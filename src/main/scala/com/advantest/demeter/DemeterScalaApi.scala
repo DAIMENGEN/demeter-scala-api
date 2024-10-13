@@ -32,7 +32,7 @@ object DemeterScalaApi extends App {
   }
 
   // Initialize the global database connection object.
-  final lazy implicit val demeter_global_database: Database = DBConnection.connect
+  final lazy implicit val DEMETER_DATABASE: Database = DBConnection.connect
 
   // Start Demeter Api Server.
   HttpRoute.start()
