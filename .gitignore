@@ -1,0 +1,14 @@
+# IntelliJ IDEA
+.idea/
+.bsp/
+*.iws
+*.iml
+*.ipr
+*.hprof
+
+# sbt
+target/
+project/target/
+
+# Logs
+*.log
