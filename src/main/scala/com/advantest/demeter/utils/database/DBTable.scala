@@ -13,13 +13,11 @@ import scala.util.{Failure, Success}
  */
 trait DBTable {
 
-  protected type TableData <: DBTableData
-
   protected type EntityData <: DBEntityData
 
   protected val db: Database
 
-  protected val table: TableQuery[_ <: Table[EntityData] with TableData]
+  protected val table: TableQuery[_ <: Table[EntityData] with DBTableData]
 
   protected def createTableIfNotExists(): Unit = {
     // If the current database table does not exist, create the database table.
@@ -127,12 +125,12 @@ trait DBTable {
   }
 
   def queryByUpdateDateTime(updateDateTime: LocalDateTime): Future[Seq[EntityData]] = {
-    val select = table.filter(_.updateDateTime === updateDateTime).result
+    val select = table.filter(_.updateDateTime() === updateDateTime).result
     db.run(select)
   }
 
   def queryByUpdateDateTimes(updateDateTimes: Seq[LocalDateTime]): Future[Seq[EntityData]] = {
-    val select = table.filter(_.updateDateTime.inSet(updateDateTimes)).result
+    val select = table.filter(_.updateDateTime().inSet(updateDateTimes)).result
     db.run(select)
   }
 
