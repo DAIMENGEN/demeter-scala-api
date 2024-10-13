@@ -11,7 +11,7 @@ import scala.util.{Failure, Success}
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-trait DBRepository {
+trait DBTable {
 
   protected type TableData <: DBTableData
 
