@@ -14,7 +14,7 @@ import scala.util.{Failure, Success}
  * Author: mengen.dai@outlook.com
  */
 trait HttpRoute {
-  private type HttpRequestParams = Map[String, JsValue]
+  type HttpRequestParams = Map[String, JsValue]
 
   def route: Route
 
