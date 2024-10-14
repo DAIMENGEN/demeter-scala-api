@@ -47,7 +47,7 @@ object HttpRoute {
 
   private val DEFAULT_IP = "0.0.0.0"
 
-  private val DEFAULT_PORT = 8080
+  private val DEFAULT_PORT = 9090
 
   def start(IP: String, PORT: Int, routes: HttpRoute*): Unit = {
     // Start the HTTP server and bind it to the specified address and port.

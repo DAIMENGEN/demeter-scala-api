@@ -2,6 +2,7 @@ package com.advantest.demeter
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
+import com.advantest.demeter.core.route.HolidayRoute
 import com.advantest.demeter.utils.database.DBConnection
 import com.advantest.demeter.utils.http.HttpRoute
 import slick.jdbc.MySQLProfile.api._
@@ -35,5 +36,5 @@ object DemeterScalaApi extends App {
   final lazy implicit val DEMETER_DATABASE: Database = DBConnection.connect
 
   // Start Demeter Api Server.
-  HttpRoute.start()
+  HttpRoute.start(HolidayRoute())
 }
