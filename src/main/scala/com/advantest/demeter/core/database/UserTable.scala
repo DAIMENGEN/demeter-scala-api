@@ -1,8 +1,7 @@
 package com.advantest.demeter.core.database
 
 import com.advantest.demeter.core.entity.UserEntity
-import com.advantest.demeter.utils.database.{DBTable, DBTableData}
-import slick.jdbc.MySQLProfile
+import com.advantest.demeter.utils.database.DBTable
 import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future
