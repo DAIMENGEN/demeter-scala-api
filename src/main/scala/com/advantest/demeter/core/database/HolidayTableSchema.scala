@@ -1,8 +1,7 @@
 package com.advantest.demeter.core.database
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.core.entity.HolidayEntity
-import com.advantest.demeter.utils.database.DBTableData
+import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
@@ -12,7 +11,7 @@ import java.time.{LocalDate, LocalDateTime}
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-class HolidayTableDescriptor(tag: Tag) extends Table[HolidayEntity](tag, "HOLIDAY_TABLE") with DBTableData {
+class HolidayTableSchema(tag: Tag) extends Table[HolidayTableRow](tag, "HOLIDAY_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
@@ -36,7 +35,7 @@ class HolidayTableDescriptor(tag: Tag) extends Table[HolidayEntity](tag, "HOLIDA
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  override def * : ProvenShape[HolidayEntity] = (
+  override def * : ProvenShape[HolidayTableRow] = (
     id,
     title,
     description,
@@ -48,5 +47,5 @@ class HolidayTableDescriptor(tag: Tag) extends Table[HolidayEntity](tag, "HOLIDA
     updaterId,
     createDateTime,
     updateDateTime()
-  ) <> ((HolidayEntity.apply _).tupled, HolidayEntity.unapply)
+  ) <> ((HolidayTableRow.apply _).tupled, HolidayTableRow.unapply)
 }

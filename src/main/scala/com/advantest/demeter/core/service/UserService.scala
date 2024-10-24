@@ -1,9 +1,10 @@
 package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
-import com.advantest.demeter.core.database.UserTable
+import com.advantest.demeter.core.database.{UserTable, UserTableRow}
 import com.advantest.demeter.core.entity.UserEntity
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 /**
@@ -12,25 +13,28 @@ import scala.concurrent.Future
  */
 case class UserService() extends UserTable with Service {
 
-  def register(user: UserEntity): Future[UserEntity] = insert(user)
+  def register(user: UserEntity): Future[UserEntity] = insert(UserEntity.create(user.id, user)).map(_.toEntity)
 
-  def register(users: Seq[UserEntity]): Future[Seq[UserEntity]] = batchInsert(users)
+  def register(users: Seq[UserEntity]): Future[Seq[UserEntity]] = {
+    val tableRows = users.map(user => UserEntity.create(user.id, user))
+    batchInsert(tableRows).map(_.map(_.toEntity))
+  }
 
   def verifyPassword(account: String, password: String): Future[UserEntity] = {
     queryByAccount(account).map {
-      case Some(user: UserEntity) =>
+      case Some(user: UserTableRow) =>
         val isCorrect = user.password == password
-        if (isCorrect) user else throw new IllegalArgumentException(s"Password for account '$account' is incorrect.")
+        if (isCorrect) user.toEntity else throw new IllegalArgumentException(s"Password for account '$account' is incorrect.")
       case None => throw new NoSuchElementException(s"Account '$account' does not exist.")
     }
   }
 
   def resetPassword(userId: Long, oldPassword: String, newPassword: String): Future[UserEntity] = {
     queryById(userId).flatMap {
-      case Some(user: UserEntity) =>
+      case Some(user: UserTableRow) =>
         val isCorrect = user.password == oldPassword
-        val newUser = user.copy(password = newPassword)
-        if (isCorrect) update(newUser) else throw new IllegalArgumentException(s"Old password for user '$userId' is incorrect.")
+        val newUser = user.copy(password = newPassword, updaterId = userId, updateDateTime = LocalDateTime.now())
+        if (isCorrect) update(newUser).map(_.toEntity) else throw new IllegalArgumentException(s"Old password for user '$userId' is incorrect.")
       case None => throw new NoSuchElementException(s"User with ID '$userId' does not exist.")
     }
   }

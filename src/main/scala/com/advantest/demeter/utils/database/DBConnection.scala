@@ -13,6 +13,8 @@ import scala.concurrent.Future
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * Database connection utilities.
  */
 object DBConnection {
 

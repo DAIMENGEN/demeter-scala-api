@@ -8,10 +8,10 @@ import java.time.LocalDateTime
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  *
- * Trait representing a database table structure.
+ * Trait representing a database table schema.
  * It defines common fields for any data type that needs to store basic metadata.
  */
-trait DBTableData {
+trait DBTableSchema {
 
   /**
    * Unique identifier of the record.

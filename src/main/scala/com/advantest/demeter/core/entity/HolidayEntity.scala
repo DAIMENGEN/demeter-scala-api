@@ -1,7 +1,8 @@
 package com.advantest.demeter.core.entity
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.utils.database.DBEntityData
+import com.advantest.demeter.core.database.HolidayTableRow
+import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
@@ -19,17 +20,38 @@ final case class HolidayEntity(
                                 holidayDate: LocalDate,
                                 holidayType: HolidayType,
                                 isRecurring: Boolean,
-                                countryCode: CountryCode,
-                                creatorId: Long,
-                                updaterId: Long,
-                                createDateTime: LocalDateTime = LocalDateTime.now(),
-                                updateDateTime: LocalDateTime = LocalDateTime.now()
-                              ) extends DBEntityData {
+                                countryCode: CountryCode
+                              ) {
 
-  override def toString: String = s"HolidayEntity(id=$id, title=$title, description=$description, holidayDate=$holidayDate, holidayType=$holidayType, isRecurring=$isRecurring, countryCode=$countryCode, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"HolidayEntity(id=$id, title=$title, description=$description, holidayDate=$holidayDate, holidayType=$holidayType, isRecurring=$isRecurring, countryCode=$countryCode)"
 }
 
-object HolidayEntity extends Serializable[HolidayEntity] {
+object HolidayEntity extends Serializable[HolidayEntity] with DBTableRowFactory {
+  override protected type EntityData = HolidayEntity
+  override protected type TableRowData = HolidayTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[HolidayEntity] = jsonFormat11(HolidayEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[HolidayEntity] = jsonFormat7(HolidayEntity.apply)
+
+  override def create(userId: Long, entityData: HolidayEntity): HolidayTableRow = HolidayTableRow(
+    id = entityData.id,
+    title = entityData.title,
+    description = entityData.description,
+    holidayDate = entityData.holidayDate,
+    holidayType = entityData.holidayType,
+    isRecurring = entityData.isRecurring,
+    countryCode = entityData.countryCode,
+    creatorId = userId,
+    updaterId = userId,
+  )
+
+  override def update(userId: Long, entityData: HolidayEntity, oldRowData: HolidayTableRow): HolidayTableRow = oldRowData.copy(
+    title = entityData.title,
+    description = entityData.description,
+    holidayDate = entityData.holidayDate,
+    holidayType = entityData.holidayType,
+    isRecurring = entityData.isRecurring,
+    countryCode = entityData.countryCode,
+    updaterId = userId,
+    updateDateTime = LocalDateTime.now()
+  )
 }

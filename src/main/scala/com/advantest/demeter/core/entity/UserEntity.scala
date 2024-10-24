@@ -1,6 +1,7 @@
 package com.advantest.demeter.core.entity
 
-import com.advantest.demeter.utils.database.DBEntityData
+import com.advantest.demeter.core.database.UserTableRow
+import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
@@ -18,18 +19,41 @@ final case class UserEntity(
                              username: String,
                              email: String,
                              phone: Option[String],
-                             teamId: Option[Long],
-                             departmentId: Option[Long],
-                             isActive: Boolean,
-                             creatorId: Long,
-                             updaterId: Long,
-                             createDateTime: LocalDateTime = LocalDateTime.now(),
-                             updateDateTime: LocalDateTime = LocalDateTime.now()
-                           ) extends DBEntityData {
-
-  override def toString: String = s"UserEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone, teamId=$teamId, departmentId=$departmentId, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+                             isActive: Boolean
+                           ) {
+  override def toString: String = s"UserEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone)"
 }
 
-object UserEntity extends Serializable[UserEntity] {
-  override implicit val serializeFormat: RootJsonFormat[UserEntity] = jsonFormat13(UserEntity.apply)
+object UserEntity extends Serializable[UserEntity] with DBTableRowFactory {
+  override protected type EntityData = UserEntity
+  override protected type TableRowData = UserTableRow
+
+  override implicit val serializeFormat: RootJsonFormat[UserEntity] = jsonFormat7(UserEntity.apply)
+
+  override def create(userId: Long, entityData: UserEntity): UserTableRow = UserTableRow(
+    id = entityData.id,
+    account = entityData.account,
+    password = entityData.password,
+    username = entityData.username,
+    email = entityData.email,
+    phone = entityData.phone,
+    teamId = None, // TODO: teamId and departmentId are not supported yet
+    departmentId = None,
+    isActive = entityData.isActive,
+    creatorId = userId,
+    updaterId = userId,
+  )
+
+  override def update(userId: Long, entityData: UserEntity, oldRowData: UserTableRow): UserTableRow = oldRowData.copy(
+    account = entityData.account,
+    password = entityData.password,
+    username = entityData.username,
+    email = entityData.email,
+    phone = entityData.phone,
+    teamId = None, // TODO: teamId and departmentId are not supported yet
+    departmentId = None,
+    isActive = entityData.isActive,
+    updaterId = userId,
+    updateDateTime = LocalDateTime.now()
+  )
 }

@@ -6,10 +6,10 @@ import java.time.LocalDateTime
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  *
- * Trait representing an entity with basic metadata fields.
- * This trait is used to encapsulate common properties for entities in a database.
+ * Trait representing a table row with basic metadata fields.
+ * This trait is used to encapsulate common properties for table rows in a database.
  */
-trait DBEntityData {
+trait DBTableRow {
 
   /**
    * Unique identifier of the record.
