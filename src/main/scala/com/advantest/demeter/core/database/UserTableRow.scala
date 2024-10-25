@@ -33,6 +33,7 @@ final case class UserTableRow(
     password = password,
     username = username,
     email = email,
-    phone = phone
+    phone = phone,
+    isActive = isActive
   )
 }
