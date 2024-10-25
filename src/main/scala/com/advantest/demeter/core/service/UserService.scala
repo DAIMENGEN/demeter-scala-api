@@ -1,8 +1,10 @@
 package com.advantest.demeter.core.service
 
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
+import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT, DEMETER_SESSION_MANAGER, REFRESH_TOKEN_STORAGE}
 import com.advantest.demeter.core.database.{UserTable, UserTableRow}
 import com.advantest.demeter.core.entity.UserEntity
+import com.softwaremill.session.SessionDirectives.setSession
+import com.softwaremill.session.SessionOptions.{refreshable, usingCookies}
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -13,9 +15,12 @@ import scala.concurrent.Future
  */
 case class UserService() extends UserTable with Service {
 
+  def checkIfAdmin(userId: Long): Boolean = userId == UserEntity.SystemAdminId
+
   def register(user: UserEntity): Future[UserEntity] = insert(UserEntity.create(user.id, user)).map(_.toEntity)
 
-  def register(users: Seq[UserEntity]): Future[Seq[UserEntity]] = {
+  def register(userId: Long, users: Seq[UserEntity]): Future[Seq[UserEntity]] = {
+    if (checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can register multiple users.")
     val tableRows = users.map(user => UserEntity.create(user.id, user))
     batchInsert(tableRows).map(_.map(_.toEntity))
   }
@@ -24,7 +29,10 @@ case class UserService() extends UserTable with Service {
     queryByAccount(account).map {
       case Some(user: UserTableRow) =>
         val isCorrect = user.password == password
-        if (isCorrect) user.toEntity else throw new IllegalArgumentException(s"Password for account '$account' is incorrect.")
+        if (isCorrect) {
+          setSession(refreshable, usingCookies, user.id)
+          user.toEntity
+        } else throw new IllegalArgumentException(s"Password for account '$account' is incorrect.")
       case None => throw new NoSuchElementException(s"Account '$account' does not exist.")
     }
   }

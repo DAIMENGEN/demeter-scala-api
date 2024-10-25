@@ -56,4 +56,6 @@ object UserEntity extends Serializable[UserEntity] with DBTableRowFactory {
     updaterId = userId,
     updateDateTime = LocalDateTime.now()
   )
+
+  val SystemAdminId: Long = 1
 }

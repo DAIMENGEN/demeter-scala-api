@@ -3,7 +3,7 @@ package com.advantest.demeter.core.service
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.constant.{CompanyHoliday, NationalHoliday, SpecialHoliday}
 import com.advantest.demeter.core.database.HolidayTable
-import com.advantest.demeter.core.entity.{HolidayEntity, UserEntity}
+import com.advantest.demeter.core.entity.HolidayEntity
 
 import scala.concurrent.Future
 
@@ -12,38 +12,52 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class HolidayService() extends HolidayTable with Service {
+  private val userService = UserService()
 
-  def createHoliday(user: UserEntity, holiday: HolidayEntity): Future[HolidayEntity] = {
-    val tableRowData = HolidayEntity.create(user.id, holiday)
+  def createHoliday(userId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can create holidays.")
+    val tableRowData = HolidayEntity.create(userId, holiday)
     insert(tableRowData).map(_.toEntity)
   }
 
-  def createHolidays(user: UserEntity, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
-    val tableRows = holidays.map(holiday => HolidayEntity.create(user.id, holiday))
+  def createHolidays(userId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can create holidays.")
+    val tableRows = holidays.map(holiday => HolidayEntity.create(userId, holiday))
     batchInsert(tableRows).map(_.map(_.toEntity))
   }
 
-  def deleteHolidays(): Future[Seq[HolidayEntity]] = delete().map(_.map(_.toEntity))
+  def deleteHolidays(userId: Long): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+    delete().map(_.map(_.toEntity))
+  }
 
-  def deleteHolidayById(holidayId: Long): Future[HolidayEntity] = deleteById(holidayId).map(_.toEntity)
+  def deleteHolidayById(userId: Long, holidayId: Long): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+    deleteById(holidayId).map(_.toEntity)
+  }
 
-  def deleteHolidayByIds(holidayIds: Seq[Long]): Future[Seq[HolidayEntity]] = deleteByIds(holidayIds).map(_.map(_.toEntity))
+  def deleteHolidayByIds(userId: Long, holidayIds: Seq[Long]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+    deleteByIds(holidayIds).map(_.map(_.toEntity))
+  }
 
-  def updateHoliday(user: UserEntity, holiday: HolidayEntity): Future[HolidayEntity] = {
+  def updateHoliday(userId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can update holidays.")
     queryById(holiday.id).flatMap {
       case Some(oldRowData: TableRowData) =>
-        val updatedTableRowData = HolidayEntity.update(user.id, holiday, oldRowData)
+        val updatedTableRowData = HolidayEntity.update(userId, holiday, oldRowData)
         update(updatedTableRowData).map(_.toEntity)
       case None => throw new Exception("holiday not found")
     }
   }
 
-  def updateHolidays(user: UserEntity, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
+  def updateHolidays(userId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can update holidays.")
     queryByIds(holidays.map(_.id)).flatMap(oldRowDataSeq => {
       val oldRowDataMap = oldRowDataSeq.map(oldRowData => oldRowData.id -> oldRowData).toMap
       val updatedTableRowDataSeq = holidays.flatMap { holiday =>
         oldRowDataMap.get(holiday.id).map { oldRowData =>
-          HolidayEntity.update(user.id, holiday, oldRowData)
+          HolidayEntity.update(userId, holiday, oldRowData)
         }
       }
       update(updatedTableRowDataSeq).map(_.map(_.toEntity))
