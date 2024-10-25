@@ -18,11 +18,6 @@ case class UserRoute() extends HttpRoute with ApiResponse {
     loginRoute,
     registerRoute,
     batchRegisterRoute,
-    updateUserRoute(),
-    batchUpdateUserRoute(),
-    getAllUsersRoute,
-    getUsersByTeamIdRoute,
-    getUsersByDepartmentIdRoute
   )
 
   private def loginRoute: Route = path("loginRoute") {
@@ -31,7 +26,7 @@ case class UserRoute() extends HttpRoute with ApiResponse {
         request =>
           val account = request.readString("account")
           val password = request.readString("password")
-          val future = userService.verifyPassword(account, password);
+          val future = userService.verifyPassword(account, password)
           response(future)
       }
     }
@@ -41,7 +36,7 @@ case class UserRoute() extends HttpRoute with ApiResponse {
     post {
       entity(as[UserEntity]) {
         request =>
-          val future = userService.register(request);
+          val future = userService.register(request)
           response(future)
       }
     }
@@ -51,56 +46,7 @@ case class UserRoute() extends HttpRoute with ApiResponse {
     post {
       entity(as[List[UserEntity]]) {
         request =>
-          val future = userService.register(request);
-          response(future)
-      }
-    }
-  }
-
-  private def updateUserRoute(): Route = path("updateUserRoute") {
-    post {
-      entity(as[UserEntity]) {
-        request =>
-          val future = userService.update(request);
-          response(future)
-      }
-    }
-  }
-
-  private def batchUpdateUserRoute(): Route = path("batchUpdateUserRoute") {
-    post {
-      entity(as[List[UserEntity]]) {
-        request =>
-          val future = userService.update(request);
-          response(future)
-      }
-    }
-  }
-
-  private def getAllUsersRoute: Route = path("getAllUsersRoute") {
-    post {
-      val future = userService.query()
-      response(future)
-    }
-  }
-
-  private def getUsersByTeamIdRoute: Route = path("getUsersByTeamIdRoute") {
-    post {
-      entity(as[HttpRequestParams]) {
-        request =>
-          val teamId = request.readLong("teamId")
-          val future = userService.queryByTeamId(teamId)
-          response(future)
-      }
-    }
-  }
-
-  private def getUsersByDepartmentIdRoute: Route = path("getUsersByDepartmentIdRoute") {
-    post {
-      entity(as[HttpRequestParams]) {
-        request =>
-          val departmentId = request.readLong("departmentId")
-          val future = userService.queryByDepartmentId(departmentId)
+          val future = userService.register(request)
           response(future)
       }
     }
