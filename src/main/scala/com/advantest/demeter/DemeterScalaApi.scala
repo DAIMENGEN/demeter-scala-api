@@ -24,10 +24,10 @@ object DemeterScalaApi extends App {
   // Configure the database using Slick.
   private lazy implicit val path: String = if (args.apply(0).equals("release")) {
     DEMETER_SYSTEM.log.info("Start with release environment.")
-    "demeter-release-mysql"
+    "database.release"
   } else if (args.apply(0).equals("develop")) {
     DEMETER_SYSTEM.log.info("Start with develop environment.")
-    "demeter-develop-mysql"
+    "database.develop"
   } else {
     throw new IllegalArgumentException("Please specify the startup environment (release or develop).")
   }
