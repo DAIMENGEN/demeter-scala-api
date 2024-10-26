@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity
 
-import com.advantest.demeter.core.database.UserTableRow
+import com.advantest.demeter.core.database.user.UserTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._

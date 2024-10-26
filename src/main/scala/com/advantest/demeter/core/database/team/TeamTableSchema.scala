@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database
+package com.advantest.demeter.core.database.team
 
 import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
@@ -7,28 +7,18 @@ import slick.lifted.ProvenShape
 import java.time.LocalDateTime
 
 /**
- * Create on 2024/10/14
+ * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-class UserTableSchema(tag: Tag) extends Table[UserTableRow](tag, "USER_TABLE") with DBTableSchema {
+class TeamTableSchema(tag: Tag) extends Table[TeamTableRow](tag, "TEAM_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
-  def account: Rep[String] = column[String]("ACCOUNT")
+  def name: Rep[String] = column[String]("NAME")
 
-  def password: Rep[String] = column[String]("PASSWORD")
-
-  def username: Rep[String] = column[String]("USERNAME")
-
-  def email: Rep[String] = column[String]("EMAIL")
-
-  def phone: Rep[Option[String]] = column[Option[String]]("PHONE")
-
-  def teamId: Rep[Option[Long]] = column[Option[Long]]("TEAM_ID")
+  def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
 
   def departmentId: Rep[Option[Long]] = column[Option[Long]]("DEPARTMENT_ID")
-
-  def isActive: Rep[Boolean] = column[Boolean]("IS_ACTIVE")
 
   override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
 
@@ -38,19 +28,14 @@ class UserTableSchema(tag: Tag) extends Table[UserTableRow](tag, "USER_TABLE") w
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  override def * : ProvenShape[UserTableRow] = (
+  override def * : ProvenShape[TeamTableRow] = (
     id,
-    account,
-    password,
-    username,
-    email,
-    phone,
-    teamId,
+    name,
+    description,
     departmentId,
-    isActive,
     creatorId,
     updaterId,
     createDateTime,
     updateDateTime()
-  ) <> ((UserTableRow.apply _).tupled, UserTableRow.unapply)
+  ) <> ((TeamTableRow.apply _).tupled, TeamTableRow.unapply)
 }

@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.core.database.HolidayTableRow
+import com.advantest.demeter.core.database.holiday.HolidayTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._

@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database
+package com.advantest.demeter.core.database.holiday
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
 import com.advantest.demeter.utils.database.DBTableSchema

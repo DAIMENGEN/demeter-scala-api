@@ -2,7 +2,7 @@ package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.constant.{CompanyHoliday, NationalHoliday, SpecialHoliday}
-import com.advantest.demeter.core.database.HolidayTable
+import com.advantest.demeter.core.database.holiday.HolidayTable
 import com.advantest.demeter.core.entity.HolidayEntity
 
 import scala.concurrent.Future

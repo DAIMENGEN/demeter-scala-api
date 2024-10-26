@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT, DEMETER_SESSION_MANAGER, REFRESH_TOKEN_STORAGE}
-import com.advantest.demeter.core.database.{UserTable, UserTableRow}
+import com.advantest.demeter.core.database.user.{UserTable, UserTableRow}
 import com.advantest.demeter.core.entity.UserEntity
 import com.softwaremill.session.SessionDirectives.setSession
 import com.softwaremill.session.SessionOptions.{refreshable, usingCookies}

@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database
+package com.advantest.demeter.core.database.user
 
 import com.advantest.demeter.utils.database.DBTable
 import slick.jdbc.MySQLProfile.api._
