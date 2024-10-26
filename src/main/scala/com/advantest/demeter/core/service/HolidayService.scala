@@ -68,9 +68,9 @@ case class HolidayService() extends Service {
 
   def getHolidays: Future[Seq[HolidayEntity]] = holidayTable.query().map(_.map(_.toEntity))
 
-  def getNationalHolidays: Future[Seq[HolidayEntity]] = holidayTable.getHolidaysByType(NationalHoliday).map(_.map(_.toEntity))
+  def getNationalHolidays: Future[Seq[HolidayEntity]] = holidayTable.queryByHolidayType(NationalHoliday).map(_.map(_.toEntity))
 
-  def getCompanyHolidays: Future[Seq[HolidayEntity]] = holidayTable.getHolidaysByType(CompanyHoliday).map(_.map(_.toEntity))
+  def getCompanyHolidays: Future[Seq[HolidayEntity]] = holidayTable.queryByHolidayType(CompanyHoliday).map(_.map(_.toEntity))
 
-  def getSpecialWorkdays: Future[Seq[HolidayEntity]] = holidayTable.getHolidaysByType(SpecialHoliday).map(_.map(_.toEntity))
+  def getSpecialWorkdays: Future[Seq[HolidayEntity]] = holidayTable.queryByHolidayType(SpecialHoliday).map(_.map(_.toEntity))
 }

@@ -9,7 +9,7 @@ import scala.concurrent.Future
  * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-class TeamTable(implicit val db: Database) extends DBTable {
+final case class TeamTable(implicit val db: Database) extends DBTable {
 
   override protected type TableRowData = TeamTableRow
   override protected val table: TableQuery[TeamTableSchema] = TableQuery[TeamTableSchema]
@@ -22,6 +22,11 @@ class TeamTable(implicit val db: Database) extends DBTable {
 
   def queryByNameLike(namePattern: String): Future[Seq[TableRowData]] = {
     val select = table.filter(_.name like s"%$namePattern%").result
+    db.run(select)
+  }
+
+  def queryByDescriptionLike(descriptionPattern: String): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.description like s"%$descriptionPattern%").result
     db.run(select)
   }
 }
