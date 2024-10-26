@@ -9,7 +9,7 @@ import scala.concurrent.Future
  * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-final case class DepartmentTable(implicit val db: Database) extends DBTable {
+final case class DepartmentTable()(implicit val db: Database) extends DBTable {
 
   override protected type TableRowData = DepartmentTableRow
   override protected val table: TableQuery[DepartmentTableSchema] = TableQuery[DepartmentTableSchema]

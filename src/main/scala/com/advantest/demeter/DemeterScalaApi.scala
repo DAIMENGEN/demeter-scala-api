@@ -2,7 +2,7 @@ package com.advantest.demeter
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
-import com.advantest.demeter.core.route.{HolidayRoute, EmployeeRoute}
+import com.advantest.demeter.core.route.{DepartmentRoute, EmployeeRoute, HolidayRoute, TeamRoute}
 import com.advantest.demeter.utils.database.DBConnection
 import com.advantest.demeter.utils.http.HttpRoute
 import com.softwaremill.session._
@@ -45,5 +45,5 @@ object DemeterScalaApi extends App {
   final lazy implicit val DEMETER_DATABASE: Database = DBConnection.connect
 
   // Start Demeter Api Server.
-  HttpRoute.start(HolidayRoute(), EmployeeRoute())
+  HttpRoute.start(HolidayRoute(), EmployeeRoute(), DepartmentRoute(), TeamRoute())
 }
