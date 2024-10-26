@@ -1,8 +1,10 @@
 package com.advantest.demeter.core.database.mapping.employee_department
 
+import com.advantest.demeter.core.database.department.{DepartmentTableRow, DepartmentTableSchema}
+import com.advantest.demeter.core.database.employee.{EmployeeTableRow, EmployeeTableSchema}
 import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
-import slick.lifted.ProvenShape
+import slick.lifted.{ForeignKeyQuery, ProvenShape}
 
 import java.time.LocalDateTime
 
@@ -25,6 +27,10 @@ class EmployeeDepartmentMappingTableSchema(tag: Tag) extends Table[EmployeeDepar
   override def createDateTime: Rep[LocalDateTime] = column[LocalDateTime]("CREATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
+
+  def employeeFk: ForeignKeyQuery[EmployeeTableSchema, EmployeeTableRow] = foreignKey("EMPLOYEE_FK", employeeId, TableQuery[EmployeeTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+
+  def departmentFk: ForeignKeyQuery[DepartmentTableSchema, DepartmentTableRow] = foreignKey("DEPARTMENT_FK", departmentId, TableQuery[DepartmentTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
   override def * : ProvenShape[EmployeeDepartmentMappingTableRow] = (
     id,
