@@ -20,8 +20,18 @@ class TeamDepartmentMappingTable(implicit val db: Database) extends DBTable {
     db.run(select)
   }
 
+  def queryByTeamIds(teamIds: Seq[Long]): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.teamId.inSet(teamIds)).result
+    db.run(select)
+  }
+
   def queryByDepartmentId(departmentId: Long): Future[Seq[TableRowData]] = {
     val select = table.filter(_.departmentId === departmentId).result
+    db.run(select)
+  }
+
+  def queryByDepartmentIds(departmentIds: Seq[Long]): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.departmentId.inSet(departmentIds)).result
     db.run(select)
   }
 }
