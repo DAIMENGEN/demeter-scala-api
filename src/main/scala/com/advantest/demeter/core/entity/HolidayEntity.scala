@@ -32,7 +32,7 @@ object HolidayEntity extends Serializable[HolidayEntity] with DBTableRowFactory 
 
   override implicit val serializeFormat: RootJsonFormat[HolidayEntity] = jsonFormat7(HolidayEntity.apply)
 
-  override def create(userId: Long, entityData: HolidayEntity): HolidayTableRow = HolidayTableRow(
+  override def create(employeeId: Long, entityData: HolidayEntity): HolidayTableRow = HolidayTableRow(
     id = entityData.id,
     title = entityData.title,
     description = entityData.description,
@@ -40,18 +40,18 @@ object HolidayEntity extends Serializable[HolidayEntity] with DBTableRowFactory 
     holidayType = entityData.holidayType,
     isRecurring = entityData.isRecurring,
     countryCode = entityData.countryCode,
-    creatorId = userId,
-    updaterId = userId,
+    creatorId = employeeId,
+    updaterId = employeeId,
   )
 
-  override def update(userId: Long, entityData: HolidayEntity, oldRowData: HolidayTableRow): HolidayTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: HolidayEntity, oldRowData: HolidayTableRow): HolidayTableRow = oldRowData.copy(
     title = entityData.title,
     description = entityData.description,
     holidayDate = entityData.holidayDate,
     holidayType = entityData.holidayType,
     isRecurring = entityData.isRecurring,
     countryCode = entityData.countryCode,
-    updaterId = userId,
+    updaterId = employeeId,
     updateDateTime = LocalDateTime.now()
   )
 }
