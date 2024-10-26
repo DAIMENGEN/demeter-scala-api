@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity
 
-import com.advantest.demeter.core.database.user.UserTableRow
+import com.advantest.demeter.core.database.employee.EmployeeTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-final case class UserEntity(
+final case class EmployeeEntity(
                              id: Long,
                              account: String,
                              password: String,
@@ -21,16 +21,16 @@ final case class UserEntity(
                              phone: Option[String],
                              isActive: Boolean
                            ) {
-  override def toString: String = s"UserEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone)"
+  override def toString: String = s"EmployeeEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone)"
 }
 
-object UserEntity extends Serializable[UserEntity] with DBTableRowFactory {
-  override protected type EntityData = UserEntity
-  override protected type TableRowData = UserTableRow
+object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactory {
+  override protected type EntityData = EmployeeEntity
+  override protected type TableRowData = EmployeeTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[UserEntity] = jsonFormat7(UserEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EmployeeEntity] = jsonFormat7(EmployeeEntity.apply)
 
-  override def create(userId: Long, entityData: UserEntity): UserTableRow = UserTableRow(
+  override def create(employeeId: Long, entityData: EmployeeEntity): EmployeeTableRow = EmployeeTableRow(
     id = entityData.id,
     account = entityData.account,
     password = entityData.password,
@@ -40,11 +40,11 @@ object UserEntity extends Serializable[UserEntity] with DBTableRowFactory {
     teamId = None, // TODO: teamId and departmentId are not supported yet
     departmentId = None,
     isActive = entityData.isActive,
-    creatorId = userId,
-    updaterId = userId,
+    creatorId = employeeId,
+    updaterId = employeeId,
   )
 
-  override def update(userId: Long, entityData: UserEntity, oldRowData: UserTableRow): UserTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: EmployeeEntity, oldRowData: EmployeeTableRow): EmployeeTableRow = oldRowData.copy(
     account = entityData.account,
     password = entityData.password,
     username = entityData.username,
@@ -53,7 +53,7 @@ object UserEntity extends Serializable[UserEntity] with DBTableRowFactory {
     teamId = None, // TODO: teamId and departmentId are not supported yet
     departmentId = None,
     isActive = entityData.isActive,
-    updaterId = userId,
+    updaterId = employeeId,
     updateDateTime = LocalDateTime.now()
   )
 

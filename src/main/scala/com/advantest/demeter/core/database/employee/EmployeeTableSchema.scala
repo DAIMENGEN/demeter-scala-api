@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database.user
+package com.advantest.demeter.core.database.employee
 
 import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-class UserTableSchema(tag: Tag) extends Table[UserTableRow](tag, "USER_TABLE") with DBTableSchema {
+class EmployeeTableSchema(tag: Tag) extends Table[EmployeeTableRow](tag, "EMPLOYEE_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
@@ -38,7 +38,7 @@ class UserTableSchema(tag: Tag) extends Table[UserTableRow](tag, "USER_TABLE") w
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  override def * : ProvenShape[UserTableRow] = (
+  override def * : ProvenShape[EmployeeTableRow] = (
     id,
     account,
     password,
@@ -52,5 +52,5 @@ class UserTableSchema(tag: Tag) extends Table[UserTableRow](tag, "USER_TABLE") w
     updaterId,
     createDateTime,
     updateDateTime()
-  ) <> ((UserTableRow.apply _).tupled, UserTableRow.unapply)
+  ) <> ((EmployeeTableRow.apply _).tupled, EmployeeTableRow.unapply)
 }

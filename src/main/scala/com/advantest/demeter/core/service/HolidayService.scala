@@ -12,52 +12,52 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class HolidayService() extends HolidayTable with Service {
-  private val userService = UserService()
+  private val userService = EmployeeService()
 
-  def createHoliday(userId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can create holidays.")
-    val tableRowData = HolidayEntity.create(userId, holiday)
+  def createHoliday(employeeId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can create holidays.")
+    val tableRowData = HolidayEntity.create(employeeId, holiday)
     insert(tableRowData).map(_.toEntity)
   }
 
-  def createHolidays(userId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can create holidays.")
-    val tableRows = holidays.map(holiday => HolidayEntity.create(userId, holiday))
+  def createHolidays(employeeId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can create holidays.")
+    val tableRows = holidays.map(holiday => HolidayEntity.create(employeeId, holiday))
     batchInsert(tableRows).map(_.map(_.toEntity))
   }
 
-  def deleteHolidays(userId: Long): Future[Seq[HolidayEntity]] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+  def deleteHolidays(employeeId: Long): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
     delete().map(_.map(_.toEntity))
   }
 
-  def deleteHolidayById(userId: Long, holidayId: Long): Future[HolidayEntity] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+  def deleteHolidayById(employeeId: Long, holidayId: Long): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
     deleteById(holidayId).map(_.toEntity)
   }
 
-  def deleteHolidayByIds(userId: Long, holidayIds: Seq[Long]): Future[Seq[HolidayEntity]] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
+  def deleteHolidayByIds(employeeId: Long, holidayIds: Seq[Long]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
     deleteByIds(holidayIds).map(_.map(_.toEntity))
   }
 
-  def updateHoliday(userId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can update holidays.")
+  def updateHoliday(employeeId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can update holidays.")
     queryById(holiday.id).flatMap {
       case Some(oldRowData: TableRowData) =>
-        val updatedTableRowData = HolidayEntity.update(userId, holiday, oldRowData)
+        val updatedTableRowData = HolidayEntity.update(employeeId, holiday, oldRowData)
         update(updatedTableRowData).map(_.toEntity)
       case None => throw new Exception("holiday not found")
     }
   }
 
-  def updateHolidays(userId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
-    if (userService.checkIfAdmin(userId)) throw new IllegalArgumentException("Only system admin can update holidays.")
+  def updateHolidays(employeeId: Long, holidays: Seq[HolidayEntity]): Future[Seq[HolidayEntity]] = {
+    if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can update holidays.")
     queryByIds(holidays.map(_.id)).flatMap(oldRowDataSeq => {
       val oldRowDataMap = oldRowDataSeq.map(oldRowData => oldRowData.id -> oldRowData).toMap
       val updatedTableRowDataSeq = holidays.flatMap { holiday =>
         oldRowDataMap.get(holiday.id).map { oldRowData =>
-          HolidayEntity.update(userId, holiday, oldRowData)
+          HolidayEntity.update(employeeId, holiday, oldRowData)
         }
       }
       update(updatedTableRowDataSeq).map(_.map(_.toEntity))

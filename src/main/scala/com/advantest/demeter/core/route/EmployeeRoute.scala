@@ -3,8 +3,8 @@ package com.advantest.demeter.core.route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
-import com.advantest.demeter.core.entity.UserEntity
-import com.advantest.demeter.core.service.UserService
+import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.core.service.EmployeeService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
 import spray.json.DefaultJsonProtocol._
 
@@ -14,8 +14,8 @@ import scala.concurrent.Future
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-case class UserRoute() extends HttpRoute with ApiRequest with ApiResponse {
-  private val userService = UserService()
+case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
+  private val userService = EmployeeService()
 
   override def route: Route = concat(
     loginRoute,
@@ -47,7 +47,7 @@ case class UserRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def registerRoute: Route = path("registerRoute") {
     post {
-      entity(as[UserEntity]) {
+      entity(as[EmployeeEntity]) {
         request =>
           val future = userService.register(request)
           response(future)
@@ -57,10 +57,10 @@ case class UserRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def batchRegisterRoute: Route = path("batchRegisterRoute") {
     post {
-      required { userId =>
-        entity(as[List[UserEntity]]) {
+      required { employeeId =>
+        entity(as[List[EmployeeEntity]]) {
           request =>
-            val future = userService.register(userId, request)
+            val future = userService.register(employeeId, request)
             response(future)
         }
       }
@@ -69,12 +69,12 @@ case class UserRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def resetPasswordRoute: Route = path("resetPasswordRoute") {
     post {
-      required { userId =>
+      required { employeeId =>
         entity(as[HttpRequestParams]) {
           request =>
             val oldPassword = request.readString("oldPassword")
             val newPassword = request.readString("newPassword")
-            val future = userService.resetPassword(userId, oldPassword, newPassword)
+            val future = userService.resetPassword(employeeId, oldPassword, newPassword)
             response(future)
         }
       }

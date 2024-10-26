@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database.user
+package com.advantest.demeter.core.database.employee
 
 import com.advantest.demeter.utils.database.DBTable
 import slick.jdbc.MySQLProfile.api._
@@ -9,10 +9,10 @@ import scala.concurrent.Future
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-class UserTable(implicit val db: Database) extends DBTable {
+class EmployeeTable(implicit val db: Database) extends DBTable {
 
-  override protected type TableRowData = UserTableRow
-  override protected val table: TableQuery[UserTableSchema] = TableQuery[UserTableSchema]
+  override protected type TableRowData = EmployeeTableRow
+  override protected val table: TableQuery[EmployeeTableSchema] = TableQuery[EmployeeTableSchema]
   createTableIfNotExists()
 
   def queryByAccount(account: String): Future[Option[TableRowData]] = {
