@@ -24,10 +24,6 @@ class EmployeeTableSchema(tag: Tag) extends Table[EmployeeTableRow](tag, "EMPLOY
 
   def phone: Rep[Option[String]] = column[Option[String]]("PHONE")
 
-  def teamId: Rep[Option[Long]] = column[Option[Long]]("TEAM_ID")
-
-  def departmentId: Rep[Option[Long]] = column[Option[Long]]("DEPARTMENT_ID")
-
   def isActive: Rep[Boolean] = column[Boolean]("IS_ACTIVE")
 
   override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
@@ -45,8 +41,6 @@ class EmployeeTableSchema(tag: Tag) extends Table[EmployeeTableRow](tag, "EMPLOY
     username,
     email,
     phone,
-    teamId,
-    departmentId,
     isActive,
     creatorId,
     updaterId,

@@ -16,8 +16,6 @@ final case class EmployeeTableRow(
                                username: String,
                                email: String,
                                phone: Option[String],
-                               teamId: Option[Long],
-                               departmentId: Option[Long],
                                isActive: Boolean,
                                creatorId: Long,
                                updaterId: Long,
@@ -25,7 +23,7 @@ final case class EmployeeTableRow(
                                updateDateTime: LocalDateTime = LocalDateTime.now()
                              ) extends DBTableRow {
 
-  override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone, teamId=$teamId, departmentId=$departmentId, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: EmployeeEntity = EmployeeEntity(
     id = id,

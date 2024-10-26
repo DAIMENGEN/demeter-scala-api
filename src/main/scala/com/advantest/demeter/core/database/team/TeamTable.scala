@@ -24,9 +24,4 @@ class TeamTable(implicit val db: Database) extends DBTable {
     val select = table.filter(_.name like s"%$namePattern%").result
     db.run(select)
   }
-
-  def queryByDepartmentId(departmentId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.departmentId === departmentId).result
-    db.run(select)
-  }
 }

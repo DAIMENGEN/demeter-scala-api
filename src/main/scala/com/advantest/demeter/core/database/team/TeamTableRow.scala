@@ -12,7 +12,6 @@ final case class TeamTableRow(
                                id: Long,
                                name: String,
                                description: Option[String],
-                               departmentId: Option[Long],
                                creatorId: Long,
                                updaterId: Long,
                                createDateTime: LocalDateTime = LocalDateTime.now(),

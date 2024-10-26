@@ -18,8 +18,6 @@ class TeamTableSchema(tag: Tag) extends Table[TeamTableRow](tag, "TEAM_TABLE") w
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
 
-  def departmentId: Rep[Option[Long]] = column[Option[Long]]("DEPARTMENT_ID")
-
   override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
 
   override def updaterId: Rep[Long] = column[Long]("UPDATER_ID")
@@ -32,7 +30,6 @@ class TeamTableSchema(tag: Tag) extends Table[TeamTableRow](tag, "TEAM_TABLE") w
     id,
     name,
     description,
-    departmentId,
     creatorId,
     updaterId,
     createDateTime,

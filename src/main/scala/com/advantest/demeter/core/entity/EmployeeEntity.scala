@@ -13,14 +13,14 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class EmployeeEntity(
-                             id: Long,
-                             account: String,
-                             password: String,
-                             username: String,
-                             email: String,
-                             phone: Option[String],
-                             isActive: Boolean
-                           ) {
+                                 id: Long,
+                                 account: String,
+                                 password: String,
+                                 username: String,
+                                 email: String,
+                                 phone: Option[String],
+                                 isActive: Boolean
+                               ) {
   override def toString: String = s"EmployeeEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone)"
 }
 
@@ -37,8 +37,6 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
     username = entityData.username,
     email = entityData.email,
     phone = entityData.phone,
-    teamId = None, // TODO: teamId and departmentId are not supported yet
-    departmentId = None,
     isActive = entityData.isActive,
     creatorId = employeeId,
     updaterId = employeeId,
@@ -50,8 +48,6 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
     username = entityData.username,
     email = entityData.email,
     phone = entityData.phone,
-    teamId = None, // TODO: teamId and departmentId are not supported yet
-    departmentId = None,
     isActive = entityData.isActive,
     updaterId = employeeId,
     updateDateTime = LocalDateTime.now()

@@ -29,14 +29,4 @@ class EmployeeTable(implicit val db: Database) extends DBTable {
     val select = table.filter(_.phone === phone).result.headOption
     db.run(select)
   }
-
-  def queryByTeamId(teamId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.teamId === teamId).result
-    db.run(select)
-  }
-
-  def queryByDepartmentId(departmentId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.departmentId === departmentId).result
-    db.run(select)
-  }
 }
