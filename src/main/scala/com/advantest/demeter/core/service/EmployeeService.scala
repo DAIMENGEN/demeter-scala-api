@@ -13,20 +13,21 @@ import scala.concurrent.Future
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-case class EmployeeService() extends EmployeeTable with Service {
+case class EmployeeService() extends Service {
+  private val employeeTable: EmployeeTable = EmployeeTable()
 
   def checkIfAdmin(employeeId: Long): Boolean = employeeId == EmployeeEntity.SystemAdminId
 
-  def register(employee: EmployeeEntity): Future[EmployeeEntity] = insert(EmployeeEntity.create(employee.id, employee)).map(_.toEntity)
+  def register(employee: EmployeeEntity): Future[EmployeeEntity] = employeeTable.insert(EmployeeEntity.create(employee.id, employee)).map(_.toEntity)
 
   def register(employeeId: Long, users: Seq[EmployeeEntity]): Future[Seq[EmployeeEntity]] = {
     if (checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can register multiple employees.")
     val tableRows = users.map(user => EmployeeEntity.create(user.id, user))
-    batchInsert(tableRows).map(_.map(_.toEntity))
+    employeeTable.batchInsert(tableRows).map(_.map(_.toEntity))
   }
 
   def verifyPassword(account: String, password: String): Future[EmployeeEntity] = {
-    queryByAccount(account).map {
+    employeeTable.queryByAccount(account).map {
       case Some(employee: EmployeeTableRow) =>
         val isCorrect = employee.password == password
         if (isCorrect) {
@@ -38,11 +39,11 @@ case class EmployeeService() extends EmployeeTable with Service {
   }
 
   def resetPassword(employeeId: Long, oldPassword: String, newPassword: String): Future[EmployeeEntity] = {
-    queryById(employeeId).flatMap {
+    employeeTable.queryById(employeeId).flatMap {
       case Some(employee: EmployeeTableRow) =>
         val isCorrect = employee.password == oldPassword
         val newEmployee = employee.copy(password = newPassword, updaterId = employeeId, updateDateTime = LocalDateTime.now())
-        if (isCorrect) update(newEmployee).map(_.toEntity) else throw new IllegalArgumentException(s"Old password for employee '$employeeId' is incorrect.")
+        if (isCorrect) employeeTable.update(newEmployee).map(_.toEntity) else throw new IllegalArgumentException(s"Old password for employee '$employeeId' is incorrect.")
       case None => throw new NoSuchElementException(s"User with ID '$employeeId' does not exist.")
     }
   }
