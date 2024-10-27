@@ -1,6 +1,7 @@
 package com.advantest.demeter.core.database.project.task
 
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
+import com.advantest.demeter.core.entity.ProjectTaskEntity
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.LocalDateTime
@@ -27,4 +28,18 @@ final case class ProjectTaskTableRow(
                                       updateDateTime: LocalDateTime = LocalDateTime.now()
                                     ) extends DBTableRow {
   override def toString: String = s"ProjectTaskTableRow(id=$id, name=$name, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, projectId=$projectId, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+
+  def toEntity: ProjectTaskEntity = ProjectTaskEntity(
+    id,
+    name,
+    description,
+    taskType,
+    taskStatus,
+    taskRule,
+    startDateTime,
+    endDateTime,
+    parentId,
+    projectId,
+    order
+  )
 }
