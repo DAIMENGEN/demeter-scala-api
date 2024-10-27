@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.project
 
-import com.advantest.demeter.core.constant.ProjectStatus
+import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape

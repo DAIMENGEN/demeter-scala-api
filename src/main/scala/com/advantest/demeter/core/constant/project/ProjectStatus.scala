@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.constant
+package com.advantest.demeter.core.constant.project
 
 import com.advantest.demeter.utils.database.DBTableColumn
 import com.advantest.demeter.utils.serialize.Serializable
@@ -45,7 +45,7 @@ case object Completed extends ProjectStatus
 /**
  * Cancelled status, indicating that the project has been canceled and will not be completed.
  */
-case object Cancelled extends ProjectStatus
+case object Canceled extends ProjectStatus
 
 /**
  * OnHold status, indicating that the project is temporarily paused or delayed.
@@ -68,7 +68,7 @@ object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
     case InProgress => 4
     case Acceptance => 5
     case Completed => 6
-    case Cancelled => 7
+    case Canceled => 7
     case OnHold => 8
     case Delayed => 9
   }
@@ -80,7 +80,7 @@ object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
     case 4 => InProgress
     case 5 => Acceptance
     case 6 => Completed
-    case 7 => Cancelled
+    case 7 => Canceled
     case 8 => OnHold
     case 9 => Delayed
     case _ => throw new IllegalArgumentException(s"Invalid ProjectStatus field: $field. Valid fields are 1 (NotStarted), 2 (RequirementsAnalysis), 3 (Planning), 4 (InProgress), 5 (Acceptance), 6 (Completed), 7 (Cancelled), 8 (OnHold), 9 (Delayed).")

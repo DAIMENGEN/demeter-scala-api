@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.project.task
 
-import com.advantest.demeter.core.constant.{ProjectTaskStatus, ProjectTaskType}
+import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.utils.database.DBTable
 import slick.jdbc.MySQLProfile.api._
 

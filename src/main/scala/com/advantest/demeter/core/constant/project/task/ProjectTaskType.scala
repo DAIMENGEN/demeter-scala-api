@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.constant
+package com.advantest.demeter.core.constant.project.task
 
 import com.advantest.demeter.utils.database.DBTableColumn
 import com.advantest.demeter.utils.serialize.Serializable
