@@ -24,6 +24,11 @@ final case class ProjectTaskFieldTable()(implicit val db: Database) extends DBTa
     db.run(select)
   }
 
+  def queryByDescriptionLike(descriptionPattern: String): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.description like s"%$descriptionPattern%").result
+    db.run(select)
+  }
+
   def queryByTaskId(askId: Long): Future[Seq[TableRowData]] = {
     val select = table.filter(_.projectTaskId === askId).result
     db.run(select)
