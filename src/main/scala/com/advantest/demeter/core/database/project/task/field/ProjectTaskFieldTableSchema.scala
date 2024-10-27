@@ -22,6 +22,8 @@ final class ProjectTaskFieldTableSchema(tag: Tag) extends Table[ProjectTaskField
 
   def fieldType: Rep[DBFieldType] = column[DBFieldType]("FIELD_TYPE")
 
+  def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
+
   def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
 
   def projectTaskId: Rep[Long] = column[Long]("PROJECT_TASK_ID")
@@ -40,5 +42,18 @@ final class ProjectTaskFieldTableSchema(tag: Tag) extends Table[ProjectTaskField
 
   def projectTaskFk: ForeignKeyQuery[ProjectTaskTableSchema, ProjectTaskTableRow] = foreignKey("PROJECT_TASK_FK", projectTaskId, TableQuery[ProjectTaskTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
-  override def * : ProvenShape[ProjectTaskFieldTableRow] = ???
+  override def * : ProvenShape[ProjectTaskFieldTableRow] = (
+    id,
+    fieldName,
+    fieldValue,
+    fieldType,
+    description,
+    order,
+    projectTaskId,
+    projectId,
+    creatorId,
+    updaterId,
+    createDateTime,
+    updateDateTime()
+  ) <> ((ProjectTaskFieldTableRow.apply _).tupled, ProjectTaskFieldTableRow.unapply)
 }

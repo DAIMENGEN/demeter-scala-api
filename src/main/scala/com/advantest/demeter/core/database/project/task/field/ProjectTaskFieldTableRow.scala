@@ -13,6 +13,7 @@ final case class ProjectTaskFieldTableRow(
                                            fieldName: String,
                                            fieldValue: String,
                                            fieldType: DBFieldType,
+                                           description: Option[String],
                                            order: Option[Int],
                                            projectTaskId: Long,
                                            projectId: Long,
@@ -21,5 +22,5 @@ final case class ProjectTaskFieldTableRow(
                                            createDateTime: LocalDateTime = LocalDateTime.now(),
                                            updateDateTime: LocalDateTime = LocalDateTime.now()
                                          ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskFieldTableRow(id=$id, fieldName=$fieldName, fieldValue=$fieldValue, fieldType=$fieldType, order=$order, projectTaskId=$projectTaskId, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskFieldTableRow(id=$id, fieldName=$fieldName, fieldValue=$fieldValue, fieldType=$fieldType, description=$description, order=$order, projectTaskId=$projectTaskId, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }
