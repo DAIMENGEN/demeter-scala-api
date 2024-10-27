@@ -1,5 +1,6 @@
 package com.advantest.demeter.core.database.project.task.field
 
+import com.advantest.demeter.core.entity.project.task.ProjectTaskFieldEntity
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableRow}
 
 import java.time.LocalDateTime
@@ -23,4 +24,6 @@ final case class ProjectTaskFieldTableRow(
                                            updateDateTime: LocalDateTime = LocalDateTime.now()
                                          ) extends DBTableRow {
   override def toString: String = s"ProjectTaskFieldTableRow(id=$id, fieldName=$fieldName, fieldValue=$fieldValue, fieldType=$fieldType, description=$description, order=$order, projectTaskId=$projectTaskId, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+
+  def toEntity: ProjectTaskFieldEntity = ProjectTaskFieldEntity(id, fieldName, fieldValue, fieldType, description, order)
 }
