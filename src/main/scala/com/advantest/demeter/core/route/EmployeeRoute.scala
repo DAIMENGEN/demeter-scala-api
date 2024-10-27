@@ -35,7 +35,17 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def logoutRoute: Route = path("logoutRoute") {
     post {
-      response(Future("Logout success"))
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) { request =>
+          val account = request.readString("account")
+          val account_ = employee.account
+          if (account == account_) {
+            response(Future("Logout success"))
+          } else {
+            response(Future("Logout failure"))
+          }
+        }
+      }
     }
   }
 }
