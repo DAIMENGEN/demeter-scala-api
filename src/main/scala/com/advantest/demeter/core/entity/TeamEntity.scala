@@ -26,7 +26,7 @@ object TeamEntity extends Serializable[TeamEntity] with DBTableRowFactory {
 
   override implicit val serializeFormat: RootJsonFormat[TeamEntity] = jsonFormat3(TeamEntity.apply)
 
-  override def create(employeeId: Long, entityData: TeamEntity): TeamTableRow = TeamTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = TeamTableRow(
     id = entityData.id,
     name = entityData.name,
     description = entityData.description,
@@ -34,7 +34,7 @@ object TeamEntity extends Serializable[TeamEntity] with DBTableRowFactory {
     updaterId = employeeId
   )
 
-  override def update(employeeId: Long, entityData: TeamEntity, oldRowData: TeamTableRow): TeamTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     name = entityData.name,
     description = entityData.description,
     updaterId = employeeId,

@@ -35,7 +35,7 @@ object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[ProjectTaskEntity] = jsonFormat11(ProjectTaskEntity.apply)
 
-  override def create(employeeId: Long, entityData: ProjectTaskEntity): ProjectTaskTableRow = ProjectTaskTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectTaskTableRow(
     id = entityData.id,
     name = entityData.name,
     description = entityData.description,
@@ -51,7 +51,7 @@ object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRow
     updaterId = employeeId
   )
 
-  override def update(employeeId: Long, entityData: ProjectTaskEntity, oldRowData: ProjectTaskTableRow): ProjectTaskTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     name = entityData.name,
     description = entityData.description,
     taskType = entityData.taskType,

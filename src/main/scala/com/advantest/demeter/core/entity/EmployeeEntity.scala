@@ -30,7 +30,7 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
 
   override implicit val serializeFormat: RootJsonFormat[EmployeeEntity] = jsonFormat7(EmployeeEntity.apply)
 
-  override def create(employeeId: Long, entityData: EmployeeEntity): EmployeeTableRow = EmployeeTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = EmployeeTableRow(
     id = entityData.id,
     account = entityData.account,
     password = entityData.password,
@@ -42,7 +42,7 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
     updaterId = employeeId,
   )
 
-  override def update(employeeId: Long, entityData: EmployeeEntity, oldRowData: EmployeeTableRow): EmployeeTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     account = entityData.account,
     password = entityData.password,
     username = entityData.username,

@@ -26,7 +26,7 @@ object DepartmentEntity extends Serializable[DepartmentEntity] with DBTableRowFa
 
   override implicit val serializeFormat: RootJsonFormat[DepartmentEntity] = jsonFormat3(DepartmentEntity.apply)
 
-  override def create(employeeId: Long, entityData: DepartmentEntity): DepartmentTableRow = DepartmentTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = DepartmentTableRow(
     id = entityData.id,
     name = entityData.name,
     description = entityData.description,
@@ -34,7 +34,7 @@ object DepartmentEntity extends Serializable[DepartmentEntity] with DBTableRowFa
     updaterId = employeeId
   )
 
-  override def update(employeeId: Long, entityData: DepartmentEntity, oldRowData: DepartmentTableRow): DepartmentTableRow = oldRowData.copy(
+  override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     name = entityData.name,
     description = entityData.description,
     updaterId = employeeId,
