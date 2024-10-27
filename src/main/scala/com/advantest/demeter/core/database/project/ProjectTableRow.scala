@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-case class ProjectTableRow(
+final case class ProjectTableRow(
                             id: Long,
                             name: String,
                             description: Option[String],

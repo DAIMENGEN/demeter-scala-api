@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-class TeamTableSchema(tag: Tag) extends Table[TeamTableRow](tag, "TEAM_TABLE") with DBTableSchema {
+final class TeamTableSchema(tag: Tag) extends Table[TeamTableRow](tag, "TEAM_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 

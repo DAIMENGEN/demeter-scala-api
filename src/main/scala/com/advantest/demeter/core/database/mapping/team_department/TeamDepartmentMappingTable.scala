@@ -9,7 +9,7 @@ import scala.concurrent.Future
  * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-class TeamDepartmentMappingTable(implicit val db: Database) extends DBTable {
+final case class TeamDepartmentMappingTable()(implicit val db: Database) extends DBTable {
 
   override protected type TableRowData = TeamDepartmentMappingTableRow
   override protected val table: TableQuery[TeamDepartmentMappingTableSchema] = TableQuery[TeamDepartmentMappingTableSchema]

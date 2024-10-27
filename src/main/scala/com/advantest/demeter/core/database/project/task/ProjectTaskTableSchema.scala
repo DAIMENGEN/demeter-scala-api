@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-case class ProjectTaskTableSchema(tag: Tag) extends Table[ProjectTaskTableRow](tag, "PROJECT_TASK_TABLE") with DBTableSchema {
+final class ProjectTaskTableSchema(tag: Tag) extends Table[ProjectTaskTableRow](tag, "PROJECT_TASK_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 

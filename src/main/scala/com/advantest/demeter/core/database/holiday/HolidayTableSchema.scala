@@ -11,7 +11,7 @@ import java.time.{LocalDate, LocalDateTime}
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-class HolidayTableSchema(tag: Tag) extends Table[HolidayTableRow](tag, "HOLIDAY_TABLE") with DBTableSchema {
+final class HolidayTableSchema(tag: Tag) extends Table[HolidayTableRow](tag, "HOLIDAY_TABLE") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 

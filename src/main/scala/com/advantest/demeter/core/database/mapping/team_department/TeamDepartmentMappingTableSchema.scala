@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/26
  * Author: mengen.dai@outlook.com
  */
-class TeamDepartmentMappingTableSchema(tag: Tag) extends Table[TeamDepartmentMappingTableRow](tag, "TEAM_DEPARTMENT_MAPPING") with DBTableSchema {
+final class TeamDepartmentMappingTableSchema(tag: Tag) extends Table[TeamDepartmentMappingTableRow](tag, "TEAM_DEPARTMENT_MAPPING") with DBTableSchema {
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
