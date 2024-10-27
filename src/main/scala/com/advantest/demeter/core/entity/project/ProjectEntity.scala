@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.entity
+package com.advantest.demeter.core.entity.project
 
 import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.database.project.ProjectTableRow

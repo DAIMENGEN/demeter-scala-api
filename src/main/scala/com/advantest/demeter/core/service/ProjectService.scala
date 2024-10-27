@@ -2,7 +2,7 @@ package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.database.project.{ProjectTable, ProjectTableRow}
-import com.advantest.demeter.core.entity.ProjectEntity
+import com.advantest.demeter.core.entity.project.ProjectEntity
 
 import scala.concurrent.Future
 

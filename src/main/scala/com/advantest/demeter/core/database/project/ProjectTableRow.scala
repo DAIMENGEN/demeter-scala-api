@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.database.project
 
 import com.advantest.demeter.core.constant.project.ProjectStatus
-import com.advantest.demeter.core.entity.ProjectEntity
+import com.advantest.demeter.core.entity.project.ProjectEntity
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.LocalDateTime

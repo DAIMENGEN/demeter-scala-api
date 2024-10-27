@@ -2,7 +2,7 @@ package com.advantest.demeter.core.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.advantest.demeter.core.entity.ProjectEntity
+import com.advantest.demeter.core.entity.project.ProjectEntity
 import com.advantest.demeter.core.service.ProjectService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
 import spray.json.DefaultJsonProtocol._

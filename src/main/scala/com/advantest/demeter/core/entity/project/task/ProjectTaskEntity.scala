@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.entity
+package com.advantest.demeter.core.entity.project.task
 
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.task.ProjectTaskTableRow
