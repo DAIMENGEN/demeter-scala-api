@@ -23,33 +23,38 @@ final case class ProjectTaskEntity(
                                     startDateTime: LocalDateTime,
                                     endDateTime: Option[LocalDateTime],
                                     parentId: Option[Long],
-                                    projectId: Long,
                                     order: Option[Int]
                                   ) {
-  override def toString: String = s"ProjectTaskEntity($id, $name, $description, $taskType, $taskStatus, $taskRule, $startDateTime, $endDateTime, $parentId, $projectId, $order)"
+  override def toString: String = s"ProjectTaskEntity($id, $name, $description, $taskType, $taskStatus, $taskRule, $startDateTime, $endDateTime, $parentId, $order)"
 }
 
 object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectTaskEntity
   override protected type TableRowData = ProjectTaskTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[ProjectTaskEntity] = jsonFormat11(ProjectTaskEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[ProjectTaskEntity] = jsonFormat10(ProjectTaskEntity.apply)
 
-  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectTaskTableRow(
-    id = entityData.id,
-    name = entityData.name,
-    description = entityData.description,
-    taskType = entityData.taskType,
-    taskStatus = entityData.taskStatus,
-    taskRule = entityData.taskRule,
-    startDateTime = entityData.startDateTime,
-    endDateTime = entityData.endDateTime,
-    parentId = entityData.parentId,
-    projectId = entityData.projectId,
-    order = entityData.order,
-    creatorId = employeeId,
-    updaterId = employeeId
-  )
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
+    options.flatMap(_.get("projectId").map(_.asInstanceOf[Long])) match {
+      case Some(projectId) =>
+        ProjectTaskTableRow(
+          id = entityData.id,
+          name = entityData.name,
+          description = entityData.description,
+          taskType = entityData.taskType,
+          taskStatus = entityData.taskStatus,
+          taskRule = entityData.taskRule,
+          startDateTime = entityData.startDateTime,
+          endDateTime = entityData.endDateTime,
+          parentId = entityData.parentId,
+          projectId = projectId,
+          order = entityData.order,
+          creatorId = employeeId,
+          updaterId = employeeId
+        )
+      case None => throw new IllegalArgumentException("projectId is required when creating a ProjectTaskTableRow")
+    }
+  }
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     name = entityData.name,
@@ -60,7 +65,6 @@ object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRow
     startDateTime = entityData.startDateTime,
     endDateTime = entityData.endDateTime,
     parentId = entityData.parentId,
-    projectId = entityData.projectId,
     order = entityData.order,
     updaterId = employeeId,
     updateDateTime = LocalDateTime.now()

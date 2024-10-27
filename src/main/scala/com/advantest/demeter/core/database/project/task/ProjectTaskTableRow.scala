@@ -39,7 +39,6 @@ final case class ProjectTaskTableRow(
     startDateTime,
     endDateTime,
     parentId,
-    projectId,
     order
   )
 }
