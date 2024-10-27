@@ -2,8 +2,8 @@ ThisBuild / version := "demeter-scala-api-1.0.0"
 ThisBuild / scalaVersion := "2.13.13"
 
 // Define the basic configuration and version information of Akka.
-lazy val AkkaVersion = "2.8.6"
-lazy val AkkaHttpVersion = "10.5.3"
+lazy val AkkaVersion = "2.9.3"
+lazy val AkkaHttpVersion = "10.6.3"
 
 // Enable plugins.
 enablePlugins(RpmPlugin)
@@ -60,18 +60,25 @@ Rpm / maintainerScripts := Map(
   RpmConstants.Postun -> Seq("""rm -rf /opt/demeter""","""echo "Uninstall complete"""")
 )
 
+// Add additional library resolvers
+resolvers ++= Seq(
+  // Akka official library resolver, used to fetch Akka-related dependency libraries
+  "Akka library repository" at "https://repo.akka.io/maven",
+  // Maven Central resolver, used to fetch a wide range of third-party libraries
+  "Maven Central" at "https://repo1.maven.org/maven2"
+)
+
 // Project dependency management.
 libraryDependencies ++= Seq(
-  "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
+  "com.typesafe.akka" %% "akka-slf4j" % AkkaVersion,
   "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
   "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-discovery" % AkkaVersion,
-  "com.typesafe.akka" %% "akka-slf4j" % AkkaVersion,
+  "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
+  "com.typesafe.akka" %% "akka-http-jwt" % AkkaHttpVersion,
   "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
-  "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "6.0.2",
-  "com.softwaremill.akka-http-session" %% "core" % "0.7.1",
   "mysql" % "mysql-connector-java" % "8.0.33",
   "ch.qos.logback" % "logback-classic" % "1.5.6",
+  "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "6.0.2",
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
-
 )

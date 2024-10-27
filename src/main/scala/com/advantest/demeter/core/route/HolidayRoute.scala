@@ -30,10 +30,10 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def createHolidayRoute: Route = path("createHolidayRoute") {
     post {
-      required { employeeId =>
+      validateToken { employee =>
         entity(as[HolidayEntity]) {
           request =>
-            val future = holidayService.createHoliday(employeeId, request)
+            val future = holidayService.createHoliday(employee.id, request)
             response(future)
         }
       }
@@ -42,10 +42,10 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def createHolidaysRoute: Route = path("createHolidaysRoute") {
     post {
-      required { employeeId =>
+      validateToken { employee =>
         entity(as[Seq[HolidayEntity]]) {
           request =>
-            val future = holidayService.createHolidays(employeeId, request)
+            val future = holidayService.createHolidays(employee.id, request)
             response(future)
         }
       }
@@ -54,8 +54,8 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def deleteHolidaysRoute(): Route = path("deleteHolidaysRoute") {
     delete {
-      required { employeeId =>
-        val future = holidayService.deleteHolidays(employeeId)
+      validateToken { employee =>
+        val future = holidayService.deleteHolidays(employee.id)
         response(future)
       }
     }
@@ -63,11 +63,11 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def deleteHolidayByIdRoute(): Route = path("deleteHolidayByIdRoute") {
     delete {
-      required { employeeId =>
+      validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
             val holidayId = request.readLong("holidayId")
-            val future = holidayService.deleteHolidayById(employeeId, holidayId)
+            val future = holidayService.deleteHolidayById(employee.id, holidayId)
             response(future)
         }
       }
@@ -76,11 +76,11 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def deleteHolidayByIdsRoute(): Route = path("deleteHolidayByIdsRoute") {
     delete {
-      required { employeeId =>
+      validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
             val holidayIds = request.readLongArray("holidayIds")
-            val future = holidayService.deleteHolidayByIds(employeeId, holidayIds)
+            val future = holidayService.deleteHolidayByIds(employee.id, holidayIds)
             response(future)
         }
       }
@@ -88,11 +88,11 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def updateHolidayRoute(): Route = path("updateHolidayRoute") {
-    put {
-      required { employeeId =>
+    post {
+      validateToken { employee =>
         entity(as[HolidayEntity]) {
           request =>
-            val future = holidayService.updateHoliday(employeeId, request)
+            val future = holidayService.updateHoliday(employee.id, request)
             response(future)
         }
       }
@@ -101,10 +101,10 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def updateHolidaysRoute(): Route = path("updateHolidaysRoute") {
     put {
-      required { employeeId =>
+      validateToken { employee =>
         entity(as[Seq[HolidayEntity]]) {
           request =>
-            val future = holidayService.updateHolidays(employeeId, request)
+            val future = holidayService.updateHolidays(employee.id, request)
             response(future)
         }
       }

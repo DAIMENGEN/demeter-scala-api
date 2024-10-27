@@ -5,7 +5,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import com.advantest.demeter.core.route.{DepartmentRoute, EmployeeRoute, HolidayRoute, TeamRoute}
 import com.advantest.demeter.utils.database.DBConnection
 import com.advantest.demeter.utils.http.HttpRoute
-import com.softwaremill.session._
+import com.typesafe.config.{ConfigFactory, ConfigObject}
 import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.ExecutionContextExecutor
@@ -22,13 +22,16 @@ object DemeterScalaApi extends App {
   // Create an ExecutionContext for handling asynchronous operations.
   final lazy implicit val DEMETER_EXECUTION_CONTEXT: ExecutionContextExecutor = DEMETER_SYSTEM.executionContext
 
-  // This instance is initialized by reading the configuration from application.conf.
-  private final val DEMETER_SESSION_CONFIG: SessionConfig = SessionConfig.fromConfig()
+  // Load configuration from the application.conf file.
+  private final lazy val DEMETER_CONFIG = ConfigFactory.load()
+  private final lazy val DEMETER_JWT_SECRETS = DEMETER_CONFIG.getList("akka.http.jwt.secrets")
+  private final lazy val DEMETER_JWT_SECRET_CONFIG = DEMETER_JWT_SECRETS.get(0).asInstanceOf[ConfigObject].toConfig
+  final lazy val DEMETER_JWT_ALGORITHM = pdi.jwt.JwtAlgorithm.HS256
+  final lazy val DEMETER_JWT_SECRET = DEMETER_JWT_SECRET_CONFIG.getString("secret")
+  final lazy val DEMETER_JWT_ISSUER = DEMETER_JWT_SECRET_CONFIG.getString("issuer")
+  final lazy val DEMETER_JWT_KEY_ID = DEMETER_JWT_SECRET_CONFIG.getString("key-id")
 
-  // Create a SessionManager instance for managing session data.
-  private implicit val DEMETER_SESSION_ENCODER: BasicSessionEncoder[Long] = new BasicSessionEncoder[Long]()
-  final implicit val DEMETER_SESSION_MANAGER: SessionManager[Long] = new SessionManager[Long](DEMETER_SESSION_CONFIG)
-  final implicit val REFRESH_TOKEN_STORAGE: InMemoryRefreshTokenStorage[Long] = (msg: String) => DEMETER_SYSTEM.log.info(msg)
+
 
   // Configure the database using Slick.
   private lazy implicit val path: String = if (args.apply(0).equals("release")) {

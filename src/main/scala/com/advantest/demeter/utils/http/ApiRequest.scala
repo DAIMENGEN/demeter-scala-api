@@ -1,11 +1,14 @@
 package com.advantest.demeter.utils.http
 
-import akka.http.scaladsl.server.{Directive0, Directive1}
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_EXECUTION_CONTEXT, DEMETER_SESSION_MANAGER, REFRESH_TOKEN_STORAGE}
+import akka.http.scaladsl.server.Directives.{extractRequest, provide, reject}
+import akka.http.scaladsl.server.{AuthorizationFailedRejection, Directive1}
+import com.advantest.demeter.DemeterScalaApi.{DEMETER_JWT_ALGORITHM, DEMETER_JWT_SECRET}
+import com.advantest.demeter.core.entity.EmployeeEntity
 import com.advantest.demeter.utils.serialize.format.reader.JsonReaderFormat
-import com.softwaremill.session.SessionDirectives._
-import com.softwaremill.session.SessionOptions._
-import spray.json.{JsValue, JsonFormat}
+import pdi.jwt.Jwt
+import spray.json._
+
+import scala.util.{Failure, Success}
 
 /**
  * Create on 2024/10/25
@@ -42,18 +45,26 @@ trait ApiRequest {
   }
 
   /**
-   * A directive that requires a session to be present in the request.
-   * The session is refreshable and uses cookies for session management.
+   * Validates the authenticity of an authentication token and returns the employee information.
    *
-   * @return A Directive1 that extracts a Long value from the session.
-   */
-  val required: Directive1[Long] = requiredSession(refreshable, usingCookies)
-
-  /**
-   * A directive that invalidates the current session.
-   * The session is refreshable and uses cookies for session management.
+   * This method decodes the JWT token, verifies its validity, and extracts the employee information from the token. If the token is invalid or expired, it returns None.
    *
-   * @return A Directive0 that does not extract any value but performs the session invalidation.
+   * @return An Option containing the employee information if the token is valid; otherwise, None.
    */
-  val invalidate: Directive0 = invalidateSession(refreshable, usingCookies)
+  def validateToken: Directive1[EmployeeEntity] = {
+    extractRequest.flatMap { request =>
+      request.header("Authorization") match {
+        case Some(authHeader) =>
+          val token = authHeader.value().stripPrefix("Bearer ")
+          // Decode the JWT token and verify its validity
+          Jwt.decode(token, DEMETER_JWT_SECRET, Seq(DEMETER_JWT_ALGORITHM)) match {
+            // If decoding fails, the token is invalid or expired, return None
+            case Failure(_) => reject(AuthorizationFailedRejection)
+            // If decoding succeeds, extract and return the employee information
+            case Success(value) => provide(value.content.parseJson.convertTo[EmployeeEntity])
+          }
+        case None => reject(AuthorizationFailedRejection)
+      }
+    }
+  }
 }

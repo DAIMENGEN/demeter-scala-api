@@ -1,10 +1,8 @@
 package com.advantest.demeter.core.service
 
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT, DEMETER_SESSION_MANAGER, REFRESH_TOKEN_STORAGE}
+import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.database.employee.{EmployeeTable, EmployeeTableRow}
 import com.advantest.demeter.core.entity.EmployeeEntity
-import com.softwaremill.session.SessionDirectives.setSession
-import com.softwaremill.session.SessionOptions.{refreshable, usingCookies}
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -31,7 +29,6 @@ case class EmployeeService() extends Service {
       case Some(employee: EmployeeTableRow) =>
         val isCorrect = employee.password == password
         if (isCorrect) {
-          setSession(refreshable, usingCookies, employee.id)
           employee.toEntity
         } else throw new IllegalArgumentException(s"Password for account '$account' is incorrect.")
       case None => throw new NoSuchElementException(s"Account '$account' does not exist.")

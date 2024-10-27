@@ -1,7 +1,7 @@
 package com.advantest.demeter.utils.http
 
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives.concat
+import akka.http.scaladsl.server.Directives.{concat, cors}
 import akka.http.scaladsl.server.Route
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_EXECUTION_CONTEXT, DEMETER_SYSTEM}
 
@@ -23,7 +23,9 @@ object HttpRoute {
 
   def start(IP: String, PORT: Int, routes: HttpRoute*): Unit = {
     // Start the HTTP server and bind it to the specified address and port.
-    val binding = Http().newServerAt(IP, PORT).bind(concat(routes.map(_.route): _*))
+    val binding = Http().newServerAt(IP, PORT).bind(cors() {
+      concat(routes.map(_.route): _*)
+    })
     // Handle the result of server binding.
     binding onComplete {
       case Failure(e) =>
