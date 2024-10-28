@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.entity.project.task
+package com.advantest.demeter.core.entity.project.task.field
 
 import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldTableRow
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableRowFactory}
