@@ -3,6 +3,8 @@ package com.advantest.demeter.utils.snowflake
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * SnowflakeIdUtil: A utility class for generating unique identifiers using the Snowflake algorithm.
  */
 private class SnowflakeIdUtil(workerId: Long = 1, datacenterId: Long = 1) {
   require(workerId >= 0 && workerId < 32, "workerId must be between 0 and 31")
