@@ -11,12 +11,24 @@ import com.advantest.demeter.utils.serialize.Serializable
  */
 sealed trait HolidayType
 
+/**
+ * NationalHoliday type, indicating a national holiday.
+ */
 case object NationalHoliday extends HolidayType
 
+/**
+ * CompanyHoliday type, indicating a company-specific holiday.
+ */
 case object CompanyHoliday extends HolidayType
 
+/**
+ * WeeklyHoliday type, indicating a weekly holiday.
+ */
 case object WeeklyHoliday extends HolidayType
 
+/**
+ * SpecialHoliday type, indicating a special holiday.
+ */
 case object SpecialHoliday extends HolidayType
 
 object HolidayType extends DBTableColumn with Serializable[HolidayType] {
