@@ -11,12 +11,24 @@ import spray.json.{JsNumber, JsValue, RootJsonFormat}
  */
 sealed trait CountryCode
 
+/**
+ * ChinaCode, representing China.
+ */
 case object ChinaCode extends CountryCode
 
+/**
+ * JapanCode, representing Japan.
+ */
 case object JapanCode extends CountryCode
 
+/**
+ * AmericaCode, representing America.
+ */
 case object AmericaCode extends CountryCode
 
+/**
+ * GermanyCode, representing Germany.
+ */
 case object GermanyCode extends CountryCode
 
 object CountryCode extends DBTableColumn with Serializable[CountryCode] {
