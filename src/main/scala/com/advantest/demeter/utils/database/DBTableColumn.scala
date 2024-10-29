@@ -10,7 +10,7 @@ import slick.jdbc.MySQLProfile.api._
  * This trait defines the basic operations for converting between model types and field types,
  * as well as providing a column mapper for database interactions.
  *
- * ModelType: The type of the model used in the application.
+ * ModelType: The type of the model used in the code.
  * FieldType: The type of the field used in the database.
  */
 trait DBTableColumn {

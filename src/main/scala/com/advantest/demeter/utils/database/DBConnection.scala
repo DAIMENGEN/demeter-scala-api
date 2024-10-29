@@ -14,7 +14,12 @@ import scala.concurrent.Future
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  *
- * Database connection utilities.
+ * The `DBConnection` object is responsible for managing database connections using Slick.
+ *
+ * Usage:
+ * To connect to the database, call the `connect` method with an implicit configuration path.
+ * This object streamlines database management and enhances application reliability by properly
+ * handling resource cleanup.
  */
 object DBConnection {
 

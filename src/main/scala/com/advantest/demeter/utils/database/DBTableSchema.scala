@@ -8,8 +8,8 @@ import java.time.LocalDateTime
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  *
- * Trait representing a database table schema.
- * It defines common fields for any data type that needs to store basic metadata.
+ * This trait provides a blueprint for the structure of a database table, including the fields and their types.
+ * Implementations of this trait should define the schema of a specific database table, including the fields and their types.
  */
 trait DBTableSchema {
 

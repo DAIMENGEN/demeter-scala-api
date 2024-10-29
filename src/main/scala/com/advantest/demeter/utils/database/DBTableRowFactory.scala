@@ -3,6 +3,20 @@ package com.advantest.demeter.utils.database
 /**
  * Create on 2024/10/24
  * Author: mengen.dai@outlook.com
+ *
+ * The `DBTableRowFactory` trait defines a factory interface for creating and updating
+ * database table row data objects.
+ *
+ * It provides type aliases for entity data and row data, ensuring that any implementations
+ * adhere to specific data structures. The trait also includes a type alias for optional
+ * field data, represented as an `Option` containing a map of field names to values of any type.
+ *
+ * Key Methods:
+ * - `create`: Creates a new instance of `TableRowData` using the provided employee ID and entity data.
+ * - `update`: Updates an existing `TableRowData` instance with new entity data and returns the updated instance.
+ *
+ * Implementations of this trait should define how to handle the creation and updating of
+ * database row data specific to their application context.
  */
 trait DBTableRowFactory {
 
