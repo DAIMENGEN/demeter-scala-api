@@ -14,15 +14,22 @@ import scala.util.{Failure, Success}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * This trait provides utility methods for handling asynchronous responses in a Spray (Akka HTTP) application
+ * and generating authentication token.
  */
 trait ApiResponse extends SprayJsonSupport {
 
   /**
    * A utility function to handle asynchronous responses in a Spray (Akka HTTP) route.
    *
-   * @param future A Future[T] representing the asynchronous operation.
+   * This method takes a `Future` representing an asynchronous operation and returns a function that can be used
+   * in a route to handle the completion of the `Future`. It completes the request with a success or failure response
+   * based on the outcome of the `Future`.
+   *
+   * @param future A `Future[T]` representing the asynchronous operation.
    * @tparam T The type of the expected result.
-   * @return A function that takes a RequestContext and returns a Future[RouteResult].
+   * @return A function that takes a `RequestContext` and returns a `Future[RouteResult]`.
    */
   def response[T: JsonFormat](future: => Future[T]): RequestContext => Future[RouteResult] = {
     onComplete(future) {
@@ -34,7 +41,9 @@ trait ApiResponse extends SprayJsonSupport {
   /**
    * Generates an authentication token for an employee.
    *
-   * This method generates a JWT token based on the employee information, which is valid for a certain period of time and is used for employee authentication.
+   * This method generates a JWT token based on the employee information. The token is valid for a certain period of time
+   * and is used for employee authentication. The token includes the employee's information, an expiration time, an issuer,
+   * and a unique identifier.
    *
    * @param employee The employee entity containing relevant employee information.
    * @return A string representing the generated JWT token.
