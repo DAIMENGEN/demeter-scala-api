@@ -35,7 +35,7 @@ final class ProjectColorTableSchema(tag: Tag) extends Table[ProjectColorTableRow
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  def projectIdFk: ForeignKeyQuery[ProjectTableSchema, ProjectTableRow] = foreignKey("PROJECT_FK", projectId, TableQuery[ProjectTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+  def projectIdFk: ForeignKeyQuery[ProjectTableSchema, ProjectTableRow] = foreignKey("PROJECT_ID_FK", projectId, TableQuery[ProjectTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
   override def * : ProvenShape[ProjectColorTableRow] = (
     id,

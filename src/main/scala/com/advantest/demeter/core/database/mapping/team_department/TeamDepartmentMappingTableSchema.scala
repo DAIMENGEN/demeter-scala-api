@@ -28,9 +28,9 @@ final class TeamDepartmentMappingTableSchema(tag: Tag) extends Table[TeamDepartm
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  def departmentFk: ForeignKeyQuery[DepartmentTableSchema, DepartmentTableRow] = foreignKey("DEPARTMENT_FK", departmentId, TableQuery[DepartmentTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+  def departmentIdFk: ForeignKeyQuery[DepartmentTableSchema, DepartmentTableRow] = foreignKey("DEPARTMENT_ID_FK", departmentId, TableQuery[DepartmentTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
-  def teamFk: ForeignKeyQuery[TeamTableSchema, TeamTableRow] = foreignKey("TEAM_FK", teamId, TableQuery[TeamTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+  def teamIdFk: ForeignKeyQuery[TeamTableSchema, TeamTableRow] = foreignKey("TEAM_ID_FK", teamId, TableQuery[TeamTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
   override def * : ProvenShape[TeamDepartmentMappingTableRow] = (
     id,

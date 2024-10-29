@@ -28,9 +28,9 @@ final class EmployeeTeamMappingTableSchema(tag: Tag) extends Table[EmployeeTeamM
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  def employeeFk: ForeignKeyQuery[EmployeeTableSchema, EmployeeTableRow] = foreignKey("EMPLOYEE_FK", employeeId, TableQuery[EmployeeTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+  def employeeIdFk: ForeignKeyQuery[EmployeeTableSchema, EmployeeTableRow] = foreignKey("EMPLOYEE_ID_FK", employeeId, TableQuery[EmployeeTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
-  def teamFk: ForeignKeyQuery[TeamTableSchema, TeamTableRow] = foreignKey("TEAM_FK", teamId, TableQuery[TeamTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
+  def teamIdFk: ForeignKeyQuery[TeamTableSchema, TeamTableRow] = foreignKey("TEAM_ID_FK", teamId, TableQuery[TeamTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
 
   override def * : ProvenShape[EmployeeTeamMappingTableRow] = (
     id,
