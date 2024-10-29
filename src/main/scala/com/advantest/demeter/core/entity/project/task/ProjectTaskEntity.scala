@@ -25,7 +25,7 @@ final case class ProjectTaskEntity(
                                     parentId: Option[Long],
                                     order: Option[Int]
                                   ) {
-  override def toString: String = s"ProjectTaskEntity($id, $name, $description, $taskType, $taskStatus, $taskRule, $startDateTime, $endDateTime, $parentId, $order)"
+  override def toString: String = s"ProjectTaskEntity(id=$id, name=$name, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, order=$order)"
 }
 
 object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRowFactory {

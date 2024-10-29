@@ -20,7 +20,7 @@ final case class ProjectColorEntity(
                                      fieldValue: String,
                                      order: Option[Int]
                                    ) {
-  override def toString: String = s"ProjectColorEntity($id, $value, $description, $fieldName, $fieldValue, $order)"
+  override def toString: String = s"ProjectColorEntity(id=$id, value=$value, description=$description, fieldName=$fieldName, fieldValue=$fieldValue, order=$order)"
 }
 
 object ProjectColorEntity extends Serializable[ProjectColorEntity] with DBTableRowFactory {
