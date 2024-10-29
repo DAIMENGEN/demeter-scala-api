@@ -9,6 +9,8 @@ import scala.util.Try
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * BooleanJsonReader: A JsonReader implementation for reading Boolean value from JSON object.
  */
 object BooleanJsonReader extends JsonReader[Boolean] {
 

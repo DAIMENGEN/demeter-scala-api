@@ -11,6 +11,8 @@ import scala.util.Try
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * LocalDateTimeJsonReader: A JsonReader implementation for reading LocalDateTime value from JSON object.
  */
 object LocalDateTimeJsonReader extends JsonReader[LocalDateTime] {
 

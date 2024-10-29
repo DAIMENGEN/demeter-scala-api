@@ -9,6 +9,8 @@ import scala.util.Try
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * IntJsonReader: A JsonReader implementation for reading Int value from JSON object.
  */
 object IntJsonReader extends JsonReader[Int] {
 

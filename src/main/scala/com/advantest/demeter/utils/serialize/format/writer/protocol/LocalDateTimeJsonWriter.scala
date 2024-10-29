@@ -9,6 +9,8 @@ import java.time.LocalDateTime
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * LocalDateTimeJsonWriter: A JsonWriter implementation for writing LocalDateTime value into JSON object.
  */
 object LocalDateTimeJsonWriter extends JsonWriter[LocalDateTime] {
 

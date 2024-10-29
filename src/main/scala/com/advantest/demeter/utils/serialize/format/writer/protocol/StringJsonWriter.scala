@@ -6,6 +6,8 @@ import spray.json.{JsString, JsValue}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * StringJsonWriter: A JsonWriter implementation for writing String value into JSON object.
  */
 object StringJsonWriter extends JsonWriter[String] {
 

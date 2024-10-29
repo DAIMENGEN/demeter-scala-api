@@ -8,6 +8,8 @@ import java.time.{LocalDate, LocalDateTime}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * JsonReaderFormat class provides methods for reading values from a JSON object using different `JsonReader` implementations.
  */
 case class JsonReaderFormat(values: Map[String, JsValue]) {
 

@@ -9,6 +9,8 @@ import scala.util.Try
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * StringJsonReader: A JsonReader implementation for reading String value from JSON object.
  */
 object StringJsonReader extends JsonReader[String] {
 

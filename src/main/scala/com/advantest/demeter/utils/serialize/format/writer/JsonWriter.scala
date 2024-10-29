@@ -5,6 +5,8 @@ import spray.json.JsValue
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * JsonWriter: A trait representing a writer for converting value of type `T` into JSON format.
  */
 trait JsonWriter[T] {
 

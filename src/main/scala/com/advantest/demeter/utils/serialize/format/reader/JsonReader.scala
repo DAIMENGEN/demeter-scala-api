@@ -5,6 +5,8 @@ import spray.json.JsValue
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * JsonReader interface for reading values from JSON objects.
  */
 trait JsonReader[T] {
 

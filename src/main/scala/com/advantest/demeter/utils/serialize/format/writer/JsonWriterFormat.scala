@@ -9,6 +9,8 @@ import scala.collection.mutable
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * JsonWriterFormat: A utility class for writing JSON object using a fluent API.
  */
 case class JsonWriterFormat() {
 

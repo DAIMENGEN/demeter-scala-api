@@ -6,6 +6,8 @@ import spray.json.{JsNumber, JsValue}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * IntJsonWriter: A JsonWriter implementation for writing Int value into JSON object.
  */
 object IntJsonWriter extends JsonWriter[Int] {
 

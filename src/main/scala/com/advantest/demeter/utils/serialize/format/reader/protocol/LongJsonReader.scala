@@ -9,6 +9,8 @@ import scala.util.Try
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * LongJsonReader: A JsonReader implementation for reading Long value from JSON object.
  */
 object LongJsonReader extends JsonReader[Long] {
 

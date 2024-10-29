@@ -6,6 +6,8 @@ import spray.json.{JsString, JsValue}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * LongJsonWriter: A JsonWriter implementation for writing Long value into JSON object.
  */
 object LongJsonWriter extends JsonWriter[Long] {
 

@@ -6,6 +6,8 @@ import spray.json.{JsBoolean, JsValue}
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
+ *
+ * BooleanJsonWriter: A JsonWriter implementation for writing Boolean value into JSON object.
  */
 object BooleanJsonWriter extends JsonWriter[Boolean] {
 
