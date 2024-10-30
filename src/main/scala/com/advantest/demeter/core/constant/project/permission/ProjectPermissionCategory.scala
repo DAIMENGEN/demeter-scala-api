@@ -11,6 +11,11 @@ import spray.json.{JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
 sealed trait ProjectPermissionCategory {
   val id: Int
   val name: String
+
+  override def equals(obj: Any): Boolean = obj match {
+    case category: ProjectPermissionCategory => id == category.id
+    case _ => false
+  }
 }
 
 case object ProjOverallPermCat extends ProjectPermissionCategory {

@@ -15,6 +15,11 @@ sealed trait ProjectPermission {
   val name: String
   val order: Int
   val category: PermissionCategory
+
+  override def equals(obj: Any): Boolean = obj match {
+    case permission: ProjectPermission => id == permission.id && category == permission.category
+    case _ => false
+  }
 }
 
 case object ProjAdminPerm extends ProjectPermission {
