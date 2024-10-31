@@ -43,6 +43,11 @@ final case class ProjectPermissionTable()(implicit val db: Database) extends DBT
     db.run(select.result)
   }
 
+  def queryByEmployeeIdAndProjectIds(employeeId: Long, projectIds: Seq[Long]): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.employeeId === employeeId).filter(_.projectId inSet projectIds)
+    db.run(select.result)
+  }
+
   def queryByEmployeeIdAndProjectIdAndPermission(employeeId: Long, projectId: Long, permission: Permission): Future[Option[TableRowData]] = {
     val select = table.filter(_.employeeId === employeeId).filter(_.projectId === projectId).filter(_.permission === permission)
     db.run(select.result.headOption)
