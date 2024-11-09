@@ -96,4 +96,6 @@ object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
       case _ => throw new IllegalArgumentException("Expected a JsNumber for ProjectStatus, but received a different type of JsValue.")
     }
   }
+
+  val values: Seq[ProjectStatus] = Seq(NotStarted, RequirementsAnalysis, Planning, InProgress, Acceptance, Completed, Canceled, OnHold, Delayed)
 }

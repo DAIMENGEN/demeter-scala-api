@@ -1,12 +1,14 @@
 package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
+import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.permission.{ProjAdminPerm, ProjViewPerm}
 import com.advantest.demeter.core.database.project.color.ProjectColorTable
 import com.advantest.demeter.core.database.project.permission.ProjectPermissionTable
 import com.advantest.demeter.core.database.project.task.ProjectTaskTable
 import com.advantest.demeter.core.database.project.{ProjectTable, ProjectTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
+import com.advantest.demeter.integration.antdesign.select.SelectOption
 
 import scala.concurrent.Future
 
@@ -154,5 +156,13 @@ case class ProjectService() extends Service {
         throw new IllegalArgumentException("Sorry, You do not have the necessary permission to get those projects.")
       }
     } yield result
+  }
+
+  def getProjectStatusSelectOptions: Future[Seq[SelectOption]] = {
+    Future.successful(ProjectStatus.values.map(status => {
+      val label = status.toString
+      val value = ProjectStatus.fromModel(status)
+      SelectOption(label, value)
+    }))
   }
 }
