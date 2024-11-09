@@ -38,10 +38,6 @@ final class ProjectTaskFieldTableSchema(tag: Tag) extends Table[ProjectTaskField
 
   override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
-  def projectIdFk: ForeignKeyQuery[ProjectTableSchema, ProjectTableRow] = foreignKey("PROJECT_ID_FK", projectId, TableQuery[ProjectTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
-
-  def projectTaskIdFk: ForeignKeyQuery[ProjectTaskTableSchema, ProjectTaskTableRow] = foreignKey("PROJECT_TASK_ID_FK", projectTaskId, TableQuery[ProjectTaskTableSchema])(_.id, onDelete = ForeignKeyAction.Cascade)
-
   override def * : ProvenShape[ProjectTaskFieldTableRow] = (
     id,
     fieldName,
