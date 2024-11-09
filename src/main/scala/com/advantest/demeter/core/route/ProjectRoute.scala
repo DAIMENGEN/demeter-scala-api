@@ -53,7 +53,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def deleteProjectsRoute(): Route = path("deleteProjectsRoute") {
-    delete {
+    post {
       validateToken { employee =>
         val future = projectService.deleteProjects(employee.id)
         response(future)
@@ -62,7 +62,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def deleteProjectByIdRoute(): Route = path("deleteProjectByIdRoute") {
-    delete {
+    post {
       validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
@@ -75,7 +75,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def deleteProjectsByIdsRoute(): Route = path("deleteProjectsByIdsRoute") {
-    delete {
+    post {
       validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
