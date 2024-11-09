@@ -7,7 +7,7 @@ import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 /**
  * Create on 2024/10/27
@@ -18,8 +18,8 @@ final case class ProjectEntity(
                                 name: String,
                                 status: ProjectStatus,
                                 description: Option[String],
-                                startDateTime: LocalDateTime,
-                                endDateTime: Option[LocalDateTime] = None,
+                                startDateTime: LocalDate,
+                                endDateTime: Option[LocalDate] = None,
                                 version: Option[Int] = None,
                                 order: Option[Int] = None,
                               ) {

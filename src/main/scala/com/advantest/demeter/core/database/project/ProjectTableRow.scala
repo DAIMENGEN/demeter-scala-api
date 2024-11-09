@@ -4,7 +4,7 @@ import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.entity.project.ProjectEntity
 import com.advantest.demeter.utils.database.DBTableRow
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 /**
  * Create on 2024/10/27
@@ -14,8 +14,8 @@ final case class ProjectTableRow(
                             id: Long,
                             name: String,
                             description: Option[String],
-                            startDateTime: LocalDateTime,
-                            endDateTime: Option[LocalDateTime],
+                            startDateTime: LocalDate,
+                            endDateTime: Option[LocalDate],
                             status: ProjectStatus,
                             version: Option[Int],
                             order: Option[Int],

@@ -5,7 +5,7 @@ import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 /**
  * Create on 2024/10/27
@@ -19,9 +19,9 @@ final class ProjectTableSchema(tag: Tag) extends Table[ProjectTableRow](tag, "PR
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
 
-  def startDateTime: Rep[LocalDateTime] = column[LocalDateTime]("START_DATE_TIME")
+  def startDateTime: Rep[LocalDate] = column[LocalDate]("START_DATE_TIME")
 
-  def endDateTime: Rep[Option[LocalDateTime]] = column[Option[LocalDateTime]]("END_DATE_TIME")
+  def endDateTime: Rep[Option[LocalDate]] = column[Option[LocalDate]]("END_DATE_TIME")
 
   def status: Rep[ProjectStatus] = column[ProjectStatus]("STATUS")
 
