@@ -79,6 +79,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
   "mysql" % "mysql-connector-java" % "8.0.33",
   "ch.qos.logback" % "logback-classic" % "1.5.6",
-  "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "6.0.2",
+  "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "7.0.2",
   "org.scalatest" %% "scalatest" % "3.2.19" % Test,
 )
