@@ -24,7 +24,8 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
     updateProjectsRoute(),
     getAllProjectsRoute,
     getProjectByIdRoute,
-    getProjectsByIdsRoute
+    getProjectsByIdsRoute,
+    getProjectStatusSelectOptionsRoute
   )
 
   private def createProjectRoute: Route = path("createProjectRoute") {
@@ -142,6 +143,13 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
             response(future)
         }
       }
+    }
+  }
+
+  private def getProjectStatusSelectOptionsRoute: Route = path("getProjectStatusSelectOptionsRoute") {
+    get {
+      val future = projectService.getProjectStatusSelectOptions
+      response(future)
     }
   }
 }
