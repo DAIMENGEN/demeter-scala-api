@@ -25,6 +25,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
     getAllProjectsRoute,
     getProjectByIdRoute,
     getProjectsByIdsRoute,
+    getProjectsByEmployeeIdRoute,
     getProjectStatusSelectOptionsRoute
   )
 
@@ -121,7 +122,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def getProjectByIdRoute: Route = path("getProjectByIdRoute") {
-    get {
+    post {
       validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
@@ -134,7 +135,7 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
   }
 
   private def getProjectsByIdsRoute: Route = path("getProjectsByIdsRoute") {
-    get {
+    post {
       validateToken { employee =>
         entity(as[HttpRequestParams]) {
           request =>
@@ -142,6 +143,15 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
             val future = projectService.getProjectsByIds(employee.id, projectIds)
             response(future)
         }
+      }
+    }
+  }
+
+  private def getProjectsByEmployeeIdRoute: Route = path("getProjectsByEmployeeIdRoute") {
+    get {
+      validateToken { employee =>
+        val future = projectService.getProjectsByEmployeeId(employee.id)
+        response(future)
       }
     }
   }

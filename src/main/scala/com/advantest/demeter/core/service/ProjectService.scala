@@ -90,7 +90,7 @@ case class ProjectService() extends Service {
       } else {
         permissionTable.queryByEmployeeIdAndProjectId(employeeId, project.id).map(_.exists(row => row.permission.equals(ProjAdminPerm)))
       }
-      result <- if (isCreator && hasUpdatePermission) {
+      result <- if (isCreator || hasUpdatePermission) {
         table.queryById(project.id).flatMap {
           case Some(oldRowData: ProjectTableRow) =>
             val updatedProject = ProjectEntity.update(employeeId, project, oldRowData)
@@ -142,7 +142,7 @@ case class ProjectService() extends Service {
       } else {
         permissionTable.queryByEmployeeIdAndProjectId(employeeId, id).map(_.exists(row => row.permission.equals(ProjViewPerm)))
       }
-      result <- if (isCreator && hasViewPermission) {
+      result <- if (isCreator || hasViewPermission) {
         table.queryById(id).map(_.map(_.toEntity))
       } else {
         throw new SecurityException("Sorry, You do not have the necessary permission to get the current project.")
@@ -166,6 +166,22 @@ case class ProjectService() extends Service {
         throw new SecurityException("Sorry, You do not have the necessary permission to get those projects.")
       }
     } yield result
+  }
+
+  def getProjectsByEmployeeId(employeeId: Long): Future[Seq[ProjectEntity]] = {
+    val isAdmin = employeeService.checkIfAdmin(employeeId)
+    if (isAdmin) {
+      table.query().map(_.map(_.toEntity))
+    } else {
+      val hasPermissionProjects = permissionTable.queryByEmployeeId(employeeId).map(_.map(row => row.projectId)).flatMap(projectIds => {
+        table.queryByIds(projectIds).map(_.map(_.toEntity))
+      })
+      val createProjects = table.queryByCreatorId(employeeId).map(_.map(_.toEntity))
+      for {
+        h <- hasPermissionProjects
+        c <- createProjects
+      } yield h ++ c
+    }
   }
 
   def getProjectStatusSelectOptions: Future[Seq[SelectOption]] = {
