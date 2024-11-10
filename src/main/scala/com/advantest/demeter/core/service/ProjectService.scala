@@ -3,6 +3,7 @@ package com.advantest.demeter.core.service
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.permission.{ProjAdminPerm, ProjViewPerm}
+import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.color.ProjectColorTable
 import com.advantest.demeter.core.database.project.permission.ProjectPermissionTable
 import com.advantest.demeter.core.database.project.task.ProjectTaskTable
@@ -188,6 +189,22 @@ case class ProjectService() extends Service {
     Future.successful(ProjectStatus.values.map(status => {
       val label = status.toString
       val value = ProjectStatus.fromModel(status)
+      SelectOption(label, value)
+    }))
+  }
+
+  def getProjectTaskTypeSelectOptions: Future[Seq[SelectOption]] = {
+    Future.successful(ProjectTaskType.values.map(taskType => {
+      val label = taskType.toString
+      val value = ProjectTaskType.fromModel(taskType)
+      SelectOption(label, value)
+    }))
+  }
+
+  def getProjectTaskStatusSelectOptions: Future[Seq[SelectOption]] = {
+    Future.successful(ProjectTaskStatus.values.map(taskStatus => {
+      val label = taskStatus.toString
+      val value = ProjectTaskStatus.fromModel(taskStatus)
       SelectOption(label, value)
     }))
   }

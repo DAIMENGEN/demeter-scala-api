@@ -95,4 +95,6 @@ object ProjectTaskType extends DBTableColumn with Serializable[ProjectTaskType] 
       case _ => throw new IllegalArgumentException("Expected a JsNumber for ProjectTaskType, but received a different type of JsValue.")
     }
   }
+
+  val values: Seq[ProjectTaskType] = Seq(Milestone, Checkpoint, Routine, Bug, Feature, Enhancement, Documentation, Research, Review)
 }
