@@ -9,7 +9,7 @@ import com.advantest.demeter.core.database.project.permission.ProjectPermissionT
 import com.advantest.demeter.core.database.project.task.ProjectTaskTable
 import com.advantest.demeter.core.database.project.{ProjectTable, ProjectTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
-import com.advantest.demeter.integration.antdesign.select.SelectOption
+import com.advantest.demeter.integration.antdesign.select.{IntValue, SelectOption}
 
 import scala.concurrent.Future
 
@@ -189,7 +189,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectStatus.values.map(status => {
       val label = status.toString
       val value = ProjectStatus.fromModel(status)
-      SelectOption(label, value)
+      SelectOption(label, IntValue(value))
     }))
   }
 
@@ -197,7 +197,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectTaskType.values.map(taskType => {
       val label = taskType.toString
       val value = ProjectTaskType.fromModel(taskType)
-      SelectOption(label, value)
+      SelectOption(label, IntValue(value))
     }))
   }
 
@@ -205,7 +205,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectTaskStatus.values.map(taskStatus => {
       val label = taskStatus.toString
       val value = ProjectTaskStatus.fromModel(taskStatus)
-      SelectOption(label, value)
+      SelectOption(label, IntValue(value))
     }))
   }
 }

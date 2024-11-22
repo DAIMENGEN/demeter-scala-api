@@ -3,6 +3,7 @@ package com.advantest.demeter.core.service
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.database.employee.{EmployeeTable, EmployeeTableRow}
 import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.integration.antdesign.select.{LongValue, SelectOption}
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -43,5 +44,9 @@ case class EmployeeService() extends Service {
         if (isCorrect) employeeTable.update(newEmployee).map(_.toEntity) else throw new IllegalArgumentException(s"Old password for employee '$employeeId' is incorrect.")
       case None => throw new NoSuchElementException(s"User with ID '$employeeId' does not exist.")
     }
+  }
+
+  def getEmployeeSelectOptions(employeeName: String): Future[Seq[SelectOption]] = {
+    employeeTable.queryByUsernameLike(employeeName).map(employees => employees.map(employee => SelectOption(employee.username, LongValue(employee.id))))
   }
 }
