@@ -16,12 +16,12 @@ final case class EmployeeEntity(
                                  id: Long,
                                  account: String,
                                  password: String,
-                                 username: String,
+                                 employeeName: String,
                                  email: String,
                                  phone: Option[String],
                                  isActive: Boolean
                                ) {
-  override def toString: String = s"EmployeeEntity(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone)"
+  override def toString: String = s"EmployeeEntity(id=$id, account=$account, password=$password, employeeName=$employeeName, email=$email, phone=$phone)"
 }
 
 object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactory {
@@ -34,7 +34,7 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
     id = entityData.id,
     account = entityData.account,
     password = entityData.password,
-    username = entityData.username,
+    employeeName = entityData.employeeName,
     email = entityData.email,
     phone = entityData.phone,
     isActive = entityData.isActive,
@@ -45,7 +45,7 @@ object EmployeeEntity extends Serializable[EmployeeEntity] with DBTableRowFactor
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     account = entityData.account,
     password = entityData.password,
-    username = entityData.username,
+    employeeName = entityData.employeeName,
     email = entityData.email,
     phone = entityData.phone,
     isActive = entityData.isActive,

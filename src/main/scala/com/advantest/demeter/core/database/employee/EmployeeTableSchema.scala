@@ -18,7 +18,7 @@ final class EmployeeTableSchema(tag: Tag) extends Table[EmployeeTableRow](tag, "
 
   def password: Rep[String] = column[String]("PASSWORD")
 
-  def username: Rep[String] = column[String]("USERNAME")
+  def employeeName: Rep[String] = column[String]("EMPLOYEE_NAME")
 
   def email: Rep[String] = column[String]("EMAIL")
 
@@ -38,7 +38,7 @@ final class EmployeeTableSchema(tag: Tag) extends Table[EmployeeTableRow](tag, "
     id,
     account,
     password,
-    username,
+    employeeName,
     email,
     phone,
     isActive,

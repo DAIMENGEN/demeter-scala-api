@@ -10,26 +10,26 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class EmployeeTableRow(
-                               id: Long,
-                               account: String,
-                               password: String,
-                               username: String,
-                               email: String,
-                               phone: Option[String],
-                               isActive: Boolean,
-                               creatorId: Long,
-                               updaterId: Long,
-                               createDateTime: LocalDateTime = LocalDateTime.now(),
-                               updateDateTime: LocalDateTime = LocalDateTime.now()
+                                   id: Long,
+                                   account: String,
+                                   password: String,
+                                   employeeName: String,
+                                   email: String,
+                                   phone: Option[String],
+                                   isActive: Boolean,
+                                   creatorId: Long,
+                                   updaterId: Long,
+                                   createDateTime: LocalDateTime = LocalDateTime.now(),
+                                   updateDateTime: LocalDateTime = LocalDateTime.now()
                              ) extends DBTableRow {
 
-  override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, username=$username, email=$email, phone=$phone, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, employeeName=$employeeName, email=$email, phone=$phone, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: EmployeeEntity = EmployeeEntity(
     id = id,
     account = account,
     password = password,
-    username = username,
+    employeeName = employeeName,
     email = email,
     phone = phone,
     isActive = isActive

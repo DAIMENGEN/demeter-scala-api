@@ -15,13 +15,13 @@ final case class EmployeeTable()(implicit val db: Database) extends DBTable {
   override protected val table: TableQuery[EmployeeTableSchema] = TableQuery[EmployeeTableSchema]
   createTableIfNotExists()
 
-  def queryByUsername(username: String): Future[Option[TableRowData]] = {
-    val select = table.filter(_.username === username).result.headOption
+  def queryByEmployeeName(employeeName: String): Future[Option[TableRowData]] = {
+    val select = table.filter(_.employeeName === employeeName).result.headOption
     db.run(select)
   }
 
-  def queryByUsernameLike(usernamePattern: String): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.username like s"%$usernamePattern%").result
+  def queryByEmployeeNameLike(employeeNamePattern: String): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.employeeName like s"%$employeeNamePattern%").result
     db.run(select)
   }
 

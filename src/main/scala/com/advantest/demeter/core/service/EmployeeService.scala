@@ -47,6 +47,6 @@ case class EmployeeService() extends Service {
   }
 
   def getEmployeeSelectOptions(employeeName: String): Future[Seq[SelectOption]] = {
-    employeeTable.queryByUsernameLike(employeeName).map(employees => employees.map(employee => SelectOption(employee.username, LongValue(employee.id))))
+    employeeTable.queryByEmployeeNameLike(employeeName).map(employees => employees.map(employee => SelectOption(employee.employeeName, LongValue(employee.id))))
   }
 }

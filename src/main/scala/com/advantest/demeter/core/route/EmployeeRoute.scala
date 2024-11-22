@@ -23,7 +23,7 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
     registerRoute,
     batchRegisterRoute,
     resetPasswordRoute,
-    getUsernameRoute,
+    getCurrentEmployeeNameRoute,
     getEmployeeSelectOptionsRoute
   )
 
@@ -91,10 +91,10 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
     }
   }
 
-  private def getUsernameRoute: Route = path("getUsernameRoute") {
+  private def getCurrentEmployeeNameRoute: Route = path("getCurrentEmployeeNameRoute") {
     get {
       validateToken { employee =>
-        val username = employee.username
+        val username = employee.employeeName
         response(Future(username))
       }
     }
