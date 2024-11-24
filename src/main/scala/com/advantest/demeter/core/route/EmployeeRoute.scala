@@ -23,6 +23,7 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
     registerRoute,
     batchRegisterRoute,
     resetPasswordRoute,
+    getCurrentEmployeeIdRoute,
     getCurrentEmployeeNameRoute,
     getEmployeeSelectOptionsRoute
   )
@@ -87,6 +88,15 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
             val future = employeeService.resetPassword(employee.id, oldPassword, newPassword)
             response(future)
         }
+      }
+    }
+  }
+
+  private def getCurrentEmployeeIdRoute: Route = path("getCurrentEmployeeIdRoute") {
+    get {
+      validateToken { employee =>
+        val employeeId = employee.id
+        response(Future(employeeId.toString))
       }
     }
   }
