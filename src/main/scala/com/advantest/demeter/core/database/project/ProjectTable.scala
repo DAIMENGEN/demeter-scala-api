@@ -15,13 +15,13 @@ final case class ProjectTable()(implicit val db: Database) extends DBTable {
   override protected val table: TableQuery[ProjectTableSchema] = TableQuery[ProjectTableSchema]
   createTableIfNotExists()
 
-  def queryByName(name: String): Future[Option[TableRowData]] = {
-    val select = table.filter(_.name === name).result.headOption
+  def queryByProjectName(projectName: String): Future[Option[TableRowData]] = {
+    val select = table.filter(_.projectName === projectName).result.headOption
     db.run(select)
   }
 
-  def queryByNameLike(namePattern: String): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.name like s"%$namePattern%").result
+  def queryByProjectNameLike(projectNamePattern: String): Future[Seq[TableRowData]] = {
+    val select = table.filter(_.projectName like s"%$projectNamePattern%").result
     db.run(select)
   }
 

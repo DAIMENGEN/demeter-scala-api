@@ -15,7 +15,7 @@ final class ProjectTableSchema(tag: Tag) extends Table[ProjectTableRow](tag, "PR
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
-  def name: Rep[String] = column[String]("NAME")
+  def projectName: Rep[String] = column[String]("PROJECT_NAME")
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
 
@@ -23,7 +23,7 @@ final class ProjectTableSchema(tag: Tag) extends Table[ProjectTableRow](tag, "PR
 
   def endDateTime: Rep[Option[LocalDate]] = column[Option[LocalDate]]("END_DATE_TIME")
 
-  def status: Rep[ProjectStatus] = column[ProjectStatus]("STATUS")
+  def projectStatus: Rep[ProjectStatus] = column[ProjectStatus]("PROJECT_STATUS")
 
   def version: Rep[Option[Int]] = column[Option[Int]]("VERSION")
 
@@ -39,11 +39,11 @@ final class ProjectTableSchema(tag: Tag) extends Table[ProjectTableRow](tag, "PR
 
   override def * : ProvenShape[ProjectTableRow] = (
     id,
-    name,
+    projectName,
     description,
     startDateTime,
     endDateTime,
-    status,
+    projectStatus,
     version,
     order,
     creatorId,

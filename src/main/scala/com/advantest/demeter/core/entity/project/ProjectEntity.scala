@@ -15,15 +15,15 @@ import java.time.{LocalDate, LocalDateTime}
  */
 final case class ProjectEntity(
                                 id: Long,
-                                name: String,
-                                status: ProjectStatus,
+                                projectName: String,
+                                projectStatus: ProjectStatus,
                                 description: Option[String],
                                 startDateTime: LocalDate,
                                 endDateTime: Option[LocalDate] = None,
                                 version: Option[Int] = None,
                                 order: Option[Int] = None,
                               ) {
-  override def toString: String = s"ProjectEntity(id=$id, name=$name, status=$status, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, version=$version, order=$order)"
+  override def toString: String = s"ProjectEntity(id=$id, projectName=$projectName, projectStatus=$projectStatus, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, version=$version, order=$order)"
 }
 
 object ProjectEntity extends Serializable[ProjectEntity] with DBTableRowFactory {
@@ -34,8 +34,8 @@ object ProjectEntity extends Serializable[ProjectEntity] with DBTableRowFactory 
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectTableRow(
     id = entityData.id,
-    name = entityData.name,
-    status = entityData.status,
+    projectName = entityData.projectName,
+    projectStatus = entityData.projectStatus,
     description = entityData.description,
     startDateTime = entityData.startDateTime,
     endDateTime = entityData.endDateTime,
@@ -46,8 +46,8 @@ object ProjectEntity extends Serializable[ProjectEntity] with DBTableRowFactory 
   )
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
-    name = entityData.name,
-    status = entityData.status,
+    projectName = entityData.projectName,
+    projectStatus = entityData.projectStatus,
     description = entityData.description,
     startDateTime = entityData.startDateTime,
     endDateTime = entityData.endDateTime,

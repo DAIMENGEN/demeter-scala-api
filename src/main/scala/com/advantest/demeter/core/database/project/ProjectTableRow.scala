@@ -11,25 +11,25 @@ import java.time.{LocalDate, LocalDateTime}
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectTableRow(
-                            id: Long,
-                            name: String,
-                            description: Option[String],
-                            startDateTime: LocalDate,
-                            endDateTime: Option[LocalDate],
-                            status: ProjectStatus,
-                            version: Option[Int],
-                            order: Option[Int],
-                            creatorId: Long,
-                            updaterId: Long,
-                            createDateTime: LocalDateTime = LocalDateTime.now(),
-                            updateDateTime: LocalDateTime = LocalDateTime.now()
+                                  id: Long,
+                                  projectName: String,
+                                  description: Option[String],
+                                  startDateTime: LocalDate,
+                                  endDateTime: Option[LocalDate],
+                                  projectStatus: ProjectStatus,
+                                  version: Option[Int],
+                                  order: Option[Int],
+                                  creatorId: Long,
+                                  updaterId: Long,
+                                  createDateTime: LocalDateTime = LocalDateTime.now(),
+                                  updateDateTime: LocalDateTime = LocalDateTime.now()
                           ) extends DBTableRow {
-  override def toString: String = s"ProjectTableRow(id=$id, name=$name, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, status=$status, version=$version, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTableRow(id=$id, projectName=$projectName, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, projectStatus=$projectStatus, version=$version, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: ProjectEntity = ProjectEntity(
     id,
-    name,
-    status,
+    projectName,
+    projectStatus,
     description,
     startDateTime,
     endDateTime,
