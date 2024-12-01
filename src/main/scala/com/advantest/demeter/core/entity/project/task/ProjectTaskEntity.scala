@@ -15,7 +15,7 @@ import java.time.LocalDateTime
  */
 final case class ProjectTaskEntity(
                                     id: Long,
-                                    name: String,
+                                    taskName: String,
                                     description: Option[String],
                                     taskType: ProjectTaskType,
                                     taskStatus: ProjectTaskStatus,
@@ -25,7 +25,7 @@ final case class ProjectTaskEntity(
                                     parentId: Option[Long],
                                     order: Option[Int]
                                   ) {
-  override def toString: String = s"ProjectTaskEntity(id=$id, name=$name, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, order=$order)"
+  override def toString: String = s"ProjectTaskEntity(id=$id, taskName=$taskName, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, order=$order)"
 }
 
 object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRowFactory {
@@ -39,7 +39,7 @@ object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRow
       case Some(projectId) =>
         ProjectTaskTableRow(
           id = entityData.id,
-          name = entityData.name,
+          taskName = entityData.taskName,
           description = entityData.description,
           taskType = entityData.taskType,
           taskStatus = entityData.taskStatus,
@@ -57,7 +57,7 @@ object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRow
   }
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
-    name = entityData.name,
+    taskName = entityData.taskName,
     description = entityData.description,
     taskType = entityData.taskType,
     taskStatus = entityData.taskStatus,

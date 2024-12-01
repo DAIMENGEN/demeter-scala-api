@@ -1,10 +1,9 @@
 package com.advantest.demeter.core.database.project.task
 
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
-import com.advantest.demeter.core.database.project.{ProjectTableRow, ProjectTableSchema}
 import com.advantest.demeter.utils.database.DBTableSchema
 import slick.jdbc.MySQLProfile.api._
-import slick.lifted.{ForeignKeyQuery, ProvenShape}
+import slick.lifted.ProvenShape
 
 import java.time.LocalDateTime
 
@@ -16,7 +15,7 @@ final class ProjectTaskTableSchema(tag: Tag) extends Table[ProjectTaskTableRow](
 
   override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
 
-  def name: Rep[String] = column[String]("NAME")
+  def taskName: Rep[String] = column[String]("TASK_NAME")
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
 
@@ -46,7 +45,7 @@ final class ProjectTaskTableSchema(tag: Tag) extends Table[ProjectTaskTableRow](
 
   override def * : ProvenShape[ProjectTaskTableRow] = (
     id,
-    name,
+    taskName,
     description,
     taskType,
     taskStatus,

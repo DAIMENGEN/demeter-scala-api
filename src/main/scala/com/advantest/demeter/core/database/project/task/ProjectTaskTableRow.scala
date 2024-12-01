@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  */
 final case class ProjectTaskTableRow(
                                       id: Long,
-                                      name: String,
+                                      taskName: String,
                                       description: Option[String],
                                       taskType: ProjectTaskType,
                                       taskStatus: ProjectTaskStatus,
@@ -27,11 +27,11 @@ final case class ProjectTaskTableRow(
                                       createDateTime: LocalDateTime = LocalDateTime.now(),
                                       updateDateTime: LocalDateTime = LocalDateTime.now()
                                     ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskTableRow(id=$id, name=$name, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, projectId=$projectId, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskTableRow(id=$id, taskName=$taskName, description=$description, taskType=$taskType, taskStatus=$taskStatus, taskRule=$taskRule, startDateTime=$startDateTime, endDateTime=$endDateTime, parentId=$parentId, projectId=$projectId, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: ProjectTaskEntity = ProjectTaskEntity(
     id,
-    name,
+    taskName,
     description,
     taskType,
     taskStatus,
