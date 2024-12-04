@@ -21,7 +21,7 @@ class ProjectTaskTableColumnDBTableSchema(tag: Tag) extends Table[ProjectTaskTab
 
   def dataIndex: Rep[String] = column[String]("DATA_INDEX")
 
-  def valueType: Rep[String] = column[String]("VALUE_TYPE")
+  def valueType: Rep[Option[String]] = column[Option[String]]("VALUE_TYPE", O.Default(None))
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION", O.Default(None))
 
