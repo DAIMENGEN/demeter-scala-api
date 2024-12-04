@@ -25,6 +25,7 @@ case class ProjectService() extends Service {
   private val employeeService: EmployeeService = EmployeeService()
 
   private def isCreator(employeeId: Long, projectId: Long): Future[Boolean] = {
+    logger.info(s"Checking if employee $employeeId is the creator of project $projectId.")
     table.queryById(projectId).map {
       case Some(value) => value.creatorId == employeeId
       case None => throw new NoSuchElementException(s"Project with ID $projectId not found")
@@ -47,10 +48,12 @@ case class ProjectService() extends Service {
   }
 
   def deleteProjectById(employeeId: Long, id: Long): Future[ProjectEntity] = {
+    logger.info(s"Employee with ID $employeeId is deleting project with ID $id")
     table.deleteById(id).map(_.toEntity)
   }
 
   def deleteProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectEntity]] = {
+    logger.info(s"Employee with ID $employeeId is deleting projects with IDs $ids")
     table.deleteByIds(ids).map(_.map(_.toEntity))
   }
 
@@ -81,10 +84,12 @@ case class ProjectService() extends Service {
   }
 
   def getProjectById(employeeId: Long, id: Long): Future[Option[ProjectEntity]] = {
+    logger.info(s"Employee with ID $employeeId is getting project with ID $id")
     table.queryById(id).map(_.map(_.toEntity))
   }
 
   def getProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectEntity]] = {
+    logger.info(s"Employee with ID $employeeId is getting projects with IDs $ids")
     table.queryByIds(ids).map(_.map(_.toEntity))
   }
 

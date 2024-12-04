@@ -1,5 +1,6 @@
 package com.advantest.demeter.core.database.project.task.field
 
+import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.utils.database._
 import com.advantest.demeter.utils.snowflake.SnowflakeIdUtil
 import slick.jdbc.MySQLProfile.api._
@@ -17,35 +18,39 @@ final case class ProjectTaskFieldDBTable()(implicit val db: Database) extends DB
   initSystemFields()
 
   private def initSystemFields(): Future[Seq[TableRowData]] = {
-    val fields: Seq[(String, DBFieldType)] = Seq(
-      ("id", LongType),
-      ("taskName", StringType),
-      ("description", StringType),
-      ("taskType", IntType),
-      ("taskStatus", IntType),
-      ("taskRule", StringType),
-      ("startDateTime", DateTimeType),
-      ("endDateTime", DateTimeType),
-      ("parentId", LongType),
-      ("projectId", LongType),
-      ("order", IntType),
-      ("creatorId", LongType),
-      ("updaterId", LongType),
-      ("createDateTime", DateTimeType),
-      ("updateDateTime", DateTimeType),
-    )
-    val systemFields = fields.map {
-      case (fieldName, fieldType) => ProjectTaskFieldDBTableRow(
-        id = SnowflakeIdUtil.nextId(),
-        fieldName = fieldName,
-        fieldType = fieldType,
-        isSystemField = true,
-        projectId = None,
-        creatorId = 1,
-        updaterId = 1,
-      )
-    }
-    batchInsert(systemFields)
+    querySystemField().flatMap(rows => {
+      if (rows.isEmpty) {
+        val fields: Seq[(String, DBFieldType)] = Seq(
+          ("id", LongType),
+          ("taskName", StringType),
+          ("description", StringType),
+          ("taskType", IntType),
+          ("taskStatus", IntType),
+          ("taskRule", StringType),
+          ("startDateTime", DateTimeType),
+          ("endDateTime", DateTimeType),
+          ("parentId", LongType),
+          ("projectId", LongType),
+          ("order", IntType),
+          ("creatorId", LongType),
+          ("updaterId", LongType),
+          ("createDateTime", DateTimeType),
+          ("updateDateTime", DateTimeType),
+        )
+        val systemFields = fields.map {
+          case (fieldName, fieldType) => ProjectTaskFieldDBTableRow(
+            id = SnowflakeIdUtil.nextId(),
+            fieldName = fieldName,
+            fieldType = fieldType,
+            isSystemField = true,
+            projectId = None,
+            creatorId = 1,
+            updaterId = 1,
+          )
+        }
+        batchInsert(systemFields)
+      } else Future.successful(Seq.empty)
+    })
   }
 
   def queryByFieldName(fieldName: String): Future[Option[TableRowData]] = {
