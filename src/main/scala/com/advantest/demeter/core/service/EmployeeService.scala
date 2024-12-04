@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
-import com.advantest.demeter.core.database.employee.{EmployeeTable, EmployeeTableRow}
+import com.advantest.demeter.core.database.employee.{EmployeeDBTable, EmployeeDBTableRow}
 import com.advantest.demeter.core.entity.EmployeeEntity
 import com.advantest.demeter.integration.antdesign.select.{LongValue, SelectOption}
 
@@ -13,7 +13,7 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class EmployeeService() extends Service {
-  private val employeeTable: EmployeeTable = EmployeeTable()
+  private val employeeTable: EmployeeDBTable = EmployeeDBTable()
 
   def checkIfAdmin(employeeId: Long): Boolean = employeeId == EmployeeEntity.SystemAdminId
 
@@ -27,7 +27,7 @@ case class EmployeeService() extends Service {
 
   def verifyPassword(account: String, password: String): Future[EmployeeEntity] = {
     employeeTable.queryByAccount(account).map {
-      case Some(employee: EmployeeTableRow) =>
+      case Some(employee: EmployeeDBTableRow) =>
         val isCorrect = employee.password == password
         if (isCorrect) {
           employee.toEntity
@@ -38,7 +38,7 @@ case class EmployeeService() extends Service {
 
   def resetPassword(employeeId: Long, oldPassword: String, newPassword: String): Future[EmployeeEntity] = {
     employeeTable.queryById(employeeId).flatMap {
-      case Some(employee: EmployeeTableRow) =>
+      case Some(employee: EmployeeDBTableRow) =>
         val isCorrect = employee.password == oldPassword
         val newEmployee = employee.copy(password = newPassword, updaterId = employeeId, updateDateTime = LocalDateTime.now())
         if (isCorrect) employeeTable.update(newEmployee).map(_.toEntity) else throw new IllegalArgumentException(s"Old password for employee '$employeeId' is incorrect.")

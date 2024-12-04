@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.core.database.holiday.HolidayTableRow
+import com.advantest.demeter.core.database.holiday.HolidayDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -28,11 +28,11 @@ final case class HolidayEntity(
 
 object HolidayEntity extends Serializable[HolidayEntity] with DBTableRowFactory {
   override protected type EntityData = HolidayEntity
-  override protected type TableRowData = HolidayTableRow
+  override protected type TableRowData = HolidayDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[HolidayEntity] = jsonFormat7(HolidayEntity.apply)
 
-  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = HolidayTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = HolidayDBTableRow(
     id = entityData.id,
     title = entityData.title,
     description = entityData.description,

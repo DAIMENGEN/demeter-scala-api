@@ -53,6 +53,12 @@ case object StringType extends DBFieldType
 case object BooleanType extends DBFieldType
 
 /**
+ * JsonType, representing a json field type in the database.
+ * JsonType is mapped to spray.json.JsValue in the database.
+ */
+case object JsonType extends DBFieldType
+
+/**
  * DateType, representing a date field type in the database.
  * DateType is mapped to java.time.LocalDate in the database.
  */
@@ -71,12 +77,13 @@ object DBFieldType extends DBTableColumn with Serializable[DBFieldType] {
   override def fromModel(model: DBFieldType): String = model match {
     case IntType => "int"
     case TextType => "text"
+    case JsonType => "json"
+    case DateType => "date"
     case LongType => "bigint"
     case FloatType => "float"
     case DoubleType => "double"
     case StringType => "varchar"
     case BooleanType => "boolean"
-    case DateType => "date"
     case DateTimeType => "datetime"
   }
 
@@ -84,13 +91,14 @@ object DBFieldType extends DBTableColumn with Serializable[DBFieldType] {
     case "int" => IntType
     case "text" => TextType
     case "date" => DateType
+    case "json" => JsonType
     case "bigint" => LongType
     case "float" => FloatType
     case "double" => DoubleType
     case "varchar" => StringType
     case "boolean" => BooleanType
     case "datetime" => DateTimeType
-    case _ => throw new IllegalArgumentException(s"Invalid DBFieldType field: $field. Valid fields are 'int', 'text', 'bigint', 'float', 'double', 'varchar', 'boolean', 'date', 'datetime'.")
+    case _ => throw new IllegalArgumentException(s"Invalid DBFieldType field: $field. Valid fields are 'int', 'json', 'text', 'date', 'varchar', 'float', 'boolean', 'bigint', 'double', 'datetime'.")
   }
 
   override implicit def columnMapper: BaseColumnType[DBFieldType] = MappedColumnType.base[DBFieldType, String](fromModel, fromField)

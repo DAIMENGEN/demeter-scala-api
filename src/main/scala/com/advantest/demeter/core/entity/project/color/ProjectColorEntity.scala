@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity.project.color
 
-import com.advantest.demeter.core.database.project.color.ProjectColorTableRow
+import com.advantest.demeter.core.database.project.color.ProjectColorDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -25,13 +25,13 @@ final case class ProjectColorEntity(
 
 object ProjectColorEntity extends Serializable[ProjectColorEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectColorEntity
-  override protected type TableRowData = ProjectColorTableRow
+  override protected type TableRowData = ProjectColorDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[ProjectColorEntity] = jsonFormat6(ProjectColorEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     options.flatMap(_.get("projectId").map(_.asInstanceOf[Long])) match {
-      case Some(projectId) => ProjectColorTableRow(
+      case Some(projectId) => ProjectColorDBTableRow(
         id = entityData.id,
         value = entityData.value,
         description = entityData.description,

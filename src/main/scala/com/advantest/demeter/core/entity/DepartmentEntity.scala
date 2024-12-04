@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity
 
-import com.advantest.demeter.core.database.department.DepartmentTableRow
+import com.advantest.demeter.core.database.department.DepartmentDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -22,11 +22,11 @@ final case class DepartmentEntity(
 
 object DepartmentEntity extends Serializable[DepartmentEntity] with DBTableRowFactory {
   override protected type EntityData = DepartmentEntity
-  override protected type TableRowData = DepartmentTableRow
+  override protected type TableRowData = DepartmentDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[DepartmentEntity] = jsonFormat3(DepartmentEntity.apply)
 
-  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = DepartmentTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = DepartmentDBTableRow(
     id = entityData.id,
     name = entityData.name,
     description = entityData.description,

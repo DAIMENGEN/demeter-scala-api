@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity.project.permission
 
 import com.advantest.demeter.core.constant.project.permission.{ProjectPermission => Permission, ProjectPermissionCategory => Category}
-import com.advantest.demeter.core.database.project.permission.ProjectPermissionTableRow
+import com.advantest.demeter.core.database.project.permission.ProjectPermissionDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -24,14 +24,14 @@ final case class ProjectPermissionEntity(
 
 object ProjectPermissionEntity extends Serializable[ProjectPermissionEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectPermissionEntity
-  override protected type TableRowData = ProjectPermissionTableRow
+  override protected type TableRowData = ProjectPermissionDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[ProjectPermissionEntity] = jsonFormat4(ProjectPermissionEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     options.flatMap(_.get("projectId").map(_.asInstanceOf[Long])) match {
       case Some(projectId) =>
-        ProjectPermissionTableRow(
+        ProjectPermissionDBTableRow(
           id = entityData.id,
           category = entityData.category,
           permission = entityData.permission,

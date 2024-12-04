@@ -2,13 +2,15 @@ package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.constant.project.ProjectStatus
-import com.advantest.demeter.core.constant.project.permission.{ProjAdminPerm, ProjViewPerm}
+import com.advantest.demeter.core.constant.project.permission.{ProjAdminPerm, ProjTaskEditPerm, ProjViewPerm}
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
-import com.advantest.demeter.core.database.project.color.ProjectColorTable
-import com.advantest.demeter.core.database.project.permission.ProjectPermissionTable
-import com.advantest.demeter.core.database.project.task.ProjectTaskTable
-import com.advantest.demeter.core.database.project.{ProjectTable, ProjectTableRow}
+import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
+import com.advantest.demeter.core.database.project.permission.ProjectPermissionDBTable
+import com.advantest.demeter.core.database.project.task.ProjectTaskDBTable
+import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTable
+import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
+import com.advantest.demeter.core.entity.project.task.field.ProjectTaskFieldEntity
 import com.advantest.demeter.integration.antdesign.select.{IntValue, SelectOption}
 
 import scala.concurrent.Future
@@ -18,10 +20,11 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class ProjectService() extends Service {
-  private val table: ProjectTable = ProjectTable()
-  private val taskTable: ProjectTaskTable = ProjectTaskTable()
-  private val colorTable: ProjectColorTable = ProjectColorTable()
-  private val permissionTable: ProjectPermissionTable = ProjectPermissionTable()
+  private val table: ProjectDBTable = ProjectDBTable()
+  private val taskTable: ProjectTaskDBTable = ProjectTaskDBTable()
+  private val colorTable: ProjectColorDBTable = ProjectColorDBTable()
+  private val taskFieldTable: ProjectTaskFieldDBTable = ProjectTaskFieldDBTable()
+  private val permissionTable: ProjectPermissionDBTable = ProjectPermissionDBTable()
 
   private val employeeService: EmployeeService = EmployeeService()
 
@@ -93,7 +96,7 @@ case class ProjectService() extends Service {
       }
       result <- if (isCreator || hasUpdatePermission) {
         table.queryById(project.id).flatMap {
-          case Some(oldRowData: ProjectTableRow) =>
+          case Some(oldRowData: ProjectDBTableRow) =>
             val updatedProject = ProjectEntity.update(employeeId, project, oldRowData)
             table.update(updatedProject).map(_.toEntity)
           case None => throw new NoSuchElementException(s"Project with ID ${project.id} not found")
@@ -183,6 +186,26 @@ case class ProjectService() extends Service {
         c <- createProjects
       } yield h ++ c
     }
+  }
+
+  def getProjectTaskFieldsByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskFieldEntity]] = {
+    val isAdmin = employeeService.checkIfAdmin(employeeId)
+    for {
+      isCreator <- isCreator(employeeId, projectId)
+      hasEditPermission <- if (isAdmin) {
+        Future.successful(true)
+      } else {
+        permissionTable.queryByEmployeeIdAndProjectId(employeeId, projectId).map(_.exists(row => row.permission.equals(ProjTaskEditPerm)))
+      }
+      result <- if (isCreator || hasEditPermission) {
+        for {
+          systemFields <- taskFieldTable.querySystemField()
+          dynamicFields <- taskFieldTable.queryDynamicFiledByProjectId(projectId)
+        } yield (systemFields ++ dynamicFields).map(_.toEntity)
+      } else {
+        throw new SecurityException("Sorry, You do not have the necessary permission to get the current project's task fields.")
+      }
+    } yield result
   }
 
   def getProjectStatusSelectOptions: Future[Seq[SelectOption]] = {

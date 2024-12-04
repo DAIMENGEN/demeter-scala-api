@@ -2,7 +2,7 @@ package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.constant.{CompanyHoliday, NationalHoliday, SpecialHoliday}
-import com.advantest.demeter.core.database.holiday.{HolidayTable, HolidayTableRow}
+import com.advantest.demeter.core.database.holiday.{HolidayDBTable, HolidayDBTableRow}
 import com.advantest.demeter.core.entity.HolidayEntity
 
 import scala.concurrent.Future
@@ -12,7 +12,7 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class HolidayService() extends Service {
-  private val holidayTable: HolidayTable = HolidayTable()
+  private val holidayTable: HolidayDBTable = HolidayDBTable()
 
   private val userService: EmployeeService = EmployeeService()
 
@@ -46,7 +46,7 @@ case class HolidayService() extends Service {
   def updateHoliday(employeeId: Long, holiday: HolidayEntity): Future[HolidayEntity] = {
     if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can update holidays.")
     holidayTable.queryById(holiday.id).flatMap {
-      case Some(oldRowData: HolidayTableRow) =>
+      case Some(oldRowData: HolidayDBTableRow) =>
         val updatedTableRowData = HolidayEntity.update(employeeId, holiday, oldRowData)
         holidayTable.update(updatedTableRowData).map(_.toEntity)
       case None => throw new Exception("holiday not found")

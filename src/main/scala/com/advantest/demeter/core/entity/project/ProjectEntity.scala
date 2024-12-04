@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity.project
 
 import com.advantest.demeter.core.constant.project.ProjectStatus
-import com.advantest.demeter.core.database.project.ProjectTableRow
+import com.advantest.demeter.core.database.project.ProjectDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -28,11 +28,11 @@ final case class ProjectEntity(
 
 object ProjectEntity extends Serializable[ProjectEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectEntity
-  override protected type TableRowData = ProjectTableRow
+  override protected type TableRowData = ProjectDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[ProjectEntity] = jsonFormat8(ProjectEntity.apply)
 
-  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectTableRow(
+  override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectDBTableRow(
     id = entityData.id,
     projectName = entityData.projectName,
     projectStatus = entityData.projectStatus,

@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity.project.task
 
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
-import com.advantest.demeter.core.database.project.task.ProjectTaskTableRow
+import com.advantest.demeter.core.database.project.task.ProjectTaskDBTableRow
 import com.advantest.demeter.utils.database.DBTableRowFactory
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -30,14 +30,14 @@ final case class ProjectTaskEntity(
 
 object ProjectTaskEntity extends Serializable[ProjectTaskEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectTaskEntity
-  override protected type TableRowData = ProjectTaskTableRow
+  override protected type TableRowData = ProjectTaskDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[ProjectTaskEntity] = jsonFormat10(ProjectTaskEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     options.flatMap(_.get("projectId").map(_.asInstanceOf[Long])) match {
       case Some(projectId) =>
-        ProjectTaskTableRow(
+        ProjectTaskDBTableRow(
           id = entityData.id,
           taskName = entityData.taskName,
           description = entityData.description,

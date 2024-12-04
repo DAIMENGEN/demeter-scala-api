@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity.project.task.field
 
-import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldTableRow
+import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTableRow
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableRowFactory}
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -15,34 +15,28 @@ import java.time.LocalDateTime
 final case class ProjectTaskFieldEntity(
                                          id: Long,
                                          fieldName: String,
-                                         fieldValue: String,
                                          fieldType: DBFieldType,
-                                         description: Option[String],
-                                         order: Option[Int]
+                                         isSystemField: Boolean
                                        ) {
-  override def toString: String = s"ProjectTaskFieldEntity(id=$id, fieldName=$fieldName, fieldValue=$fieldValue, fieldType=$fieldType, description=$description, order=$order)"
+  override def toString: String = s"ProjectTaskFieldEntity(id=$id, fieldName=$fieldName, fieldType=$fieldType, isSystemField=$isSystemField"
 }
 
 object ProjectTaskFieldEntity extends Serializable[ProjectTaskFieldEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectTaskFieldEntity
-  override protected type TableRowData = ProjectTaskFieldTableRow
+  override protected type TableRowData = ProjectTaskFieldDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[ProjectTaskFieldEntity] = jsonFormat6(ProjectTaskFieldEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[ProjectTaskFieldEntity] = jsonFormat4(ProjectTaskFieldEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
-    val maybeProjectTaskId = options.flatMap(_.get("projectTaskId").map(_.asInstanceOf[Long]))
-    (maybeProjectId, maybeProjectTaskId) match {
-      case (Some(projectId), Some(projectTaskId)) =>
-        ProjectTaskFieldTableRow(
+    maybeProjectId match {
+      case Some(projectId) =>
+        ProjectTaskFieldDBTableRow(
           id = entityData.id,
           fieldName = entityData.fieldName,
-          fieldValue = entityData.fieldValue,
           fieldType = entityData.fieldType,
-          description = entityData.description,
-          order = entityData.order,
-          projectId = projectId,
-          projectTaskId = projectTaskId,
+          isSystemField = entityData.isSystemField,
+          projectId = Some(projectId),
           creatorId = employeeId,
           updaterId = employeeId,
         )
@@ -52,10 +46,8 @@ object ProjectTaskFieldEntity extends Serializable[ProjectTaskFieldEntity] with 
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
     fieldName = entityData.fieldName,
-    fieldValue = entityData.fieldValue,
     fieldType = entityData.fieldType,
-    description = entityData.description,
-    order = entityData.order,
+    isSystemField = entityData.isSystemField,
     updaterId = employeeId,
     updateDateTime = LocalDateTime.now()
   )
