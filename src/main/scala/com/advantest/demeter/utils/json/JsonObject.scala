@@ -3,6 +3,7 @@ package com.advantest.demeter.utils.json
 import com.advantest.demeter.utils.database.DBTableColumn
 import com.advantest.demeter.utils.serialize.Serializable
 import slick.jdbc.MySQLProfile.api._
+import spray.json.DefaultJsonProtocol._
 import spray.json._
 
 import scala.util.Try
@@ -58,5 +59,9 @@ object JsonObject extends DBTableColumn with Serializable[JsonObject] {
       throw new IllegalArgumentException(s"Invalid JSON string: $jsonString")
     }
     new JsonObject(result.get)
+  }
+
+  def apply(data: Map[String, JsValue]): JsonObject = {
+    new JsonObject(data.toJson)
   }
 }

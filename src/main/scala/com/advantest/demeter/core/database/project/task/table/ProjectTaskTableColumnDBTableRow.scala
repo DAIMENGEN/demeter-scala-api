@@ -15,25 +15,29 @@ final case class ProjectTaskTableColumnDBTableRow(
                                                    key: String,
                                                    title: String,
                                                    dataIndex: String,
+                                                   minWidth: Option[Int] = None,
                                                    valueType: Option[String] = None,
                                                    description: Option[String] = None,
                                                    filedProps: Option[JsonObject] = None,
                                                    formItemProps: Option[JsonObject] = None,
-                                                   projectId: Long,
+                                                   projectId: Option[Long],
+                                                   order: Int,
                                                    creatorId: Long,
                                                    updaterId: Long,
                                                    createDateTime: LocalDateTime = LocalDateTime.now(),
                                                    updateDateTime: LocalDateTime = LocalDateTime.now()
                                                  ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskTableColumnDBTableRow(id=$id, key=$key, title=$title, dataIndex=$dataIndex, valueType=$valueType description=$description, filedProps=${filedProps.map(_.toString)}, formItemProps=${formItemProps.map(_.toString)}, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskTableColumnDBTableRow(id=$id, key=$key, title=$title, dataIndex=$dataIndex, minWidth=$minWidth, valueType=$valueType description=$description, filedProps=${filedProps.map(_.toString)}, formItemProps=${formItemProps.map(_.toString)}, projectId=$projectId, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }
 
 object ProjectTaskTableColumnDBTableRow {
 
   def createColumnRow(title: String,
                       dataIndex: String,
-                      projectId: Long,
                       employeeId: Long,
+                      order: Int,
+                      minWidth: Option[Int] = None,
+                      projectId: Option[Long] = None,
                       valueType: Option[String] = None,
                       filedProps: Option[JsonObject] = None,
                       formItemProps: Option[JsonObject] = None,
@@ -44,11 +48,13 @@ object ProjectTaskTableColumnDBTableRow {
       id.toString,
       title,
       dataIndex,
+      minWidth,
       valueType,
       None,
       filedProps,
       formItemProps,
       projectId,
+      order,
       employeeId,
       employeeId
     )

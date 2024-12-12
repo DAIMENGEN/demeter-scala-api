@@ -21,6 +21,8 @@ class ProjectTaskTableColumnDBTableSchema(tag: Tag) extends Table[ProjectTaskTab
 
   def dataIndex: Rep[String] = column[String]("DATA_INDEX")
 
+  def minWidth: Rep[Option[Int]] = column[Option[Int]]("MIN_WIDTH")
+
   def valueType: Rep[Option[String]] = column[Option[String]]("VALUE_TYPE", O.Default(None))
 
   def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION", O.Default(None))
@@ -29,7 +31,9 @@ class ProjectTaskTableColumnDBTableSchema(tag: Tag) extends Table[ProjectTaskTab
 
   def formItemProps: Rep[Option[JsonObject]] = column[Option[JsonObject]]("FORM_ITEM_PROPS", O.Default(None))
 
-  def projectId: Rep[Long] = column[Long]("PROJECT_ID")
+  def projectId: Rep[Option[Long]] = column[Option[Long]]("PROJECT_ID")
+
+  def order: Rep[Int] = column[Int]("ORDER")
 
   override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
 
@@ -44,11 +48,13 @@ class ProjectTaskTableColumnDBTableSchema(tag: Tag) extends Table[ProjectTaskTab
     key,
     title,
     dataIndex,
+    minWidth,
     valueType,
     description,
     filedProps,
     formItemProps,
     projectId,
+    order,
     creatorId,
     updaterId,
     createDateTime,
