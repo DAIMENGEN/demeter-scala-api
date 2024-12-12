@@ -25,7 +25,7 @@ final case class ProjectTaskTableColumnDBTableRow(
                                                    createDateTime: LocalDateTime = LocalDateTime.now(),
                                                    updateDateTime: LocalDateTime = LocalDateTime.now()
                                                  ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskTableColumnDBTableRow(id=$id, key=$key, title=$title, dataIndex=$dataIndex, valueType=${valueType.map(_)}, description=$description, filedProps=${filedProps.map(_.toString)}, formItemProps=${formItemProps.map(_.toString)}, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskTableColumnDBTableRow(id=$id, key=$key, title=$title, dataIndex=$dataIndex, valueType=$valueType description=$description, filedProps=${filedProps.map(_.toString)}, formItemProps=${formItemProps.map(_.toString)}, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }
 
 object ProjectTaskTableColumnDBTableRow {
