@@ -1,18 +1,14 @@
 package com.advantest.demeter.core.database.employee
 
-import com.advantest.demeter.utils.database.DBTableSchema
+import com.advantest.demeter.utils.database.DBTableSchemaAbstract
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
-
-import java.time.LocalDateTime
 
 /**
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-final class EmployeeDBTableSchema(tag: Tag) extends Table[EmployeeDBTableRow](tag, "EMPLOYEE_DB_TABLE") with DBTableSchema {
-
-  override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
+final class EmployeeDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[EmployeeDBTableRow](tag, "EMPLOYEE_DB_TABLE") {
 
   def account: Rep[String] = column[String]("ACCOUNT")
 
@@ -25,14 +21,6 @@ final class EmployeeDBTableSchema(tag: Tag) extends Table[EmployeeDBTableRow](ta
   def phone: Rep[Option[String]] = column[Option[String]]("PHONE")
 
   def isActive: Rep[Boolean] = column[Boolean]("IS_ACTIVE")
-
-  override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
-
-  override def updaterId: Rep[Long] = column[Long]("UPDATER_ID")
-
-  override def createDateTime: Rep[LocalDateTime] = column[LocalDateTime]("CREATE_DATE_TIME", O.Default(LocalDateTime.now()))
-
-  override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
   override def * : ProvenShape[EmployeeDBTableRow] = (
     id,

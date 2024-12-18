@@ -1,19 +1,17 @@
 package com.advantest.demeter.core.database.holiday
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.utils.database.DBTableSchema
+import com.advantest.demeter.utils.database.DBTableSchemaAbstract
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-final class HolidayDBTableSchema(tag: Tag) extends Table[HolidayDBTableRow](tag, "HOLIDAY_DB_TABLE") with DBTableSchema {
-
-  override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
+final class HolidayDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[HolidayDBTableRow](tag, "HOLIDAY_DB_TABLE") {
 
   def title: Rep[String] = column[String]("TITLE")
 
@@ -26,14 +24,6 @@ final class HolidayDBTableSchema(tag: Tag) extends Table[HolidayDBTableRow](tag,
   def isRecurring: Rep[Boolean] = column[Boolean]("IS_RECURRING")
 
   def countryCode: Rep[CountryCode] = column[CountryCode]("COUNTRY_CODE")
-
-  override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
-
-  override def updaterId: Rep[Long] = column[Long]("UPDATER_ID")
-
-  override def createDateTime: Rep[LocalDateTime] = column[LocalDateTime]("CREATE_DATE_TIME", O.Default(LocalDateTime.now()))
-
-  override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
   override def * : ProvenShape[HolidayDBTableRow] = (
     id,

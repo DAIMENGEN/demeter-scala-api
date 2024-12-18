@@ -1,19 +1,17 @@
 package com.advantest.demeter.core.database.project
 
 import com.advantest.demeter.core.constant.project.ProjectStatus
-import com.advantest.demeter.utils.database.DBTableSchema
+import com.advantest.demeter.utils.database.DBTableSchemaAbstract
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 
 /**
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-final class ProjectDBTableSchema(tag: Tag) extends Table[ProjectDBTableRow](tag, "PROJECT_DB_TABLE") with DBTableSchema {
-
-  override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
+final class ProjectDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectDBTableRow](tag, "PROJECT_DB_TABLE") {
 
   def projectName: Rep[String] = column[String]("PROJECT_NAME")
 
@@ -28,14 +26,6 @@ final class ProjectDBTableSchema(tag: Tag) extends Table[ProjectDBTableRow](tag,
   def version: Rep[Option[Int]] = column[Option[Int]]("VERSION")
 
   def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
-
-  override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
-
-  override def updaterId: Rep[Long] = column[Long]("UPDATER_ID")
-
-  override def createDateTime: Rep[LocalDateTime] = column[LocalDateTime]("CREATE_DATE_TIME", O.Default(LocalDateTime.now()))
-
-  override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
 
   override def * : ProvenShape[ProjectDBTableRow] = (
     id,
