@@ -8,10 +8,11 @@ final case class ProjectTaskFieldValueDBTableRow(
                                                   id: Long,
                                                   fieldId: Long,
                                                   fieldValue: DBFieldValue,
+                                                  projectId: Long,
                                                   creatorId: Long,
                                                   updaterId: Long,
                                                   createDateTime: LocalDateTime = LocalDateTime.now(),
                                                   updateDateTime: LocalDateTime = LocalDateTime.now()
                                                 ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskFieldValueDBTableRow(id=$id, fieldId=$fieldId, fieldValue=$fieldValue, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskFieldValueDBTableRow(id=$id, fieldId=$fieldId, fieldValue=$fieldValue, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }

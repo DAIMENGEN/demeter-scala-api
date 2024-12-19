@@ -14,19 +14,22 @@ class ProjectTaskFieldLongTypeValueDBTableSchema(tag: Tag) extends DBTableSchema
 
   def fieldValue: Rep[Long] = column[Long]("FIELD_VALUE")
 
+  def projectId: Rep[Long] = column[Long]("PROJECT_ID")
+
   override def * : ProvenShape[ProjectTaskFieldValueDBTableRow] = (
     id,
     fieldId,
     fieldValue,
+    projectId,
     creatorId,
     updaterId,
     createDateTime,
     updateDateTime()
   ) <> ( {
-    case (id, fieldId, value, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskFieldValueDBTableRow(id, fieldId, DBLongValue(value), creatorId, updaterId, createDateTime, updateDateTime)
+    case (id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskFieldValueDBTableRow(id, fieldId, DBLongValue(fieldValue), projectId, creatorId, updaterId, createDateTime, updateDateTime)
   },
     (row: ProjectTaskFieldValueDBTableRow) => row.fieldValue match {
-      case DBLongValue(value) => Some((row.id, row.fieldId, value, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
+      case DBLongValue(fieldValue) => Some((row.id, row.fieldId, fieldValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
       case _ => None
     }
   )
