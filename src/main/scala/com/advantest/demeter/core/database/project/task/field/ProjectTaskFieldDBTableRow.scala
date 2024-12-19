@@ -11,22 +11,26 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectTaskFieldDBTableRow(
-                                           id: Long,
-                                           fieldName: String,
-                                           fieldType: DBFieldType,
-                                           isSystemField: Boolean,
-                                           projectId: Option[Long] = None,
-                                           creatorId: Long,
-                                           updaterId: Long,
-                                           createDateTime: LocalDateTime = LocalDateTime.now(),
-                                           updateDateTime: LocalDateTime = LocalDateTime.now()
-                                         ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskFieldTableRow(id=$id, fieldName=$fieldName, fieldType=$fieldType, isSystemField=$isSystemField, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+                                             id: Long,
+                                             fieldName: String,
+                                             fieldType: DBFieldType,
+                                             projectId: Long,
+                                             properties: Option[JsonObject] = None, // 存储 column 相关的内容同，比如： fieldProps, formItemProps
+                                             order: Int,
+                                             creatorId: Long,
+                                             updaterId: Long,
+                                             createDateTime: LocalDateTime = LocalDateTime.now(),
+                                             updateDateTime: LocalDateTime = LocalDateTime.now()
+                                           ) extends DBTableRow {
+  override def toString: String = s"ProjectTaskFieldDBTableRow(id=$id, fieldName=$fieldName, fieldType=$fieldType, projectId=$projectId, properties=${properties.map(_.toString)}, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: ProjectTaskFieldEntity = ProjectTaskFieldEntity(
-    id,
-    fieldName,
-    fieldType,
-    isSystemField
-  )
+  def toEntity: ProjectTaskFieldEntity = {
+    ProjectTaskFieldEntity(
+      id = id,
+      fieldName = fieldName,
+      fieldType = fieldType,
+      properties = properties,
+      order = order
+    )
+  }
 }
