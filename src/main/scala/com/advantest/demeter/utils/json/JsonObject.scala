@@ -6,8 +6,6 @@ import slick.jdbc.MySQLProfile.api._
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
-import scala.util.Try
-
 /**
  * Create on 2024/12/1
  * Author: mengen.dai@outlook.com
@@ -54,7 +52,7 @@ object JsonObject extends DBTableColumn with Serializable[JsonObject] {
   }
 
   def apply(jsonString: String): JsonObject = {
-    val result = Try(jsonString.parseJson)
+    val result = scala.util.Try(jsonString.parseJson)
     if (result.isFailure) {
       throw new IllegalArgumentException(s"Invalid JSON string: $jsonString")
     }

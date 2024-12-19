@@ -24,7 +24,7 @@ object DepartmentEntity extends Serializable[DepartmentEntity] with DBTableRowFa
   override protected type EntityData = DepartmentEntity
   override protected type TableRowData = DepartmentDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[DepartmentEntity] = jsonFormat3(DepartmentEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(DepartmentEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = DepartmentDBTableRow(
     id = entityData.id,

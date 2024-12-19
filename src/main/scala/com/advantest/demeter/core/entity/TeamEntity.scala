@@ -24,7 +24,7 @@ object TeamEntity extends Serializable[TeamEntity] with DBTableRowFactory {
   override protected type EntityData = TeamEntity
   override protected type TableRowData = TeamDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[TeamEntity] = jsonFormat3(TeamEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(TeamEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = TeamDBTableRow(
     id = entityData.id,

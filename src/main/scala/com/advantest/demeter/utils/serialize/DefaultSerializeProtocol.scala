@@ -1,7 +1,7 @@
 package com.advantest.demeter.utils.serialize
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import com.advantest.demeter.utils.date.DateFormatterUtil
+import com.advantest.demeter.utils.date.DateUtils
 import spray.json.{JsNumber, JsString, JsValue, JsonFormat}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -55,7 +55,7 @@ trait DefaultSerializeProtocol extends SprayJsonSupport {
      * @param obj The `LocalDate` object to be serialized.
      * @return A JSON string representing the `LocalDate` object.
      */
-    override def write(obj: LocalDate): JsValue = JsString(DateFormatterUtil.formatLocalDate(obj))
+    override def write(obj: LocalDate): JsValue = JsString(DateUtils.formatLocalDate(obj))
 
     /**
      * Deserializes a JSON string to a `LocalDate` object.
@@ -65,7 +65,7 @@ trait DefaultSerializeProtocol extends SprayJsonSupport {
      * @throws IllegalArgumentException if the JSON value is not a string.
      */
     override def read(json: JsValue): LocalDate = json match {
-      case JsString(value) => DateFormatterUtil.parseLocalDate(value)
+      case JsString(value) => DateUtils.parseLocalDate(value)
       case _ => throw new IllegalArgumentException(s"Expected a string as a LocalDate, but received ${json.getClass.getSimpleName}.")
     }
   }
@@ -82,7 +82,7 @@ trait DefaultSerializeProtocol extends SprayJsonSupport {
      * @param obj The `LocalDateTime` object to be serialized.
      * @return A JSON string representing the `LocalDateTime` object.
      */
-    override def write(obj: LocalDateTime): JsValue = JsString(DateFormatterUtil.formatLocalDateTime(obj))
+    override def write(obj: LocalDateTime): JsValue = JsString(DateUtils.formatLocalDateTime(obj))
 
     /**
      * Deserializes a JSON string to a `LocalDateTime` object.
@@ -92,7 +92,7 @@ trait DefaultSerializeProtocol extends SprayJsonSupport {
      * @throws IllegalArgumentException if the JSON value is not a string.
      */
     override def read(json: JsValue): LocalDateTime = json match {
-      case JsString(value) => DateFormatterUtil.parseLocalDateTime(value)
+      case JsString(value) => DateUtils.parseLocalDateTime(value)
       case _ => throw new IllegalArgumentException(s"Serialization Failure: Expected a string as a LocalDateTime, but received ${json.getClass.getSimpleName}.")
     }
   }

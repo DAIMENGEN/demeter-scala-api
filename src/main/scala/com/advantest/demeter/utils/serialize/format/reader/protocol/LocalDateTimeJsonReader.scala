@@ -1,6 +1,6 @@
 package com.advantest.demeter.utils.serialize.format.reader.protocol
 
-import com.advantest.demeter.utils.date.DateFormatterUtil
+import com.advantest.demeter.utils.date.DateUtils
 import com.advantest.demeter.utils.serialize.format.reader.JsonReader
 import spray.json.DefaultJsonProtocol.StringJsonFormat
 import spray.json.{JsString, JsValue}
@@ -25,7 +25,7 @@ object LocalDateTimeJsonReader extends JsonReader[LocalDateTime] {
    */
   override def read(key: String, values: Map[String, JsValue]): Either[NoSuchElementException, LocalDateTime] =
     values.get(key) match {
-      case Some(JsString(value)) => Right(DateFormatterUtil.parseLocalDateTime(value))
+      case Some(JsString(value)) => Right(DateUtils.parseLocalDateTime(value))
       case _ => Left(new NoSuchElementException(s"$key not found in the values map. Available keys: ${values.keys.mkString(", ")}"))
     }
 
@@ -37,5 +37,5 @@ object LocalDateTimeJsonReader extends JsonReader[LocalDateTime] {
    * @return An Option containing the extracted value of type LocalDateTime, or None if the value is not present.
    */
   override def readOption(key: String, values: Map[String, JsValue]): Option[LocalDateTime] =
-    values.get(key).flatMap(value => Try(DateFormatterUtil.parseLocalDateTime(value.convertTo[String])).toOption)
+    values.get(key).flatMap(value => Try(DateUtils.parseLocalDateTime(value.convertTo[String])).toOption)
 }

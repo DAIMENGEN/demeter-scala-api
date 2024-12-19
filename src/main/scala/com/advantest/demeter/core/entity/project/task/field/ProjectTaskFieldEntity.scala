@@ -27,7 +27,7 @@ object ProjectTaskFieldEntity extends Serializable[ProjectTaskFieldEntity] with 
   override protected type EntityData = ProjectTaskFieldEntity
   override protected type TableRowData = ProjectTaskFieldDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[ProjectTaskFieldEntity] = jsonFormat5(ProjectTaskFieldEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat5(ProjectTaskFieldEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))

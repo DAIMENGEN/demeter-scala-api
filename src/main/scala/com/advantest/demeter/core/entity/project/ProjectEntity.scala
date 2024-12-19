@@ -30,7 +30,7 @@ object ProjectEntity extends Serializable[ProjectEntity] with DBTableRowFactory 
   override protected type EntityData = ProjectEntity
   override protected type TableRowData = ProjectDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[ProjectEntity] = jsonFormat8(ProjectEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat8(ProjectEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = ProjectDBTableRow(
     id = entityData.id,

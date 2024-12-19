@@ -1,6 +1,6 @@
 package com.advantest.demeter.utils.serialize.format.writer.protocol
 
-import com.advantest.demeter.utils.date.DateFormatterUtil
+import com.advantest.demeter.utils.date.DateUtils
 import com.advantest.demeter.utils.serialize.format.writer.JsonWriter
 import spray.json.{JsString, JsValue}
 
@@ -22,7 +22,7 @@ object LocalDateJsonWriter extends JsonWriter[LocalDate] {
    * @return A tuple containing the key-value pair in JSON format.
    */
   override def write(key: String, value: LocalDate): (String, JsValue) =
-    (key, JsString(DateFormatterUtil.formatLocalDate(value)))
+    (key, JsString(DateUtils.formatLocalDate(value)))
 
   /**
    * Writes an optional value of type `LocalDate` into a JSON field with the specified key.
@@ -32,5 +32,5 @@ object LocalDateJsonWriter extends JsonWriter[LocalDate] {
    * @return An Option containing a tuple with the key-value pair in JSON format, or None if the option is None.
    */
   override def writeOption(key: String, option: Option[LocalDate]): Option[(String, JsValue)] =
-    option.map(value => (key, JsString(DateFormatterUtil.formatLocalDate(value))))
+    option.map(value => (key, JsString(DateUtils.formatLocalDate(value))))
 }

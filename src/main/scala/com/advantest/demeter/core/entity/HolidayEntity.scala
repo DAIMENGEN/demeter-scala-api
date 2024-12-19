@@ -30,7 +30,7 @@ object HolidayEntity extends Serializable[HolidayEntity] with DBTableRowFactory 
   override protected type EntityData = HolidayEntity
   override protected type TableRowData = HolidayDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[HolidayEntity] = jsonFormat7(HolidayEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat7(HolidayEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = HolidayDBTableRow(
     id = entityData.id,

@@ -6,7 +6,6 @@ import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, Proj
 import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
 import com.advantest.demeter.core.database.project.task.ProjectTaskDBTable
 import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTable
-import com.advantest.demeter.core.database.project.task.table.ProjectTaskTableColumnDBTable
 import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
 import com.advantest.demeter.integration.antdesign.select.{IntValue, SelectOption}
@@ -22,7 +21,6 @@ case class ProjectService() extends Service {
   private val taskDBTable: ProjectTaskDBTable = ProjectTaskDBTable()
   private val colorDBTable: ProjectColorDBTable = ProjectColorDBTable()
   private val taskFieldDBTable: ProjectTaskFieldDBTable = ProjectTaskFieldDBTable()
-  private val taskTableColumnDBTable: ProjectTaskTableColumnDBTable = ProjectTaskTableColumnDBTable()
 
   private val employeeService: EmployeeService = EmployeeService()
 
