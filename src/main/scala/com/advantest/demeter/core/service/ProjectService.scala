@@ -4,11 +4,10 @@ import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTIO
 import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
-import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTable
 import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
-import com.advantest.demeter.integration.antdesign.select.SelectOption
 import com.advantest.demeter.integration.antdesign.select
+import com.advantest.demeter.integration.antdesign.select.SelectOption
 
 import scala.concurrent.Future
 
@@ -18,8 +17,8 @@ import scala.concurrent.Future
  */
 case class ProjectService() extends Service {
   private val dBTable: ProjectDBTable = ProjectDBTable()
+  private val taskService: ProjectTaskService = ProjectTaskService()
   private val colorDBTable: ProjectColorDBTable = ProjectColorDBTable()
-  private val taskFieldDBTable: ProjectTaskFieldDBTable = ProjectTaskFieldDBTable()
 
   private val employeeService: EmployeeService = EmployeeService()
 
