@@ -7,7 +7,7 @@ import slick.jdbc.MySQLProfile.api._
  * Create on 2024/12/20
  * Author: mengen.dai@outlook.com
  */
-abstract class ProjectTaskFieldValueDBTableSchema[T](tag: Tag, tableName: String) extends DBTableSchemaAbstract[T](tag, tableName) {
+abstract class ProjectTaskAttributeValueDBTableSchema[T](tag: Tag, tableName: String) extends DBTableSchemaAbstract[T](tag, tableName) {
 
   def fieldId: Rep[Long] = column[Long]("FIELD_ID")
 

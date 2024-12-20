@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.database.project.task.field
+package com.advantest.demeter.core.database.project.task.attribute
 
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableSchemaAbstract}
 import com.advantest.demeter.utils.json.JsonObject
@@ -9,7 +9,7 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/1
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskFieldDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskFieldDBTableRow](tag, "PROJECT_TASK_FIELD_DB_TABLE") {
+class ProjectTaskAttributeDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskAttributeDBTableRow](tag, "PROJECT_TASK_ATTRIBUTE_DB_TABLE") {
 
   def fieldName: Rep[String] = column[String]("FIELD_NAME")
 
@@ -21,7 +21,7 @@ class ProjectTaskFieldDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[Proj
 
   def order: Rep[Int] = column[Int]("ORDER")
 
-  override def * : ProvenShape[ProjectTaskFieldDBTableRow] = (
+  override def * : ProvenShape[ProjectTaskAttributeDBTableRow] = (
     id,
     fieldName,
     fieldType,
@@ -32,5 +32,5 @@ class ProjectTaskFieldDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[Proj
     updaterId,
     createDateTime,
     updateDateTime()
-  ) <> ((ProjectTaskFieldDBTableRow.apply _).tupled, ProjectTaskFieldDBTableRow.unapply)
+  ) <> ((ProjectTaskAttributeDBTableRow.apply _).tupled, ProjectTaskAttributeDBTableRow.unapply)
 }

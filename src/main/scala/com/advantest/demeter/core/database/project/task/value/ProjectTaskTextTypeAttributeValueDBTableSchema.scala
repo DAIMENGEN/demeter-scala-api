@@ -8,11 +8,11 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/20
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskFieldTextTypeValueDBTableSchema(tag: Tag) extends ProjectTaskFieldValueDBTableSchema[ProjectTaskFieldValueDBTableRow](tag, "PROJECT_TASK_FIELD_TEXT_TYPE_VALUE_DB_TABLE") {
+class ProjectTaskTextTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_TEXT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
   def fieldValue: Rep[DBTextValue] = column[DBTextValue]("FIELD_VALUE", O.SqlType("TEXT"))
 
-  override def * : ProvenShape[ProjectTaskFieldValueDBTableRow] = (
+  override def * : ProvenShape[ProjectTaskAttributeValueDBTableRow] = (
     id,
     fieldId,
     fieldValue,
@@ -22,9 +22,9 @@ class ProjectTaskFieldTextTypeValueDBTableSchema(tag: Tag) extends ProjectTaskFi
     createDateTime,
     updateDateTime()
   ) <> ( {
-    case (id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskFieldValueDBTableRow(id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
+    case (id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskAttributeValueDBTableRow(id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
   },
-    (row: ProjectTaskFieldValueDBTableRow) => row.fieldValue match {
+    (row: ProjectTaskAttributeValueDBTableRow) => row.fieldValue match {
       case fieldValue: DBTextValue => Some((row.id, row.fieldId, fieldValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
       case _ => None
     }

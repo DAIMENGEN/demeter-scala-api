@@ -4,7 +4,7 @@ import com.advantest.demeter.utils.database.{DBFieldValue, DBTableRow}
 
 import java.time.LocalDateTime
 
-final case class ProjectTaskFieldValueDBTableRow(
+final case class ProjectTaskAttributeValueDBTableRow(
                                                   id: Long,
                                                   fieldId: Long,
                                                   fieldValue: DBFieldValue,

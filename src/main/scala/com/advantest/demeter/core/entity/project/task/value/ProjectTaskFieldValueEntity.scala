@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.entity.project.task.value
 
-import com.advantest.demeter.core.database.project.task.value.ProjectTaskFieldValueDBTableRow
+import com.advantest.demeter.core.database.project.task.value.ProjectTaskAttributeValueDBTableRow
 import com.advantest.demeter.utils.database.{DBFieldValue, DBTableRowFactory}
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -22,14 +22,14 @@ final case class ProjectTaskFieldValueEntity(
 
 object ProjectTaskFieldValueEntity extends Serializable[ProjectTaskFieldValueEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectTaskFieldValueEntity
-  override protected type TableRowData = ProjectTaskFieldValueDBTableRow
+  override protected type TableRowData = ProjectTaskAttributeValueDBTableRow
 
   override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(ProjectTaskFieldValueEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
     maybeProjectId match {
-      case Some(projectId) => ProjectTaskFieldValueDBTableRow(
+      case Some(projectId) => ProjectTaskAttributeValueDBTableRow(
         id = entityData.id,
         fieldId = entityData.fieldId,
         fieldValue = entityData.fieldValue,

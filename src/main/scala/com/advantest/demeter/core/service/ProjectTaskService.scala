@@ -1,12 +1,12 @@
 package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
-import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTable
+import com.advantest.demeter.core.database.project.task.attribute.ProjectTaskAttributeDBTable
 import com.advantest.demeter.core.database.project.task.value.{
-  ProjectTaskFieldTextTypeValueDBTable => TextTypeValueDBTable,
-  ProjectTaskFieldLongtextTypeValueDBTable => LongtextTypeValueDBTable,
-  ProjectTaskFieldMediumtextTypeValueDBTable => MediumtextTypeValueDBTable,
-  ProjectTaskFieldDatetimeTypeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskFieldBooleanTypeValueDBTable => BooleanTypeValueDBTable, ProjectTaskFieldDateTypeValueDBTable => DateTypeValueDBTable, ProjectTaskFieldDoubleTypeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFieldFloatTypeValueDBTable => FloatTypeValueDBTable, ProjectTaskFieldIntTypeValueDBTable => IntTypeValueDBTable, ProjectTaskFieldJsonTypeValueDBTable => JsonTypeValueDBTable, ProjectTaskFieldLongTypeValueDBTable => LongTypeValueDBTable, ProjectTaskFieldStringTypeValueDBTable => StringTypeValueDBTable}
+  ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable,
+  ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable,
+  ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable,
+  ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable}
 import com.advantest.demeter.core.entity.project.task.field.ProjectTaskFieldEntity
 import slick.jdbc.MySQLProfile.api._
 
@@ -17,7 +17,7 @@ import scala.concurrent.Future
  * Author: mengen.dai@outlook.com
  */
 case class ProjectTaskService()(implicit val db: Database) extends Service {
-  private val taskFieldDBTable: ProjectTaskFieldDBTable = ProjectTaskFieldDBTable()
+  private val taskFieldDBTable: ProjectTaskAttributeDBTable = ProjectTaskAttributeDBTable()
   private val intTypeValueDBTable: IntTypeValueDBTable = IntTypeValueDBTable()
   private val dateTypeValueDBTable: DateTypeValueDBTable = DateTypeValueDBTable()
   private val jsonTypeValueDBTable: JsonTypeValueDBTable = JsonTypeValueDBTable()
