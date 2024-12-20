@@ -4,11 +4,11 @@ import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTIO
 import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
-import com.advantest.demeter.core.database.project.task.ProjectTaskDBTable
 import com.advantest.demeter.core.database.project.task.field.ProjectTaskFieldDBTable
 import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
-import com.advantest.demeter.integration.antdesign.select.{IntValue, SelectOption}
+import com.advantest.demeter.integration.antdesign.select.SelectOption
+import com.advantest.demeter.integration.antdesign.select
 
 import scala.concurrent.Future
 
@@ -18,7 +18,6 @@ import scala.concurrent.Future
  */
 case class ProjectService() extends Service {
   private val dBTable: ProjectDBTable = ProjectDBTable()
-  private val taskDBTable: ProjectTaskDBTable = ProjectTaskDBTable()
   private val colorDBTable: ProjectColorDBTable = ProjectColorDBTable()
   private val taskFieldDBTable: ProjectTaskFieldDBTable = ProjectTaskFieldDBTable()
 
@@ -101,7 +100,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectStatus.values.map(status => {
       val label = status.toString
       val value = ProjectStatus.fromModel(status)
-      SelectOption(label, IntValue(value))
+      SelectOption(label, select.IntValue(value))
     }))
   }
 
@@ -109,7 +108,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectTaskType.values.map(taskType => {
       val label = taskType.toString
       val value = ProjectTaskType.fromModel(taskType)
-      SelectOption(label, IntValue(value))
+      SelectOption(label, select.IntValue(value))
     }))
   }
 
@@ -117,7 +116,7 @@ case class ProjectService() extends Service {
     Future.successful(ProjectTaskStatus.values.map(taskStatus => {
       val label = taskStatus.toString
       val value = ProjectTaskStatus.fromModel(taskStatus)
-      SelectOption(label, IntValue(value))
+      SelectOption(label, select.IntValue(value))
     }))
   }
 }
