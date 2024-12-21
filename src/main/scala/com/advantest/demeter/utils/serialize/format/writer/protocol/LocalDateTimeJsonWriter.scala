@@ -2,7 +2,7 @@ package com.advantest.demeter.utils.serialize.format.writer.protocol
 
 import com.advantest.demeter.utils.date.DateUtils
 import com.advantest.demeter.utils.serialize.format.writer.JsonWriter
-import spray.json.{JsString, JsValue}
+import spray.json._
 
 import java.time.LocalDateTime
 

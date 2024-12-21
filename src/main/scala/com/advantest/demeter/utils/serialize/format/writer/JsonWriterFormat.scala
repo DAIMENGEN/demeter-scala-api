@@ -87,6 +87,30 @@ case class JsonWriterFormat() {
     this
   }
 
+  def writeFloat(key: String, value: Float): JsonWriterFormat = {
+    val tuple2 = write(key, value, FloatJsonWriter)
+    values.addOne(Some(tuple2))
+    this
+  }
+
+  def writeFloat(key: String, value: Option[Float]): JsonWriterFormat = {
+    val tuple2 = write(key, value, FloatJsonWriter)
+    values.addOne(tuple2)
+    this
+  }
+
+  def writeDouble(key: String, value: Double): JsonWriterFormat = {
+    val tuple2 = write(key, value, DoubleJsonWriter)
+    values.addOne(Some(tuple2))
+    this
+  }
+
+  def writeDouble(key: String, value: Option[Double]): JsonWriterFormat = {
+    val tuple2 = write(key, value, DoubleJsonWriter)
+    values.addOne(tuple2)
+    this
+  }
+
   def writeString(key: String, value: String): JsonWriterFormat = {
     val tuple2 = write(key, value, StringJsonWriter)
     values.addOne(Some(tuple2))

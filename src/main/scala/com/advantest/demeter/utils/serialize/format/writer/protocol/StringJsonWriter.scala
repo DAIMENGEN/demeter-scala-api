@@ -1,7 +1,7 @@
 package com.advantest.demeter.utils.serialize.format.writer.protocol
 
 import com.advantest.demeter.utils.serialize.format.writer.JsonWriter
-import spray.json.{JsString, JsValue}
+import spray.json._
 
 /**
  * Create on 2024/10/13
