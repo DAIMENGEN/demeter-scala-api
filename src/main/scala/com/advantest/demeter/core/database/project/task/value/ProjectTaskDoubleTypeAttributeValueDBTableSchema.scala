@@ -8,7 +8,7 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/18
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskDoubleTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_DOUBLE_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
+final class ProjectTaskDoubleTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_DOUBLE_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
   def fieldValue: Rep[DBDoubleValue] = column[DBDoubleValue]("FIELD_VALUE")
 

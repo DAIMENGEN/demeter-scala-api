@@ -8,7 +8,7 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/20
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskLongtextTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_LONGTEXT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
+final class ProjectTaskLongtextTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_LONGTEXT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
   def fieldValue: Rep[DBLongtextValue] = column[DBLongtextValue]("FIELD_VALUE", O.SqlType("LONGTEXT"))
 

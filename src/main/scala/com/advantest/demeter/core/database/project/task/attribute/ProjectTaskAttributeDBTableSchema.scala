@@ -9,7 +9,7 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/1
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskAttributeDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskAttributeDBTableRow](tag, "PROJECT_TASK_ATTRIBUTE_DB_TABLE") {
+final class ProjectTaskAttributeDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskAttributeDBTableRow](tag, "PROJECT_TASK_ATTRIBUTE_DB_TABLE") {
 
   def fieldName: Rep[String] = column[String]("FIELD_NAME")
 

@@ -7,7 +7,7 @@ import com.advantest.demeter.core.database.project.task.value.{
   ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable,
   ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable,
   ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable}
-import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskFieldEntity
+import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
 import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future
@@ -31,7 +31,7 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
   private val longtextTypeValueDBTable: LongtextTypeValueDBTable = LongtextTypeValueDBTable()
   private val mediumtextTypeValueDBTable: MediumtextTypeValueDBTable = MediumtextTypeValueDBTable()
 
-  def getTaskFieldsByProjectId(projectId: Long): Future[Seq[ProjectTaskFieldEntity]] = {
+  def getTaskFieldsByProjectId(projectId: Long): Future[Seq[ProjectTaskAttributeEntity]] = {
     taskFieldDBTable.queryByProjectId(projectId).map(_.map(_.toEntity))
   }
 

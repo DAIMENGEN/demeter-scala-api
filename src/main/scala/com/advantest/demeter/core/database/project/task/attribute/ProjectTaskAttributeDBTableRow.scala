@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.project.task.attribute
 
-import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskFieldEntity
+import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableRow}
 import com.advantest.demeter.utils.json.JsonObject
 
@@ -24,8 +24,8 @@ final case class ProjectTaskAttributeDBTableRow(
                                            ) extends DBTableRow {
   override def toString: String = s"ProjectTaskFieldDBTableRow(id=$id, fieldName=$fieldName, fieldType=$fieldType, projectId=$projectId, properties=${properties.map(_.toString)}, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: ProjectTaskFieldEntity = {
-    ProjectTaskFieldEntity(
+  def toEntity: ProjectTaskAttributeEntity = {
+    ProjectTaskAttributeEntity(
       id = id,
       fieldName = fieldName,
       fieldType = fieldType,

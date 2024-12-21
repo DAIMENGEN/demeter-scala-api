@@ -8,7 +8,7 @@ import slick.lifted.ProvenShape
  * Create on 2024/12/18
  * Author: mengen.dai@outlook.com
  */
-class ProjectTaskFloatTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_FLOAT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
+final class ProjectTaskFloatTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_FLOAT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
   def fieldValue: Rep[DBFloatValue] = column[DBFloatValue]("FIELD_VALUE", O.SqlType("FLOAT"))
 
