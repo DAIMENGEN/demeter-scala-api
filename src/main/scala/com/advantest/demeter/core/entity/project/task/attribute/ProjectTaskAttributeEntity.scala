@@ -20,7 +20,7 @@ final case class ProjectTaskAttributeEntity(
                                              properties: Option[JsonObject],
                                              order: Int,
                                        ) {
-
+  override def toString: String = s"ProjectTaskAttributeEntity(id=$id, taskAttributeName=$taskAttributeName, taskAttributeType=$taskAttributeType, properties=${properties.map(_.toString)}, order=$order)"
 }
 
 object ProjectTaskAttributeEntity extends Serializable[ProjectTaskAttributeEntity] with DBTableRowFactory {
