@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.project.task.value
 
-import com.advantest.demeter.utils.database.{DBFieldValue, DBTableSchemaAbstract}
+import com.advantest.demeter.utils.database.{DBFieldValueType, DBTableSchemaAbstract}
 import slick.jdbc.MySQLProfile.api._
 
 /**
@@ -13,7 +13,7 @@ abstract class ProjectTaskAttributeValueDBTableSchema[T](tag: Tag, tableName: St
 
   def taskAttributeId: Rep[Long] = column[Long]("TASK_ATTRIBUTE_ID")
 
-  def taskAttributeValue: Rep[_ <: DBFieldValue]
+  def taskAttributeValue: Rep[_ <: DBFieldValueType]
 
   def projectId: Rep[Long] = column[Long]("PROJECT_ID")
 }

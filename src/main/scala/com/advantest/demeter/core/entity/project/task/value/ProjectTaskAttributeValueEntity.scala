@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.entity.project.task.value
 
 import com.advantest.demeter.core.database.project.task.value.ProjectTaskAttributeValueDBTableRow
-import com.advantest.demeter.utils.database.{DBFieldValue, DBTableRowFactory}
+import com.advantest.demeter.utils.database.{DBFieldValueType, DBTableRowFactory}
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
@@ -16,7 +16,7 @@ final case class ProjectTaskAttributeValueEntity(
                                                   id: Long,
                                                   taskId: Long,
                                                   taskAttributeId: Long,
-                                                  taskAttributeValue: DBFieldValue,
+                                                  taskAttributeValue: DBFieldValueType,
                                                 ) {
   override def toString: String = s"ProjectTaskAttributeValueEntity(id=$id, taskId=$taskId, taskAttributeId=$taskAttributeId, taskAttributeValue=$taskAttributeValue)"
 }
