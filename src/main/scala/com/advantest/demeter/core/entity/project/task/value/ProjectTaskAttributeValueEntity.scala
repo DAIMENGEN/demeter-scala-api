@@ -13,26 +13,28 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectTaskAttributeValueEntity(
-                                              id: Long,
-                                              fieldId: Long,
-                                              fieldValue: DBFieldValue,
-                                            ) {
-  override def toString: String = s"ProjectTaskAttributeValueEntity(id=$id, fieldId=$fieldId, fieldValue=$fieldValue)"
+                                                  id: Long,
+                                                  taskId: Long,
+                                                  taskAttributeId: Long,
+                                                  taskAttributeValue: DBFieldValue,
+                                                ) {
+  override def toString: String = s"ProjectTaskAttributeValueEntity(id=$id, taskId=$taskId, taskAttributeId=$taskAttributeId, taskAttributeValue=$taskAttributeValue)"
 }
 
 object ProjectTaskAttributeValueEntity extends Serializable[ProjectTaskAttributeValueEntity] with DBTableRowFactory {
   override protected type EntityData = ProjectTaskAttributeValueEntity
   override protected type TableRowData = ProjectTaskAttributeValueDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(ProjectTaskAttributeValueEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat4(ProjectTaskAttributeValueEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
     maybeProjectId match {
       case Some(projectId) => ProjectTaskAttributeValueDBTableRow(
         id = entityData.id,
-        attributeId = entityData.fieldId,
-        attributeValue = entityData.fieldValue,
+        taskId = entityData.taskId,
+        taskAttributeId = entityData.taskAttributeId,
+        taskAttributeValue = entityData.taskAttributeValue,
         projectId = projectId,
         creatorId = employeeId,
         updaterId = employeeId,
@@ -42,7 +44,7 @@ object ProjectTaskAttributeValueEntity extends Serializable[ProjectTaskAttribute
   }
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData): TableRowData = oldRowData.copy(
-    attributeValue = entityData.fieldValue,
+    taskAttributeValue = entityData.taskAttributeValue,
     updaterId = employeeId,
     updateDateTime = LocalDateTime.now()
   )

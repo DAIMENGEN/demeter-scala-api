@@ -12,8 +12,8 @@ import java.time.LocalDateTime
  */
 final case class ProjectTaskAttributeDBTableRow(
                                                  id: Long,
-                                                 attributeName: String,
-                                                 attributeType: DBFieldType,
+                                                 taskAttributeName: String,
+                                                 taskAttributeType: DBFieldType,
                                                  projectId: Long,
                                                  properties: Option[JsonObject] = None, // 存储 column 相关的内容同，比如： fieldProps, formItemProps
                                                  order: Int,
@@ -22,13 +22,13 @@ final case class ProjectTaskAttributeDBTableRow(
                                                  createDateTime: LocalDateTime = LocalDateTime.now(),
                                                  updateDateTime: LocalDateTime = LocalDateTime.now()
                                            ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskAttributeDBTableRow(id=$id, attributeName=$attributeName, attributeType=$attributeType, projectId=$projectId, properties=${properties.map(_.toString)}, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+  override def toString: String = s"ProjectTaskAttributeDBTableRow(id=$id, taskAttributeName=$taskAttributeName, taskAttributeType=$taskAttributeType, projectId=$projectId, properties=${properties.map(_.toString)}, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: ProjectTaskAttributeEntity = {
     ProjectTaskAttributeEntity(
       id = id,
-      attributeName = attributeName,
-      attributeType = attributeType,
+      taskAttributeName = taskAttributeName,
+      taskAttributeType = taskAttributeType,
       properties = properties,
       order = order
     )

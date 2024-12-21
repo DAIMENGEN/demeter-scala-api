@@ -15,8 +15,8 @@ import java.time.LocalDateTime
  */
 final case class ProjectTaskAttributeEntity(
                                              id: Long,
-                                             attributeName: String,
-                                             attributeType: DBFieldType,
+                                             taskAttributeName: String,
+                                             taskAttributeType: DBFieldType,
                                              properties: Option[JsonObject],
                                              order: Int,
                                        ) {
@@ -35,8 +35,8 @@ object ProjectTaskAttributeEntity extends Serializable[ProjectTaskAttributeEntit
       case Some(projectId) =>
         ProjectTaskAttributeDBTableRow(
           id = entityData.id,
-          attributeName = entityData.attributeName,
-          attributeType = entityData.attributeType,
+          taskAttributeName = entityData.taskAttributeName,
+          taskAttributeType = entityData.taskAttributeType,
           properties = entityData.properties,
           order = entityData.order,
           projectId = projectId,
@@ -48,8 +48,8 @@ object ProjectTaskAttributeEntity extends Serializable[ProjectTaskAttributeEntit
   }
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData = oldRowData.copy(
-    attributeName = entityData.attributeName,
-    attributeType = entityData.attributeType,
+    taskAttributeName = entityData.taskAttributeName,
+    taskAttributeType = entityData.taskAttributeType,
     properties = entityData.properties,
     order = entityData.order,
     updaterId = employeeId,
