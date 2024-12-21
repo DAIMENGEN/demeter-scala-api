@@ -43,7 +43,7 @@ object ProjectTaskAttributeEntity extends Serializable[ProjectTaskAttributeEntit
           creatorId = employeeId,
           updaterId = employeeId,
         )
-      case _ => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskAttributeTableRow")
+      case None => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskAttributeTableRow")
     }
   }
 
