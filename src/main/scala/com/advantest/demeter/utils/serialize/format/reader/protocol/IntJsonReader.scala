@@ -4,8 +4,6 @@ import com.advantest.demeter.utils.serialize.format.reader.JsonReader
 import spray.json.DefaultJsonProtocol.IntJsonFormat
 import spray.json.JsValue
 
-import scala.util.Try
-
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
@@ -35,5 +33,5 @@ object IntJsonReader extends JsonReader[Int] {
    * @return An Option containing the extracted value of type Int, or None if the value is not present.
    */
   override def readOption(key: String, values: Map[String, JsValue]): Option[Int] =
-    values.get(key).flatMap(value => Try(value.convertTo[Int]).toOption)
+    values.get(key).flatMap(value => scala.util.Try(value.convertTo[Int]).toOption)
 }

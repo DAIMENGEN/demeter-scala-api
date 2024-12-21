@@ -4,8 +4,6 @@ import com.advantest.demeter.utils.serialize.format.reader.JsonReader
 import spray.json.DefaultJsonProtocol.StringJsonFormat
 import spray.json.JsValue
 
-import scala.util.Try
-
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
@@ -35,5 +33,5 @@ object LongJsonReader extends JsonReader[Long] {
    * @return An Option containing the extracted value of type Long, or None if the value is not present.
    */
   override def readOption(key: String, values: Map[String, JsValue]): Option[Long] =
-    values.get(key).flatMap(value => Try(value.convertTo[String].toLong).toOption)
+    values.get(key).flatMap(value => scala.util.Try(value.convertTo[String].toLong).toOption)
 }

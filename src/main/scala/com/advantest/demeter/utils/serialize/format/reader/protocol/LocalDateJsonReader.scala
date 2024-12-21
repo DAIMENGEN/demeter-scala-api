@@ -6,7 +6,6 @@ import spray.json.DefaultJsonProtocol.StringJsonFormat
 import spray.json.{JsString, JsValue}
 
 import java.time.LocalDate
-import scala.util.Try
 
 /**
  * Create on 2024/10/13
@@ -37,5 +36,5 @@ object LocalDateJsonReader extends JsonReader[LocalDate] {
    * @return An Option containing the extracted value of type LocalDate, or None if the value is not present.
    */
   override def readOption(key: String, values: Map[String, JsValue]): Option[LocalDate] =
-    values.get(key).flatMap(value => Try(DateUtils.parseLocalDate(value.convertTo[String])).toOption)
+    values.get(key).flatMap(value => scala.util.Try(DateUtils.parseLocalDate(value.convertTo[String])).toOption)
 }
