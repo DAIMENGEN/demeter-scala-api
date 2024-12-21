@@ -14,10 +14,13 @@ final class ProjectTaskDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[Pro
 
   def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
 
+  def projectId: Rep[Long] = column[Long]("PROJECT_ID")
+
   override def * : ProvenShape[ProjectTaskDBTableRow] = (
     id,
     taskName,
     order,
+    projectId,
     creatorId,
     updaterId,
     createDateTime,
