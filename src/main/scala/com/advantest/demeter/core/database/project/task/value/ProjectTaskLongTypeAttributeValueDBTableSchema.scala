@@ -10,22 +10,22 @@ import slick.lifted.ProvenShape
  */
 final class ProjectTaskLongTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_LONG_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
-  def fieldValue: Rep[DBLongValue] = column[DBLongValue]("FIELD_VALUE")
+  def attributeValue: Rep[DBLongValue] = column[DBLongValue]("ATTRIBUTE_VALUE")
 
   override def * : ProvenShape[ProjectTaskAttributeValueDBTableRow] = (
     id,
-    fieldId,
-    fieldValue,
+    attributeId,
+    attributeValue,
     projectId,
     creatorId,
     updaterId,
     createDateTime,
     updateDateTime()
   ) <> ( {
-    case (id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskAttributeValueDBTableRow(id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
+    case (id, attributeId, attributeValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskAttributeValueDBTableRow(id, attributeId, attributeValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
   },
-    (row: ProjectTaskAttributeValueDBTableRow) => row.fieldValue match {
-      case fieldValue: DBLongValue => Some((row.id, row.fieldId, fieldValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
+    (row: ProjectTaskAttributeValueDBTableRow) => row.attributeValue match {
+      case attributeValue: DBLongValue => Some((row.id, row.attributeId, attributeValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
       case _ => None
     }
   )

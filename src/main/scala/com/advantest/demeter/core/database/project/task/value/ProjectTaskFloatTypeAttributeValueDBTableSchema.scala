@@ -10,22 +10,22 @@ import slick.lifted.ProvenShape
  */
 final class ProjectTaskFloatTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_FLOAT_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
-  def fieldValue: Rep[DBFloatValue] = column[DBFloatValue]("FIELD_VALUE", O.SqlType("FLOAT"))
+  def attributeValue: Rep[DBFloatValue] = column[DBFloatValue]("ATTRIBUTE_VALUE", O.SqlType("FLOAT"))
 
   override def * : ProvenShape[ProjectTaskAttributeValueDBTableRow] = (
     id,
-    fieldId,
-    fieldValue,
+    attributeId,
+    attributeValue,
     projectId,
     creatorId,
     updaterId,
     createDateTime,
     updateDateTime()
   ) <> ( {
-    case (id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskAttributeValueDBTableRow(id, fieldId, fieldValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
+    case (id, attributeId, attributeValue, projectId, creatorId, updaterId, createDateTime, updateDateTime) => ProjectTaskAttributeValueDBTableRow(id, attributeId, attributeValue, projectId, creatorId, updaterId, createDateTime, updateDateTime)
   },
-    (row: ProjectTaskAttributeValueDBTableRow) => row.fieldValue match {
-      case fieldValue: DBFloatValue => Some((row.id, row.fieldId, fieldValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
+    (row: ProjectTaskAttributeValueDBTableRow) => row.attributeValue match {
+      case attributeValue: DBFloatValue => Some((row.id, row.attributeId, attributeValue, row.projectId, row.creatorId, row.updaterId, row.createDateTime, row.updateDateTime))
       case _ => None
     }
   )

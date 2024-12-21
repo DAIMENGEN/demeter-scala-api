@@ -9,7 +9,7 @@ import slick.jdbc.MySQLProfile.api._
  */
 abstract class ProjectTaskAttributeValueDBTableSchema[T](tag: Tag, tableName: String) extends DBTableSchemaAbstract[T](tag, tableName) {
 
-  def fieldId: Rep[Long] = column[Long]("FIELD_ID")
+  def attributeId: Rep[Long] = column[Long]("ATTRIBUTE_ID")
 
   def projectId: Rep[Long] = column[Long]("PROJECT_ID")
 }

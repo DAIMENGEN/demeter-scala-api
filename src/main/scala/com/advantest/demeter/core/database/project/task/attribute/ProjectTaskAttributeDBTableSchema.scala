@@ -11,9 +11,9 @@ import slick.lifted.ProvenShape
  */
 final class ProjectTaskAttributeDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskAttributeDBTableRow](tag, "PROJECT_TASK_ATTRIBUTE_DB_TABLE") {
 
-  def fieldName: Rep[String] = column[String]("FIELD_NAME")
+  def attributeName: Rep[String] = column[String]("ATTRIBUTE_NAME")
 
-  def fieldType: Rep[DBFieldType] = column[DBFieldType]("FIELD_TYPE")
+  def attributeType: Rep[DBFieldType] = column[DBFieldType]("ATTRIBUTE_TYPE")
 
   def projectId: Rep[Long] = column[Long]("PROJECT_ID")
 
@@ -23,8 +23,8 @@ final class ProjectTaskAttributeDBTableSchema(tag: Tag) extends DBTableSchemaAbs
 
   override def * : ProvenShape[ProjectTaskAttributeDBTableRow] = (
     id,
-    fieldName,
-    fieldType,
+    attributeName,
+    attributeType,
     projectId,
     properties,
     order,

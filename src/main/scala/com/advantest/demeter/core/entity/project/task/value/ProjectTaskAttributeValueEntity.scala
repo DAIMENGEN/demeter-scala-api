@@ -31,8 +31,8 @@ object ProjectTaskAttributeValueEntity extends Serializable[ProjectTaskAttribute
     maybeProjectId match {
       case Some(projectId) => ProjectTaskAttributeValueDBTableRow(
         id = entityData.id,
-        fieldId = entityData.fieldId,
-        fieldValue = entityData.fieldValue,
+        attributeId = entityData.fieldId,
+        attributeValue = entityData.fieldValue,
         projectId = projectId,
         creatorId = employeeId,
         updaterId = employeeId,
@@ -42,7 +42,7 @@ object ProjectTaskAttributeValueEntity extends Serializable[ProjectTaskAttribute
   }
 
   override def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData): TableRowData = oldRowData.copy(
-    fieldValue = entityData.fieldValue,
+    attributeValue = entityData.fieldValue,
     updaterId = employeeId,
     updateDateTime = LocalDateTime.now()
   )
