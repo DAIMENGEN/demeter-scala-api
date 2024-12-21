@@ -12,19 +12,19 @@ import java.time.LocalDateTime
  * Create on 2024/12/19
  * Author: mengen.dai@outlook.com
  */
-final case class ProjectTaskFieldValueEntity(
+final case class ProjectTaskAttributeValueEntity(
                                               id: Long,
                                               fieldId: Long,
                                               fieldValue: DBFieldValue,
                                             ) {
-  override def toString: String = s"ProjectTaskFieldValueEntity(id=$id, fieldId=$fieldId, fieldValue=$fieldValue)"
+  override def toString: String = s"ProjectTaskAttributeValueEntity(id=$id, fieldId=$fieldId, fieldValue=$fieldValue)"
 }
 
-object ProjectTaskFieldValueEntity extends Serializable[ProjectTaskFieldValueEntity] with DBTableRowFactory {
-  override protected type EntityData = ProjectTaskFieldValueEntity
+object ProjectTaskAttributeValueEntity extends Serializable[ProjectTaskAttributeValueEntity] with DBTableRowFactory {
+  override protected type EntityData = ProjectTaskAttributeValueEntity
   override protected type TableRowData = ProjectTaskAttributeValueDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(ProjectTaskFieldValueEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat3(ProjectTaskAttributeValueEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
@@ -37,7 +37,7 @@ object ProjectTaskFieldValueEntity extends Serializable[ProjectTaskFieldValueEnt
         creatorId = employeeId,
         updaterId = employeeId,
       )
-      case None => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskFieldValueDBTableRow")
+      case None => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskAttributeValueDBTableRow")
     }
   }
 

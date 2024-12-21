@@ -7,7 +7,7 @@ import com.advantest.demeter.core.database.project.task.value.{
   ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable,
   ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable,
   ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable}
-import com.advantest.demeter.core.entity.project.task.field.ProjectTaskFieldEntity
+import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskFieldEntity
 import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future

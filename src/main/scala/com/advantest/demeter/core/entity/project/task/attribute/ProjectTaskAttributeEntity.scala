@@ -1,4 +1,4 @@
-package com.advantest.demeter.core.entity.project.task.field
+package com.advantest.demeter.core.entity.project.task.attribute
 
 import com.advantest.demeter.core.database.project.task.attribute.ProjectTaskAttributeDBTableRow
 import com.advantest.demeter.utils.database.{DBFieldType, DBTableRowFactory}
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-final case class ProjectTaskFieldEntity(
+final case class ProjectTaskAttributeEntity(
                                          id: Long,
                                          fieldName: String,
                                          fieldType: DBFieldType,
@@ -23,11 +23,11 @@ final case class ProjectTaskFieldEntity(
 
 }
 
-object ProjectTaskFieldEntity extends Serializable[ProjectTaskFieldEntity] with DBTableRowFactory {
-  override protected type EntityData = ProjectTaskFieldEntity
+object ProjectTaskAttributeEntity extends Serializable[ProjectTaskAttributeEntity] with DBTableRowFactory {
+  override protected type EntityData = ProjectTaskAttributeEntity
   override protected type TableRowData = ProjectTaskAttributeDBTableRow
 
-  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat5(ProjectTaskFieldEntity.apply)
+  override implicit val serializeFormat: RootJsonFormat[EntityData] = jsonFormat5(ProjectTaskAttributeEntity.apply)
 
   override def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData = {
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
@@ -43,7 +43,7 @@ object ProjectTaskFieldEntity extends Serializable[ProjectTaskFieldEntity] with 
           creatorId = employeeId,
           updaterId = employeeId,
         )
-      case _ => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskFieldTableRow")
+      case _ => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskAttributeTableRow")
     }
   }
 
