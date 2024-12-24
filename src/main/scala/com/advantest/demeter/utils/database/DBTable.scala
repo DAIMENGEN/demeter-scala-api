@@ -43,6 +43,13 @@ trait DBTable {
   }
 
   /**
+   * Provides access to the underlying table query object.
+   *
+   * @return
+   */
+  def tableQuery: TableQuery[_ <: Table[TableRowData] with DBTableSchema] = table
+
+  /**
    * Inserts a row of data into the database table.
    *
    * @param data The row data to be inserted, of type `TableRowData`.

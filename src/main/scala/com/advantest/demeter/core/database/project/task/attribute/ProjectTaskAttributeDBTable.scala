@@ -12,6 +12,7 @@ import scala.concurrent.Future
 final case class ProjectTaskAttributeDBTable()(implicit val db: Database) extends DBTable {
   override protected type TableRowData = ProjectTaskAttributeDBTableRow
   override protected val table: TableQuery[ProjectTaskAttributeDBTableSchema] = TableQuery[ProjectTaskAttributeDBTableSchema]
+  override def tableQuery: TableQuery[ProjectTaskAttributeDBTableSchema] = table
   createTableIfNotExists()
 
   def queryByProjectId(projectId: Long): Future[Seq[TableRowData]] = {
