@@ -3,7 +3,7 @@ package com.advantest.demeter.core.service
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.core.database.project.task.ProjectTaskDBTable
 import com.advantest.demeter.core.database.project.task.attribute.ProjectTaskAttributeDBTable
-import com.advantest.demeter.core.database.project.task.value.{ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable, ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable, ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable}
+import com.advantest.demeter.core.database.project.task.value.{ProjectTaskAttributeValueDBTableRow, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable, ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable, ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable}
 import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
 import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
 import com.advantest.demeter.core.entity.project.task.value.ProjectTaskAttributeValueEntity
@@ -31,6 +31,25 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
   private val textTypeValueDBTable: TextTypeValueDBTable = TextTypeValueDBTable()
   private val longtextTypeValueDBTable: LongtextTypeValueDBTable = LongtextTypeValueDBTable()
   private val mediumtextTypeValueDBTable: MediumtextTypeValueDBTable = MediumtextTypeValueDBTable()
+
+  private def buildInsertTaskAttributeValueRowsAction(taskAttributeValueRows: Seq[ProjectTaskAttributeValueDBTableRow]) = {
+    DBIO.sequence(taskAttributeValueRows.map { taskAttributeValueRow =>
+      taskAttributeValueRow.taskAttributeValue match {
+        case DBIntTypeValue(_) => intTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBLongTypeValue(_) => longTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBFloatTypeValue(_) => floatTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDoubleTypeValue(_) => doubleTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBStringTypeValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBTextTypeValue(_) => textTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBMediumtextTypeValue(_) => mediumtextTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBLongtextTypeValue(_) => longtextTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBBooleanTypeValue(_) => booleanTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBJsonTypeValue(_) => jsonTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDateTypeValue(_) => dateTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDateTimeTypeValue(_) => datetimeTypeValueDBTable.tableQuery += taskAttributeValueRow
+      }
+    })
+  }
 
   def getTasksByProjectId(projectId: Long): Future[Seq[ProjectTaskEntity]] = {
     val taskRowsFuture = dbTable.queryByProjectId(projectId)
@@ -73,53 +92,46 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
   }
 
   def createTask(employeeId: Long, projectId: Long, task: ProjectTaskEntity): Future[ProjectTaskEntity] = {
+    createTasks(employeeId, projectId, Seq(task)).map {
+      case Seq(task) => task
+      case _ => throw new RuntimeException("create task failed")
+    }
+  }
+
+  def createTasks(employeeId: Long, projectId: Long, tasks: Seq[ProjectTaskEntity]): Future[Seq[ProjectTaskEntity]] = {
     val optionData = Some(Map("projectId" -> projectId))
-    val taskRow = ProjectTaskEntity.create(employeeId, task, optionData)
-    val taskAttributeValueRows = task.taskAttributeValues.map(taskAttributeValue => ProjectTaskAttributeValueEntity.create(employeeId, taskAttributeValue, optionData))
-    val insertTaskRow = dbTable.tableQuery += taskRow
-    val insertTaskAttributeValueRows = DBIO.sequence(taskAttributeValueRows.map { taskAttributeValueRow =>
-      val taskAttributeValue = taskAttributeValueRow.taskAttributeValue
-      taskAttributeValue match {
-        case DBIntTypeValue(_) => intTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBLongTypeValue(_) => longTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBFloatTypeValue(_) => floatTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDoubleTypeValue(_) => doubleTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBStringTypeValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBTextTypeValue(_) => textTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBMediumtextTypeValue(_) => mediumtextTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBLongtextTypeValue(_) => longtextTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBBooleanTypeValue(_) => booleanTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBJsonTypeValue(_) => jsonTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDateTypeValue(_) => dateTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDateTimeTypeValue(_) => datetimeTypeValueDBTable.tableQuery += taskAttributeValueRow
-      }
-    })
-    val selectTaskRow = dbTable.tableQuery.filter(_.id === taskRow.id).result.headOption
+    val taskRow = tasks.map(task => ProjectTaskEntity.create(employeeId, task, optionData))
+    val taskRowIds = taskRow.map(_.id)
+    val taskAttributeValueRows = tasks.flatMap(task => task.taskAttributeValues.map(taskAttributeValue => ProjectTaskAttributeValueEntity.create(employeeId, taskAttributeValue, optionData)))
+    val insertTaskRows = dbTable.tableQuery ++= taskRow
+    val insertTaskAttributeValueRows = buildInsertTaskAttributeValueRowsAction(taskAttributeValueRows)
+    val selectTaskRows = dbTable.tableQuery.filter(_.id.inSet(taskRowIds)).result
     val selectTaskAttributes = attributeDBTable.tableQuery.filter(_.projectId === projectId).result
     val selectTaskAttributeValueRows = DBIO.sequence(Seq(
-      intTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      dateTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      jsonTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      longTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      floatTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      doubleTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      stringTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      booleanTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      datetimeTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      textTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      longtextTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result,
-      mediumtextTypeValueDBTable.tableQuery.filter(_.id === taskRow.id).result
+      intTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      dateTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      jsonTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      longTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      floatTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      doubleTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      stringTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      booleanTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      datetimeTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      textTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      longtextTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
+      mediumtextTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
     ))
-    val transaction = (insertTaskRow andThen insertTaskAttributeValueRows andThen (selectTaskRow zip selectTaskAttributes zip selectTaskAttributeValueRows)).transactionally
+    val transaction = (insertTaskRows andThen insertTaskAttributeValueRows andThen (selectTaskRows zip selectTaskAttributes zip selectTaskAttributeValueRows)).transactionally
     db.run(transaction).map {
-      case ((Some(taskRow), taskAttributeRows), taskAttributeValueRows) =>
-        ProjectTaskEntity(
-          id = taskRow.id,
-          taskName = taskRow.taskName,
-          taskAttributes = taskAttributeRows.map(_.toEntity),
-          taskAttributeValues = taskAttributeValueRows.flatten.map(_.toEntity),
-        )
-      case _ => throw new RuntimeException("Failed to create task")
+      case ((taskRows, taskAttributeRows), taskAttributeValueRows) =>
+        taskRows.map { taskRow =>
+          ProjectTaskEntity(
+            id = taskRow.id,
+            taskName = taskRow.taskName,
+            taskAttributes = taskAttributeRows.map(_.toEntity),
+            taskAttributeValues = taskAttributeValueRows.flatten.filter(_.id == taskRow.id).map(_.toEntity),
+          )
+        }
     }
   }
 

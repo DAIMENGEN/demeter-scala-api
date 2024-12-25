@@ -1,13 +1,16 @@
 package com.advantest.demeter.core.service
 
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
+import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
 import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.core.entity.project.ProjectEntity
+import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
+import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
 import com.advantest.demeter.integration.antdesign.select
 import com.advantest.demeter.integration.antdesign.select.SelectOption
+import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future
 
@@ -15,7 +18,7 @@ import scala.concurrent.Future
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-case class ProjectService() extends Service {
+case class ProjectService()(implicit val db: Database) extends Service {
   private val dBTable: ProjectDBTable = ProjectDBTable()
   private val taskService: ProjectTaskService = ProjectTaskService()
   private val colorDBTable: ProjectColorDBTable = ProjectColorDBTable()
@@ -38,6 +41,22 @@ case class ProjectService() extends Service {
   def createProjects(employeeId: Long, projects: Seq[ProjectEntity]): Future[Seq[ProjectEntity]] = {
     val tableRows = projects.map(project => ProjectEntity.create(employeeId, project))
     dBTable.batchInsert(tableRows).map(_.map(_.toEntity))
+  }
+
+  def createProjectTask(employeeId: Long, projectId: Long, projectTask: ProjectTaskEntity): Future[ProjectTaskEntity] = {
+    taskService.createTask(employeeId, projectId, projectTask)
+  }
+
+  def createProjectTasks(employeeId: Long, projectId: Long, projectTasks: Seq[ProjectTaskEntity]): Future[Seq[ProjectTaskEntity]] = {
+    taskService.createTasks(employeeId, projectId, projectTasks)
+  }
+
+  def createProjectTaskAttribute(employeeId: Long, projectId: Long, projectTaskAttribute: ProjectTaskAttributeEntity): Future[ProjectTaskAttributeEntity] = {
+    taskService.createTaskAttribute(employeeId, projectId, projectTaskAttribute)
+  }
+
+  def createProjectTaskAttributes(employeeId: Long, projectId: Long, projectTaskAttributes: Seq[ProjectTaskAttributeEntity]): Future[Seq[ProjectTaskAttributeEntity]] = {
+    taskService.createTaskAttributes(employeeId, projectId, projectTaskAttributes)
   }
 
   def deleteProjects(employeeId: Long): Future[Seq[ProjectEntity]] = {

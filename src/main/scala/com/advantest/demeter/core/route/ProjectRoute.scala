@@ -3,20 +3,27 @@ package com.advantest.demeter.core.route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.advantest.demeter.core.entity.project.ProjectEntity
+import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
+import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
 import com.advantest.demeter.core.service.ProjectService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
+import slick.jdbc.MySQLProfile.api._
 import spray.json.DefaultJsonProtocol._
 
 /**
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
-case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
+case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiRequest with ApiResponse {
   private val projectService: ProjectService = ProjectService()
 
   override def route: Route = concat(
     createProjectRoute,
     createProjectsRoute,
+    createProjectTaskRoute,
+    createProjectTasksRoute,
+    createProjectTaskAttributeRoute,
+    createProjectTaskAttributesRoute,
     deleteProjectsRoute(),
     deleteProjectByIdRoute(),
     deleteProjectsByIdsRoute(),
@@ -49,6 +56,62 @@ case class ProjectRoute() extends HttpRoute with ApiRequest with ApiResponse {
         entity(as[Seq[ProjectEntity]]) {
           request =>
             val future = projectService.createProjects(employee.id, request)
+            response(future)
+        }
+      }
+    }
+  }
+
+  private def createProjectTaskRoute: Route = path("createProjectTaskRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val projectTask = request.read[ProjectTaskEntity]("projectTask")
+            val future = projectService.createProjectTask(employee.id, projectId, projectTask)
+            response(future)
+        }
+      }
+    }
+  }
+
+  private def createProjectTasksRoute: Route = path("createProjectTasksRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val projectTasks = request.read[Seq[ProjectTaskEntity]]("projectTasks")
+            val future = projectService.createProjectTasks(employee.id, projectId, projectTasks)
+            response(future)
+        }
+      }
+    }
+  }
+
+  private def createProjectTaskAttributeRoute: Route = path("createProjectTaskAttributeRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val projectTaskAttribute = request.read[ProjectTaskAttributeEntity]("projectTaskAttribute")
+            val future = projectService.createProjectTaskAttribute(employee.id, projectId, projectTaskAttribute)
+            response(future)
+        }
+      }
+    }
+  }
+
+  private def createProjectTaskAttributesRoute: Route = path("createProjectTaskAttributesRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val projectTaskAttributes = request.read[Seq[ProjectTaskAttributeEntity]]("projectTaskAttributes")
+            val future = projectService.createProjectTaskAttributes(employee.id, projectId, projectTaskAttributes)
             response(future)
         }
       }
