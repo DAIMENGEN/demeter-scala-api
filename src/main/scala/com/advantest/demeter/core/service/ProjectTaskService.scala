@@ -4,9 +4,7 @@ import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.core.database.project.task.ProjectTaskDBTable
 import com.advantest.demeter.core.database.project.task.attribute.ProjectTaskAttributeDBTable
 import com.advantest.demeter.core.database.project.task.value.{ProjectTaskAttributeValueDBTableRow, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable, ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable, ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable}
-import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
-import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
-import com.advantest.demeter.core.entity.project.task.value.ProjectTaskAttributeValueEntity
+import com.advantest.demeter.core.http.payload.{ProjectTaskAttributePayload, ProjectTaskAttributeValuePayload, ProjectTaskPayload}
 import com.advantest.demeter.utils.database._
 import slick.jdbc.MySQLProfile.api._
 
@@ -51,7 +49,7 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
     })
   }
 
-  def getTasksByProjectId(projectId: Long): Future[Seq[ProjectTaskEntity]] = {
+  def getTasksByProjectId(projectId: Long): Future[Seq[ProjectTaskPayload]] = {
     val taskRowsFuture = dbTable.queryByProjectId(projectId)
     val taskAttributeRowsFuture = attributeDBTable.queryByProjectId(projectId)
     val taskIntAttributeValueRowsFuture = Future.sequence(Seq(
@@ -73,10 +71,10 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
       taskAttributeRows <- taskAttributeRowsFuture
       taskIntAttributeValueRows <- taskIntAttributeValueRowsFuture
     } yield {
-      val taskAttributeEntities = taskAttributeRows.map(_.toEntity)
-      val taskIntAttributeValueEntitiesMap = taskIntAttributeValueRows.map(_.toEntity).groupBy(_.taskId)
+      val taskAttributeEntities = taskAttributeRows.map(_.toPayload)
+      val taskIntAttributeValueEntitiesMap = taskIntAttributeValueRows.map(_.toPayload).groupBy(_.taskId)
       taskRows.map { taskRow =>
-        ProjectTaskEntity(
+        ProjectTaskPayload(
           id = taskRow.id,
           taskName = taskRow.taskName,
           taskAttributes = taskAttributeEntities,
@@ -87,22 +85,22 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
     }
   }
 
-  def getTaskAttributesByProjectId(projectId: Long): Future[Seq[ProjectTaskAttributeEntity]] = {
-    attributeDBTable.queryByProjectId(projectId).map(_.map(_.toEntity))
+  def getTaskAttributesByProjectId(projectId: Long): Future[Seq[ProjectTaskAttributePayload]] = {
+    attributeDBTable.queryByProjectId(projectId).map(_.map(_.toPayload))
   }
 
-  def createTask(employeeId: Long, projectId: Long, task: ProjectTaskEntity): Future[ProjectTaskEntity] = {
+  def createTask(employeeId: Long, projectId: Long, task: ProjectTaskPayload): Future[ProjectTaskPayload] = {
     createTasks(employeeId, projectId, Seq(task)).map {
       case Seq(task) => task
       case _ => throw new RuntimeException("create task failed")
     }
   }
 
-  def createTasks(employeeId: Long, projectId: Long, tasks: Seq[ProjectTaskEntity]): Future[Seq[ProjectTaskEntity]] = {
+  def createTasks(employeeId: Long, projectId: Long, tasks: Seq[ProjectTaskPayload]): Future[Seq[ProjectTaskPayload]] = {
     val optionData = Some(Map("projectId" -> projectId))
-    val taskRow = tasks.map(task => ProjectTaskEntity.create(employeeId, task, optionData))
+    val taskRow = tasks.map(task => ProjectTaskPayload.create(employeeId, task, optionData))
     val taskRowIds = taskRow.map(_.id)
-    val taskAttributeValueRows = tasks.flatMap(task => task.taskAttributeValues.map(taskAttributeValue => ProjectTaskAttributeValueEntity.create(employeeId, taskAttributeValue, optionData)))
+    val taskAttributeValueRows = tasks.flatMap(task => task.taskAttributeValues.map(taskAttributeValue => ProjectTaskAttributeValuePayload.create(employeeId, taskAttributeValue, optionData)))
     val insertTaskRows = dbTable.tableQuery ++= taskRow
     val insertTaskAttributeValueRows = buildInsertTaskAttributeValueRowsAction(taskAttributeValueRows)
     val selectTaskRows = dbTable.tableQuery.filter(_.id.inSet(taskRowIds)).result
@@ -125,25 +123,25 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
     db.run(transaction).map {
       case ((taskRows, taskAttributeRows), taskAttributeValueRows) =>
         taskRows.map { taskRow =>
-          ProjectTaskEntity(
+          ProjectTaskPayload(
             id = taskRow.id,
             taskName = taskRow.taskName,
-            taskAttributes = taskAttributeRows.map(_.toEntity),
-            taskAttributeValues = taskAttributeValueRows.flatten.filter(_.id == taskRow.id).map(_.toEntity),
+            taskAttributes = taskAttributeRows.map(_.toPayload),
+            taskAttributeValues = taskAttributeValueRows.flatten.filter(_.id == taskRow.id).map(_.toPayload),
           )
         }
     }
   }
 
-  def createTaskAttribute(employeeId: Long, projectId: Long, attribute: ProjectTaskAttributeEntity): Future[ProjectTaskAttributeEntity] = {
+  def createTaskAttribute(employeeId: Long, projectId: Long, attribute: ProjectTaskAttributePayload): Future[ProjectTaskAttributePayload] = {
     val optionData = Some(Map("projectId" -> projectId))
-    val tableRowData = ProjectTaskAttributeEntity.create(employeeId, attribute, optionData)
-    attributeDBTable.insert(tableRowData).map(_.toEntity)
+    val tableRowData = ProjectTaskAttributePayload.create(employeeId, attribute, optionData)
+    attributeDBTable.insert(tableRowData).map(_.toPayload)
   }
 
-  def createTaskAttributes(employeeId: Long, projectId: Long, attributes: Seq[ProjectTaskAttributeEntity]): Future[Seq[ProjectTaskAttributeEntity]] = {
+  def createTaskAttributes(employeeId: Long, projectId: Long, attributes: Seq[ProjectTaskAttributePayload]): Future[Seq[ProjectTaskAttributePayload]] = {
     val optionData = Some(Map("projectId" -> projectId))
-    val tableRows = attributes.map(attribute => ProjectTaskAttributeEntity.create(employeeId, attribute, optionData))
-    attributeDBTable.batchInsert(tableRows).map(_.map(_.toEntity))
+    val tableRows = attributes.map(attribute => ProjectTaskAttributePayload.create(employeeId, attribute, optionData))
+    attributeDBTable.batchInsert(tableRows).map(_.map(_.toPayload))
   }
 }

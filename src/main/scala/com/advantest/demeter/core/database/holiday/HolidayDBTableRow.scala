@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.database.holiday
 
 import com.advantest.demeter.core.constant.{CountryCode, HolidayType}
-import com.advantest.demeter.core.entity.HolidayEntity
+import com.advantest.demeter.core.http.payload.HolidayPayload
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.{LocalDate, LocalDateTime}
@@ -26,7 +26,7 @@ final case class HolidayDBTableRow(
 
   override def toString: String = s"HolidayTableRow(id=$id, title=$title, description=$description, holidayDate=$holidayDate, holidayType=$holidayType, isRecurring=$isRecurring, countryCode=$countryCode, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: HolidayEntity = HolidayEntity(
+  def toEntity: HolidayPayload = HolidayPayload(
     id,
     title,
     description,

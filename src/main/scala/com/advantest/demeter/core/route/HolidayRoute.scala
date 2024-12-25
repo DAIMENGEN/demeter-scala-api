@@ -2,7 +2,7 @@ package com.advantest.demeter.core.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.advantest.demeter.core.entity.HolidayEntity
+import com.advantest.demeter.core.http.payload.HolidayPayload
 import com.advantest.demeter.core.service.HolidayService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
 import spray.json.DefaultJsonProtocol._
@@ -31,7 +31,7 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
   private def createHolidayRoute: Route = path("createHolidayRoute") {
     post {
       validateToken { employee =>
-        entity(as[HolidayEntity]) {
+        entity(as[HolidayPayload]) {
           request =>
             val future = holidayService.createHoliday(employee.id, request)
             response(future)
@@ -43,7 +43,7 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
   private def createHolidaysRoute: Route = path("createHolidaysRoute") {
     post {
       validateToken { employee =>
-        entity(as[Seq[HolidayEntity]]) {
+        entity(as[Seq[HolidayPayload]]) {
           request =>
             val future = holidayService.createHolidays(employee.id, request)
             response(future)
@@ -90,7 +90,7 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
   private def updateHolidayRoute(): Route = path("updateHolidayRoute") {
     post {
       validateToken { employee =>
-        entity(as[HolidayEntity]) {
+        entity(as[HolidayPayload]) {
           request =>
             val future = holidayService.updateHoliday(employee.id, request)
             response(future)
@@ -102,7 +102,7 @@ case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
   private def updateHolidaysRoute(): Route = path("updateHolidaysRoute") {
     put {
       validateToken { employee =>
-        entity(as[Seq[HolidayEntity]]) {
+        entity(as[Seq[HolidayPayload]]) {
           request =>
             val future = holidayService.updateHolidays(employee.id, request)
             response(future)

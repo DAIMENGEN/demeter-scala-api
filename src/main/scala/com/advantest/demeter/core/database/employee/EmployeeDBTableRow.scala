@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.employee
 
-import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.core.http.payload.EmployeePayload
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.LocalDateTime
@@ -25,7 +25,7 @@ final case class EmployeeDBTableRow(
 
   override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, employeeName=$employeeName, email=$email, phone=$phone, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: EmployeeEntity = EmployeeEntity(
+  def toPayload: EmployeePayload = EmployeePayload(
     id = id,
     account = account,
     password = password,

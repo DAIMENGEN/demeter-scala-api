@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.database.project
 
 import com.advantest.demeter.core.constant.project.ProjectStatus
-import com.advantest.demeter.core.entity.project.ProjectEntity
+import com.advantest.demeter.core.http.payload.ProjectPayload
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.{LocalDate, LocalDateTime}
@@ -26,7 +26,7 @@ final case class ProjectDBTableRow(
                           ) extends DBTableRow {
   override def toString: String = s"ProjectTableRow(id=$id, projectName=$projectName, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, projectStatus=$projectStatus, version=$version, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: ProjectEntity = ProjectEntity(
+  def toPayload: ProjectPayload = ProjectPayload(
     id,
     projectName,
     projectStatus,

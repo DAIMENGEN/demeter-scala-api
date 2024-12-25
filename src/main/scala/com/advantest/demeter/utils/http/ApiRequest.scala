@@ -3,7 +3,7 @@ package com.advantest.demeter.utils.http
 import akka.http.scaladsl.server.Directives.{extractRequest, provide, reject}
 import akka.http.scaladsl.server.{AuthorizationFailedRejection, Directive1}
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_JWT_ALGORITHM, DEMETER_JWT_SECRET}
-import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.core.http.payload.EmployeePayload
 import com.advantest.demeter.utils.serialize.format.reader.JsonReaderFormat
 import pdi.jwt.Jwt
 import spray.json._
@@ -109,7 +109,7 @@ trait ApiRequest {
    *
    * @return An Option containing the employee information if the token is valid; otherwise, None.
    */
-  def validateToken: Directive1[EmployeeEntity] = {
+  def validateToken: Directive1[EmployeePayload] = {
     extractRequest.flatMap { request =>
       request.header("Authorization") match {
         case Some(authHeader) =>
@@ -119,7 +119,7 @@ trait ApiRequest {
             // If decoding fails, the token is invalid or expired, return None
             case Failure(_) => reject(AuthorizationFailedRejection)
             // If decoding succeeds, extract and return the employee information
-            case Success(value) => provide(value.content.parseJson.convertTo[EmployeeEntity])
+            case Success(value) => provide(value.content.parseJson.convertTo[EmployeePayload])
           }
         case None => reject(AuthorizationFailedRejection)
       }

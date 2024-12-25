@@ -2,9 +2,7 @@ package com.advantest.demeter.core.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.advantest.demeter.core.entity.project.ProjectEntity
-import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
-import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
+import com.advantest.demeter.core.http.payload.{ProjectPayload, ProjectTaskAttributePayload, ProjectTaskPayload}
 import com.advantest.demeter.core.service.ProjectService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
 import slick.jdbc.MySQLProfile.api._
@@ -43,7 +41,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
   private def createProjectRoute: Route = path("createProjectRoute") {
     post {
       validateToken { employee =>
-        entity(as[ProjectEntity]) {
+        entity(as[ProjectPayload]) {
           request =>
             val future = projectService.createProject(employee.id, request)
             response(future)
@@ -55,7 +53,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
   private def createProjectsRoute: Route = path("createProjectsRoute") {
     post {
       validateToken { employee =>
-        entity(as[Seq[ProjectEntity]]) {
+        entity(as[Seq[ProjectPayload]]) {
           request =>
             val future = projectService.createProjects(employee.id, request)
             response(future)
@@ -70,7 +68,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
         entity(as[HttpRequestParams]) {
           request =>
             val projectId = request.readLong("projectId")
-            val projectTask = request.read[ProjectTaskEntity]("projectTask")
+            val projectTask = request.read[ProjectTaskPayload]("projectTask")
             val future = projectService.createProjectTask(employee.id, projectId, projectTask)
             response(future)
         }
@@ -84,7 +82,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
         entity(as[HttpRequestParams]) {
           request =>
             val projectId = request.readLong("projectId")
-            val projectTasks = request.read[Seq[ProjectTaskEntity]]("projectTasks")
+            val projectTasks = request.read[Seq[ProjectTaskPayload]]("projectTasks")
             val future = projectService.createProjectTasks(employee.id, projectId, projectTasks)
             response(future)
         }
@@ -98,7 +96,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
         entity(as[HttpRequestParams]) {
           request =>
             val projectId = request.readLong("projectId")
-            val projectTaskAttribute = request.read[ProjectTaskAttributeEntity]("projectTaskAttribute")
+            val projectTaskAttribute = request.read[ProjectTaskAttributePayload]("projectTaskAttribute")
             val future = projectService.createProjectTaskAttribute(employee.id, projectId, projectTaskAttribute)
             response(future)
         }
@@ -112,7 +110,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
         entity(as[HttpRequestParams]) {
           request =>
             val projectId = request.readLong("projectId")
-            val projectTaskAttributes = request.read[Seq[ProjectTaskAttributeEntity]]("projectTaskAttributes")
+            val projectTaskAttributes = request.read[Seq[ProjectTaskAttributePayload]]("projectTaskAttributes")
             val future = projectService.createProjectTaskAttributes(employee.id, projectId, projectTaskAttributes)
             response(future)
         }
@@ -158,7 +156,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
   private def updateProjectRoute(): Route = path("updateProjectRoute") {
     put {
       validateToken { employee =>
-        entity(as[ProjectEntity]) {
+        entity(as[ProjectPayload]) {
           request =>
             val future = projectService.updateProject(employee.id, request)
             response(future)
@@ -170,7 +168,7 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
   private def updateProjectsRoute(): Route = path("updateProjectsRoute") {
     put {
       validateToken { employee =>
-        entity(as[Seq[ProjectEntity]]) {
+        entity(as[Seq[ProjectPayload]]) {
           request =>
             val future = projectService.updateProjects(employee.id, request)
             response(future)

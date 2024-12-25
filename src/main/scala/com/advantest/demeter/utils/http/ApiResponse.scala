@@ -4,7 +4,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.Directives.{complete, onComplete}
 import akka.http.scaladsl.server.{RequestContext, RouteResult}
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_JWT_ALGORITHM, DEMETER_JWT_ISSUER, DEMETER_JWT_KEY_ID, DEMETER_JWT_SECRET}
-import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.core.http.payload.EmployeePayload
 import pdi.jwt.{Jwt, JwtClaim}
 import spray.json.{JsonFormat, enrichAny}
 
@@ -48,7 +48,7 @@ trait ApiResponse extends SprayJsonSupport {
    * @param employee The employee entity containing relevant employee information.
    * @return A string representing the generated JWT token.
    */
-  def generateToken(employee: EmployeeEntity): String = {
+  def generateToken(employee: EmployeePayload): String = {
     // Create a JWT claim with an expiration time and employee information
     val claim = JwtClaim(
       expiration = Some(System.currentTimeMillis() + 3600000),

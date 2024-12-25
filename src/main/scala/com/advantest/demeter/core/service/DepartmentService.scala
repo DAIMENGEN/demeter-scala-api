@@ -2,7 +2,7 @@ package com.advantest.demeter.core.service
 
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
 import com.advantest.demeter.core.database.department.DepartmentDBTable
-import com.advantest.demeter.core.entity.DepartmentEntity
+import com.advantest.demeter.core.http.payload.DepartmentPayload
 
 import scala.concurrent.Future
 
@@ -13,6 +13,6 @@ import scala.concurrent.Future
 case class DepartmentService() extends Service {
   private val departmentTable: DepartmentDBTable = DepartmentDBTable()
 
-  def getAllDepartments: Future[Seq[DepartmentEntity]] = departmentTable.query().map(_.map(_.toEntity))
+  def getAllDepartments: Future[Seq[DepartmentPayload]] = departmentTable.query().map(_.map(_.toEntity))
 
 }

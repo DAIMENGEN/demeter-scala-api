@@ -5,9 +5,7 @@ import com.advantest.demeter.core.constant.project.ProjectStatus
 import com.advantest.demeter.core.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
 import com.advantest.demeter.core.database.project.color.ProjectColorDBTable
 import com.advantest.demeter.core.database.project.{ProjectDBTable, ProjectDBTableRow}
-import com.advantest.demeter.core.entity.project.ProjectEntity
-import com.advantest.demeter.core.entity.project.task.ProjectTaskEntity
-import com.advantest.demeter.core.entity.project.task.attribute.ProjectTaskAttributeEntity
+import com.advantest.demeter.core.http.payload.{ProjectPayload, ProjectTaskAttributePayload, ProjectTaskPayload}
 import com.advantest.demeter.integration.antdesign.select
 import com.advantest.demeter.integration.antdesign.select.SelectOption
 import slick.jdbc.MySQLProfile.api._
@@ -33,85 +31,85 @@ case class ProjectService()(implicit val db: Database) extends Service {
     }
   }
 
-  def createProject(employeeId: Long, project: ProjectEntity): Future[ProjectEntity] = {
-    val tableRowData = ProjectEntity.create(employeeId, project)
-    dBTable.insert(tableRowData).map(_.toEntity)
+  def createProject(employeeId: Long, project: ProjectPayload): Future[ProjectPayload] = {
+    val tableRowData = ProjectPayload.create(employeeId, project)
+    dBTable.insert(tableRowData).map(_.toPayload)
   }
 
-  def createProjects(employeeId: Long, projects: Seq[ProjectEntity]): Future[Seq[ProjectEntity]] = {
-    val tableRows = projects.map(project => ProjectEntity.create(employeeId, project))
-    dBTable.batchInsert(tableRows).map(_.map(_.toEntity))
+  def createProjects(employeeId: Long, projects: Seq[ProjectPayload]): Future[Seq[ProjectPayload]] = {
+    val tableRows = projects.map(project => ProjectPayload.create(employeeId, project))
+    dBTable.batchInsert(tableRows).map(_.map(_.toPayload))
   }
 
-  def createProjectTask(employeeId: Long, projectId: Long, projectTask: ProjectTaskEntity): Future[ProjectTaskEntity] = {
+  def createProjectTask(employeeId: Long, projectId: Long, projectTask: ProjectTaskPayload): Future[ProjectTaskPayload] = {
     taskService.createTask(employeeId, projectId, projectTask)
   }
 
-  def createProjectTasks(employeeId: Long, projectId: Long, projectTasks: Seq[ProjectTaskEntity]): Future[Seq[ProjectTaskEntity]] = {
+  def createProjectTasks(employeeId: Long, projectId: Long, projectTasks: Seq[ProjectTaskPayload]): Future[Seq[ProjectTaskPayload]] = {
     taskService.createTasks(employeeId, projectId, projectTasks)
   }
 
-  def createProjectTaskAttribute(employeeId: Long, projectId: Long, projectTaskAttribute: ProjectTaskAttributeEntity): Future[ProjectTaskAttributeEntity] = {
+  def createProjectTaskAttribute(employeeId: Long, projectId: Long, projectTaskAttribute: ProjectTaskAttributePayload): Future[ProjectTaskAttributePayload] = {
     taskService.createTaskAttribute(employeeId, projectId, projectTaskAttribute)
   }
 
-  def createProjectTaskAttributes(employeeId: Long, projectId: Long, projectTaskAttributes: Seq[ProjectTaskAttributeEntity]): Future[Seq[ProjectTaskAttributeEntity]] = {
+  def createProjectTaskAttributes(employeeId: Long, projectId: Long, projectTaskAttributes: Seq[ProjectTaskAttributePayload]): Future[Seq[ProjectTaskAttributePayload]] = {
     taskService.createTaskAttributes(employeeId, projectId, projectTaskAttributes)
   }
 
-  def deleteProjects(employeeId: Long): Future[Seq[ProjectEntity]] = {
+  def deleteProjects(employeeId: Long): Future[Seq[ProjectPayload]] = {
     if (!employeeService.checkIfAdmin(employeeId)) throw new SecurityException("Only system admin can delete projects.")
-    dBTable.delete().map(_.map(_.toEntity))
+    dBTable.delete().map(_.map(_.toPayload))
   }
 
-  def deleteProjectById(employeeId: Long, id: Long): Future[ProjectEntity] = {
+  def deleteProjectById(employeeId: Long, id: Long): Future[ProjectPayload] = {
     logger.info(s"Employee with ID $employeeId is deleting project with ID $id")
-    dBTable.deleteById(id).map(_.toEntity)
+    dBTable.deleteById(id).map(_.toPayload)
   }
 
-  def deleteProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectEntity]] = {
+  def deleteProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectPayload]] = {
     logger.info(s"Employee with ID $employeeId is deleting projects with IDs $ids")
-    dBTable.deleteByIds(ids).map(_.map(_.toEntity))
+    dBTable.deleteByIds(ids).map(_.map(_.toPayload))
   }
 
-  def updateProject(employeeId: Long, project: ProjectEntity): Future[ProjectEntity] = {
+  def updateProject(employeeId: Long, project: ProjectPayload): Future[ProjectPayload] = {
     dBTable.queryById(project.id).flatMap {
       case Some(oldRowData: ProjectDBTableRow) =>
-        val updatedProject = ProjectEntity.update(employeeId, project, oldRowData)
-        dBTable.update(updatedProject).map(_.toEntity)
+        val updatedProject = ProjectPayload.update(employeeId, project, oldRowData)
+        dBTable.update(updatedProject).map(_.toPayload)
       case None => throw new NoSuchElementException(s"Project with ID ${project.id} not found")
     }
   }
 
-  def updateProjects(employeeId: Long, projects: Seq[ProjectEntity]): Future[Seq[ProjectEntity]] = {
+  def updateProjects(employeeId: Long, projects: Seq[ProjectPayload]): Future[Seq[ProjectPayload]] = {
     dBTable.queryByIds(projects.map(_.id)).flatMap(oldRowDataSeq => {
       val oldRowDataMap = oldRowDataSeq.map(oldRowData => oldRowData.id -> oldRowData).toMap
       val updatedProjectSeq = projects.flatMap { project =>
         oldRowDataMap.get(project.id).map { oldRowData =>
-          ProjectEntity.update(employeeId, project, oldRowData)
+          ProjectPayload.update(employeeId, project, oldRowData)
         }
       }
-      dBTable.update(updatedProjectSeq).map(_.map(_.toEntity))
+      dBTable.update(updatedProjectSeq).map(_.map(_.toPayload))
     })
   }
 
-  def getAllProjects(employeeId: Long): Future[Seq[ProjectEntity]] = {
+  def getAllProjects(employeeId: Long): Future[Seq[ProjectPayload]] = {
     if (!employeeService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can get all projects.")
-    dBTable.query().map(_.map(_.toEntity))
+    dBTable.query().map(_.map(_.toPayload))
   }
 
-  def getProjectById(employeeId: Long, id: Long): Future[Option[ProjectEntity]] = {
+  def getProjectById(employeeId: Long, id: Long): Future[Option[ProjectPayload]] = {
     logger.info(s"Employee with ID $employeeId is getting project with ID $id")
-    dBTable.queryById(id).map(_.map(_.toEntity))
+    dBTable.queryById(id).map(_.map(_.toPayload))
   }
 
-  def getProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectEntity]] = {
+  def getProjectsByIds(employeeId: Long, ids: Seq[Long]): Future[Seq[ProjectPayload]] = {
     logger.info(s"Employee with ID $employeeId is getting projects with IDs $ids")
-    dBTable.queryByIds(ids).map(_.map(_.toEntity))
+    dBTable.queryByIds(ids).map(_.map(_.toPayload))
   }
 
-  def getProjectsByEmployeeId(employeeId: Long): Future[Seq[ProjectEntity]] = {
-    dBTable.queryByCreatorId(employeeId).map(_.map(_.toEntity))
+  def getProjectsByEmployeeId(employeeId: Long): Future[Seq[ProjectPayload]] = {
+    dBTable.queryByCreatorId(employeeId).map(_.map(_.toPayload))
   }
 
   def getProjectStatusSelectOptions: Future[Seq[SelectOption]] = {
@@ -122,11 +120,11 @@ case class ProjectService()(implicit val db: Database) extends Service {
     }))
   }
 
-  def getProjectTasksByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskEntity]] = {
+  def getProjectTasksByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskPayload]] = {
     taskService.getTasksByProjectId(projectId)
   }
 
-  def getProjectTaskAttributesByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskAttributeEntity]] = {
+  def getProjectTaskAttributesByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskAttributePayload]] = {
     taskService.getTaskAttributesByProjectId(projectId)
   }
 

@@ -1,6 +1,6 @@
 package com.advantest.demeter.core.database.department
 
-import com.advantest.demeter.core.entity.DepartmentEntity
+import com.advantest.demeter.core.http.payload.DepartmentPayload
 import com.advantest.demeter.utils.database.DBTableRow
 
 import java.time.LocalDateTime
@@ -20,7 +20,7 @@ final case class DepartmentDBTableRow(
                                    ) extends DBTableRow {
   override def toString: String = s"DepartmentTableRow(id=$id, name=$name, description=$description, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
-  def toEntity: DepartmentEntity = DepartmentEntity(
+  def toEntity: DepartmentPayload = DepartmentPayload(
     id = id,
     name = name,
     description = description

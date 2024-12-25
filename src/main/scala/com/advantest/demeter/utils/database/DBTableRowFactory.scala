@@ -1,50 +1,43 @@
 package com.advantest.demeter.utils.database
 
+import com.advantest.demeter.utils.http.HttpPayload
+
 /**
  * Create on 2024/10/24
  * Author: mengen.dai@outlook.com
- *
- * The `DBTableRowFactory` trait defines a factory interface for creating and updating
- * database table row data objects.
- *
- * It provides type aliases for entity data and row data, ensuring that any implementations
- * adhere to specific data structures. The trait also includes a type alias for optional
- * field data, represented as an `Option` containing a map of field names to values of any type.
- *
- * Key Methods:
- * - `create`: Creates a new instance of `TableRowData` using the provided employee ID and entity data.
- * - `update`: Updates an existing `TableRowData` instance with new entity data and returns the updated instance.
- *
- * Implementations of this trait should define how to handle the creation and updating of
- * database row data specific to their application context.
  */
 trait DBTableRowFactory {
 
-  // Defines a type alias for entity data.
-  protected type EntityData
+  // The type of data that will be used as the payload for creating or updating a database table row.
+  // This data is typically extracted from an HTTP request or response.
+  protected type PayloadData <: HttpPayload
 
-  // Defines a type alias for row data, which must be a subclass of DBTableRow.
-  protected type TableRowData <: DBTableRow
+  // The type representing a database table row. Must be a subtype of DBTableRow.
+  protected type DBTableRowData <: DBTableRow
 
-  // Defines a type alias for optional field data, which is a map of field names to any type.
+  // The type representing optional additional data, encapsulated as an Option of a Map with String keys and Any values.
   protected type OptionalData = Option[Map[String, Any]]
 
   /**
-   * Creates a new row data object.
+   * Creates a new database table row based on the provided employee ID, payload data,
+   * and optional additional data.
    *
-   * @param employeeId The user ID associated with the row data.
-   * @param entityData The entity data used to create the row data.
-   * @return A new instance of `TableRowData`.
+   * @param employeeId The unique identifier of the employee.
+   * @param payloadData The payload data extracted from an HTTP request or response, used to construct the database table row.
+   * @param options Additional optional data, defaulting to None.
+   * @return An instance of DBTableRowData representing the newly created row.
    */
-  def create(employeeId: Long, entityData: EntityData, options: OptionalData = None): TableRowData
+  def create(employeeId: Long, payloadData: PayloadData, options: OptionalData = None): DBTableRowData
 
   /**
-   * Updates an existing row data object.
+   * Updates an existing database table row using the provided employee ID, payload data,
+   * old row data, and optional additional data.
    *
-   * @param employeeId The user ID associated with the row data.
-   * @param entityData The entity data used to update the row data.
-   * @param oldRowData The existing row data object to be updated.
-   * @return An updated instance of `TableRowData`.
+   * @param employeeId The unique identifier of the employee.
+   * @param payloadData The payload data extracted from an HTTP request or response, used to update the database table row.
+   * @param oldRowData The existing row data that will be updated.
+   * @param options Additional optional data, defaulting to None.
+   * @return An instance of DBTableRowData representing the updated row.
    */
-  def update(employeeId: Long, entityData: EntityData, oldRowData: TableRowData, options: OptionalData = None): TableRowData
+  def update(employeeId: Long, payloadData: PayloadData, oldRowData: DBTableRowData, options: OptionalData = None): DBTableRowData
 }

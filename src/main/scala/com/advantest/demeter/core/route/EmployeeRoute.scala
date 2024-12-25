@@ -3,7 +3,7 @@ package com.advantest.demeter.core.route
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
-import com.advantest.demeter.core.entity.EmployeeEntity
+import com.advantest.demeter.core.http.payload.EmployeePayload
 import com.advantest.demeter.core.service.EmployeeService
 import com.advantest.demeter.utils.http.{ApiRequest, ApiResponse, HttpRoute}
 import spray.json.DefaultJsonProtocol._
@@ -58,7 +58,7 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
 
   private def registerRoute: Route = path("registerRoute") {
     post {
-      entity(as[EmployeeEntity]) {
+      entity(as[EmployeePayload]) {
         request =>
           val future = employeeService.register(request);
           response(future)
@@ -69,7 +69,7 @@ case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
   private def batchRegisterRoute: Route = path("batchRegisterRoute") {
     post {
       validateToken { employee =>
-        entity(as[List[EmployeeEntity]]) {
+        entity(as[List[EmployeePayload]]) {
           request =>
             val future = employeeService.register(employee.id, request);
             response(future)
