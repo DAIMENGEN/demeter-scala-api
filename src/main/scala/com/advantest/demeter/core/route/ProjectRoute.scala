@@ -34,6 +34,8 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
     getProjectsByIdsRoute,
     getProjectsByEmployeeIdRoute,
     getProjectStatusSelectOptionsRoute,
+    getProjectTasksByProjectIdRoute,
+    getProjectTaskAttributesByProjectIdRoute,
     getProjectTaskTypeSelectOptionsRoute,
     getProjectTaskStatusSelectOptionsRoute
   )
@@ -225,6 +227,32 @@ case class ProjectRoute()(implicit val db: Database) extends HttpRoute with ApiR
     get {
       val future = projectService.getProjectStatusSelectOptions
       response(future)
+    }
+  }
+
+  private def getProjectTasksByProjectIdRoute: Route = path("getProjectTasksByProjectIdRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val future = projectService.getProjectTasksByProjectId(employee.id, projectId)
+            response(future)
+        }
+      }
+    }
+  }
+
+  private def getProjectTaskAttributesByProjectIdRoute: Route = path("getProjectTaskAttributesByProjectIdRoute") {
+    post {
+      validateToken { employee =>
+        entity(as[HttpRequestParams]) {
+          request =>
+            val projectId = request.readLong("projectId")
+            val future = projectService.getProjectTaskAttributesByProjectId(employee.id, projectId)
+            response(future)
+        }
+      }
     }
   }
 

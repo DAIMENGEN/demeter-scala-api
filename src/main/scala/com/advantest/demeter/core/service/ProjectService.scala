@@ -122,6 +122,14 @@ case class ProjectService()(implicit val db: Database) extends Service {
     }))
   }
 
+  def getProjectTasksByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskEntity]] = {
+    taskService.getTasksByProjectId(projectId)
+  }
+
+  def getProjectTaskAttributesByProjectId(employeeId: Long, projectId: Long): Future[Seq[ProjectTaskAttributeEntity]] = {
+    taskService.getTaskAttributesByProjectId(projectId)
+  }
+
   def getProjectTaskTypeSelectOptions: Future[Seq[SelectOption]] = {
     Future.successful(ProjectTaskType.values.map(taskType => {
       val label = taskType.toString
