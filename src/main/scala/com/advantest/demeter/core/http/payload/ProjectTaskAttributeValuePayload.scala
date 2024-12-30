@@ -1,7 +1,7 @@
 package com.advantest.demeter.core.http.payload
 
 import com.advantest.demeter.core.database.project.task.value.ProjectTaskAttributeValueDBTableRow
-import com.advantest.demeter.utils.database.{DBFieldValueType, DBTableRowFactory}
+import com.advantest.demeter.utils.database.{DBFieldValue, DBTableRowFactory}
 import com.advantest.demeter.utils.http.HttpPayload
 import com.advantest.demeter.utils.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
@@ -14,10 +14,10 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectTaskAttributeValuePayload(
-                                                  id: Long,
-                                                  taskId: Long,
-                                                  taskAttributeId: Long,
-                                                  taskAttributeValue: DBFieldValueType,
+                                                   id: Long,
+                                                   taskId: Long,
+                                                   taskAttributeId: Long,
+                                                   taskAttributeValue: DBFieldValue,
                                                 ) extends HttpPayload {
   override def toString: String = s"ProjectTaskAttributeValuePayload(id=$id, taskId=$taskId, taskAttributeId=$taskAttributeId, taskAttributeValue=$taskAttributeValue)"
 }

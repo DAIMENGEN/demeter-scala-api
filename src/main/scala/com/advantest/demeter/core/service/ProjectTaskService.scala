@@ -33,18 +33,18 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
   private def buildInsertTaskAttributeValueRowsAction(taskAttributeValueRows: Seq[ProjectTaskAttributeValueDBTableRow]) = {
     DBIO.sequence(taskAttributeValueRows.map { taskAttributeValueRow =>
       taskAttributeValueRow.taskAttributeValue match {
-        case DBIntTypeValue(_) => intTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBLongTypeValue(_) => longTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBFloatTypeValue(_) => floatTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDoubleTypeValue(_) => doubleTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBStringTypeValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBTextTypeValue(_) => textTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBMediumtextTypeValue(_) => mediumtextTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBLongtextTypeValue(_) => longtextTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBBooleanTypeValue(_) => booleanTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBJsonTypeValue(_) => jsonTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDateTypeValue(_) => dateTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBDateTimeTypeValue(_) => datetimeTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBIntValue(_) => intTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBLongValue(_) => longTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBFloatValue(_) => floatTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDoubleValue(_) => doubleTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBStringValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBTextValue(_) => textTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBMediumtextValue(_) => mediumtextTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBLongtextValue(_) => longtextTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBBooleanValue(_) => booleanTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBJsonValue(_) => jsonTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDateValue(_) => dateTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBDateTimeValue(_) => datetimeTypeValueDBTable.tableQuery += taskAttributeValueRow
       }
     })
   }

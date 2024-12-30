@@ -39,18 +39,18 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
       }.foreach {
         case (attributeName, attributeValue) =>
           attributeValue.taskAttributeValue match {
-            case DBIntTypeValue(value) => writer.writeInt(attributeName, value)
-            case DBLongTypeValue(value) => writer.writeLong(attributeName, value)
-            case DBFloatTypeValue(value) => writer.writeFloat(attributeName, value)
-            case DBDoubleTypeValue(value) => writer.writeDouble(attributeName, value)
-            case DBStringTypeValue(value) => writer.writeString(attributeName, value)
-            case DBTextTypeValue(value) => writer.writeString(attributeName, value)
-            case DBMediumtextTypeValue(value) => writer.writeString(attributeName, value)
-            case DBLongtextTypeValue(value) => writer.writeString(attributeName, value)
-            case DBBooleanTypeValue(value) => writer.writeBoolean(attributeName, value)
-            case DBJsonTypeValue(value) => writer.writeString(attributeName, value.toString)
-            case DBDateTypeValue(value) => writer.writeLocalDate(attributeName, value)
-            case DBDateTimeTypeValue(value) => writer.writeLocalDateTime(attributeName, value)
+            case DBIntValue(value) => writer.writeInt(attributeName, value)
+            case DBLongValue(value) => writer.writeLong(attributeName, value)
+            case DBFloatValue(value) => writer.writeFloat(attributeName, value)
+            case DBDoubleValue(value) => writer.writeDouble(attributeName, value)
+            case DBStringValue(value) => writer.writeString(attributeName, value)
+            case DBTextValue(value) => writer.writeString(attributeName, value)
+            case DBMediumtextValue(value) => writer.writeString(attributeName, value)
+            case DBLongtextValue(value) => writer.writeString(attributeName, value)
+            case DBBooleanValue(value) => writer.writeBoolean(attributeName, value)
+            case DBJsonValue(value) => writer.writeString(attributeName, value.toString)
+            case DBDateValue(value) => writer.writeLocalDate(attributeName, value)
+            case DBDateTimeValue(value) => writer.writeLocalDateTime(attributeName, value)
           }
       }
       writer.writeString("taskName", obj.taskName).writeInt("order", obj.order).toJsObject
