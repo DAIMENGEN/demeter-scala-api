@@ -11,93 +11,93 @@ import spray.json.{JsString, JsValue, RootJsonFormat}
 sealed trait DBFieldType
 
 /**
- * IntType, representing an int field type in the database.
- * IntType is mapped to scala.Int in the database.
+ * DBIntFieldType, representing an int field type in the database.
+ * DBIntFieldType is mapped to scala.Int in the database.
  */
-case object IntType extends DBFieldType
+case object DBIntFieldType extends DBFieldType
 
 /**
- * LongType, representing a long field type in the database.
- * LongType is mapped to scala.Long in the database.
+ * DBLongFieldType, representing a long field type in the database.
+ * DBLongFieldType is mapped to scala.Long in the database.
  */
-case object LongType extends DBFieldType
+case object DBLongFieldType extends DBFieldType
 
 /**
- * TextType, representing a text field type in the database.
- * TextType is mapped to scala.String in the database.
+ * DBTextFieldType, representing a text field type in the database.
+ * DBTextFieldType is mapped to scala.String in the database.
  */
-case object TextType extends DBFieldType
+case object DBTextFieldType extends DBFieldType
 
 /**
- * FloatType, representing a float field type in the database.
- * FloatType is mapped to scala.Float in the database.
+ * DBFloatFieldType, representing a float field type in the database.
+ * DBFloatFieldType is mapped to scala.Float in the database.
  */
-case object FloatType extends DBFieldType
+case object DBFloatFieldType extends DBFieldType
 
 /**
- * DoubleType, representing a double field type in the database.
- * DoubleType is mapped to scala.Double in the database.
+ * DBDoubleFieldType, representing a double field type in the database.
+ * DBDoubleFieldType is mapped to scala.Double in the database.
  */
-case object DoubleType extends DBFieldType
+case object DBDoubleFieldType extends DBFieldType
 
 /**
- * StringType, representing a string field type in the database.
- * StringType is mapped to scala.String in the database.
+ * DBStringFieldType, representing a string field type in the database.
+ * DBStringFieldType is mapped to scala.String in the database.
  */
-case object StringType extends DBFieldType
+case object DBStringFieldType extends DBFieldType
 
 /**
- * BooleanType, representing a boolean field type in the database.
- * BooleanType is mapped to scala.Boolean in the database.
+ * DBBooleanFieldType, representing a boolean field type in the database.
+ * DBBooleanFieldType is mapped to scala.Boolean in the database.
  */
-case object BooleanType extends DBFieldType
+case object DBBooleanFieldType extends DBFieldType
 
 /**
- * JsonType, representing a json field type in the database.
- * JsonType is mapped to spray.json.JsValue in the database.
+ * DBJsonFieldType, representing a json field type in the database.
+ * DBJsonFieldType is mapped to spray.json.JsValue in the database.
  */
-case object JsonType extends DBFieldType
+case object DBJsonFieldType extends DBFieldType
 
 /**
- * DateType, representing a date field type in the database.
- * DateType is mapped to java.time.LocalDate in the database.
+ * DBDateFieldType, representing a date field type in the database.
+ * DBDateFieldType is mapped to java.time.LocalDate in the database.
  */
-case object DateType extends DBFieldType
+case object DBDateFieldType extends DBFieldType
 
 /**
- * DateTimeType, representing a datetime field type in the database.
- * DateTimeType is mapped to java.time.LocalDateTime in the database.
+ * DBDateTimeFieldType, representing a datetime field type in the database.
+ * DBDateTimeFieldType is mapped to java.time.LocalDateTime in the database.
  */
-case object DateTimeType extends DBFieldType
+case object DBDateTimeFieldType extends DBFieldType
 
 object DBFieldType extends DBTableColumn with Serializable[DBFieldType] {
   override type ModelType = DBFieldType
   override type FieldType = String
 
   override def fromModel(model: DBFieldType): String = model match {
-    case IntType => "int"
-    case TextType => "text"
-    case JsonType => "json"
-    case DateType => "date"
-    case LongType => "bigint"
-    case FloatType => "float"
-    case DoubleType => "double"
-    case StringType => "varchar"
-    case BooleanType => "boolean"
-    case DateTimeType => "datetime"
+    case DBIntFieldType => "int"
+    case DBTextFieldType => "text"
+    case DBJsonFieldType => "json"
+    case DBDateFieldType => "date"
+    case DBLongFieldType => "bigint"
+    case DBFloatFieldType => "float"
+    case DBDoubleFieldType => "double"
+    case DBStringFieldType => "varchar"
+    case DBBooleanFieldType => "boolean"
+    case DBDateTimeFieldType => "datetime"
   }
 
   override def fromField(field: String): DBFieldType = field match {
-    case "int" => IntType
-    case "text" => TextType
-    case "date" => DateType
-    case "json" => JsonType
-    case "bigint" => LongType
-    case "float" => FloatType
-    case "double" => DoubleType
-    case "varchar" => StringType
-    case "boolean" => BooleanType
-    case "datetime" => DateTimeType
+    case "int" => DBIntFieldType
+    case "text" => DBTextFieldType
+    case "date" => DBDateFieldType
+    case "json" => DBJsonFieldType
+    case "bigint" => DBLongFieldType
+    case "float" => DBFloatFieldType
+    case "double" => DBDoubleFieldType
+    case "varchar" => DBStringFieldType
+    case "boolean" => DBBooleanFieldType
+    case "datetime" => DBDateTimeFieldType
     case _ => throw new IllegalArgumentException(s"Invalid DBFieldType field: $field. Valid fields are 'int', 'json', 'text', 'date', 'varchar', 'float', 'boolean', 'bigint', 'double', 'datetime'.")
   }
 
