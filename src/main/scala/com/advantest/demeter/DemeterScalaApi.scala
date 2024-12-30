@@ -2,9 +2,9 @@ package com.advantest.demeter
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
-import com.advantest.demeter.core.route.{DepartmentRoute, EmployeeRoute, HolidayRoute, ProjectRoute, TeamRoute}
-import com.advantest.demeter.utils.database.DBConnection
-import com.advantest.demeter.utils.http.HttpRoute
+import com.advantest.demeter.database.DBConnection
+import com.advantest.demeter.http.HttpRoute
+import com.advantest.demeter.http.route.{DepartmentRoute, EmployeeRoute, HolidayRoute, ProjectRoute, TeamRoute}
 import com.typesafe.config.{ConfigFactory, ConfigObject}
 import slick.jdbc.MySQLProfile.api._
 

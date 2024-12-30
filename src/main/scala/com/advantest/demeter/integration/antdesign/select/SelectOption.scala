@@ -1,6 +1,6 @@
 package com.advantest.demeter.integration.antdesign.select
 
-import com.advantest.demeter.utils.serialize.Serializable
+import com.advantest.demeter.json.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.{JsNumber, JsString, JsValue, RootJsonFormat}
 

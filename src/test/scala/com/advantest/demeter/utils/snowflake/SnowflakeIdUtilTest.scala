@@ -1,5 +1,6 @@
 package com.advantest.demeter.utils.snowflake
 
+import com.advantest.demeter.utils.SnowflakeIdUtil
 import org.scalatest.funsuite.AnyFunSuiteLike
 import org.scalatest.matchers.should.Matchers._
 
