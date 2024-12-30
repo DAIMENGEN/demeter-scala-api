@@ -23,12 +23,6 @@ case object DBIntFieldType extends DBFieldType
 case object DBLongFieldType extends DBFieldType
 
 /**
- * DBTextFieldType, representing a text field type in the database.
- * DBTextFieldType is mapped to scala.String in the database.
- */
-case object DBTextFieldType extends DBFieldType
-
-/**
  * DBFloatFieldType, representing a float field type in the database.
  * DBFloatFieldType is mapped to scala.Float in the database.
  */
@@ -45,6 +39,24 @@ case object DBDoubleFieldType extends DBFieldType
  * DBStringFieldType is mapped to scala.String in the database.
  */
 case object DBStringFieldType extends DBFieldType
+
+/**
+ * DBTextFieldType, representing a text field type in the database.
+ * DBTextFieldType is mapped to scala.String in the database.
+ */
+case object DBTextFieldType extends DBFieldType
+
+/**
+ * DBMediumtextFieldType, representing a mediumtext field type in the database.
+ * DBMediumtextFieldType is mapped to scala.String in the database.
+ */
+case object DBMediumtextFieldType extends DBFieldType
+
+/**
+ * DBLongtextFieldType, representing a longtext field type in the database.
+ * DBLongtextFieldType is mapped to scala.String in the database.
+ */
+case object DBLongtextFieldType extends DBFieldType
 
 /**
  * DBBooleanFieldType, representing a boolean field type in the database.
@@ -85,6 +97,8 @@ object DBFieldType extends DBTableColumn with Serializable[DBFieldType] {
     case DBStringFieldType => "varchar"
     case DBBooleanFieldType => "boolean"
     case DBDateTimeFieldType => "datetime"
+    case DBLongtextFieldType => "longtext"
+    case DBMediumtextFieldType => "mediumtext"
   }
 
   override def fromField(field: String): DBFieldType = field match {
@@ -98,7 +112,9 @@ object DBFieldType extends DBTableColumn with Serializable[DBFieldType] {
     case "varchar" => DBStringFieldType
     case "boolean" => DBBooleanFieldType
     case "datetime" => DBDateTimeFieldType
-    case _ => throw new IllegalArgumentException(s"Invalid DBFieldType field: $field. Valid fields are 'int', 'json', 'text', 'date', 'varchar', 'float', 'boolean', 'bigint', 'double', 'datetime'.")
+    case "longtext" => DBLongtextFieldType
+    case "mediumtext" => DBMediumtextFieldType
+    case _ => throw new IllegalArgumentException(s"Invalid DBFieldType field: $field. Valid fields are 'int', 'text', 'json', 'date', 'bigint', 'float', 'double', 'varchar', 'boolean', 'datetime', 'longtext', 'mediumtext'.")
   }
 
   override implicit def columnMapper: BaseColumnType[DBFieldType] = MappedColumnType.base[DBFieldType, String](fromModel, fromField)
