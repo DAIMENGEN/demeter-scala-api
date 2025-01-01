@@ -10,14 +10,14 @@ import java.time.LocalDateTime
  * Author: mengen.dai@outlook.com
  */
 final case class DepartmentDBTableRow(
-                                     id: Long,
-                                     name: String,
-                                     description: Option[String],
-                                     creatorId: Long,
-                                     updaterId: Long,
-                                     createDateTime: LocalDateTime = LocalDateTime.now(),
-                                     updateDateTime: LocalDateTime = LocalDateTime.now()
-                                   ) extends DBTableRow {
+                                       id: Long,
+                                       name: String,
+                                       description: Option[String],
+                                       creatorId: Long,
+                                       updaterId: Long,
+                                       createDateTime: LocalDateTime = LocalDateTime.now(),
+                                       updateDateTime: LocalDateTime = LocalDateTime.now()
+                                     ) extends DBTableRow {
   override def toString: String = s"DepartmentTableRow(id=$id, name=$name, description=$description, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toEntity: DepartmentPayload = DepartmentPayload(

@@ -1,8 +1,8 @@
 package com.advantest.demeter.database.table.project.task.attribute
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.{DBFieldType, DBTableSchemaAbstract}
 import com.advantest.demeter.json.JsonObject
-import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
 /**

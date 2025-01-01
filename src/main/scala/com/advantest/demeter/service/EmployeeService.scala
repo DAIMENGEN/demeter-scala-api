@@ -1,6 +1,7 @@
 package com.advantest.demeter.service
 
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
+import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.database.table.employee.{EmployeeDBTable, EmployeeDBTableRow}
 import com.advantest.demeter.http.payload.EmployeePayload
 import com.advantest.demeter.integration.antdesign.select.{LongValue, SelectOption}
@@ -12,7 +13,7 @@ import scala.concurrent.Future
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-case class EmployeeService() extends Service {
+case class EmployeeService()(implicit val db: Database) extends Service {
   private val employeeTable: EmployeeDBTable = EmployeeDBTable()
 
   def checkIfAdmin(employeeId: Long): Boolean = employeeId == EmployeePayload.SystemAdminId

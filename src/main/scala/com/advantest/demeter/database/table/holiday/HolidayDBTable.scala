@@ -1,9 +1,9 @@
 package com.advantest.demeter.database.table.holiday
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.constant.country.CountryCode
 import com.advantest.demeter.constant.holiday.HolidayType
 import com.advantest.demeter.database.DBTable
-import slick.jdbc.MySQLProfile.api._
 
 import java.time.LocalDate
 import scala.concurrent.Future

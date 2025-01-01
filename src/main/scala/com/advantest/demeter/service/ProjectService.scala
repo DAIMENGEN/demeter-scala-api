@@ -1,14 +1,14 @@
 package com.advantest.demeter.service
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.constant.project.ProjectStatus
 import com.advantest.demeter.constant.project.task.{ProjectTaskStatus, ProjectTaskType}
-import com.advantest.demeter.database.table.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.database.table.project.color.ProjectColorDBTable
+import com.advantest.demeter.database.table.project.{ProjectDBTable, ProjectDBTableRow}
 import com.advantest.demeter.http.payload.{ProjectPayload, ProjectTaskAttributePayload, ProjectTaskPayload}
 import com.advantest.demeter.integration.antdesign.select
 import com.advantest.demeter.integration.antdesign.select.SelectOption
-import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future
 

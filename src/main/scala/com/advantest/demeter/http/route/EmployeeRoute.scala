@@ -2,9 +2,10 @@ package com.advantest.demeter.http.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
-import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
 import com.advantest.demeter.http.payload.EmployeePayload
+import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
 import com.advantest.demeter.service.EmployeeService
 import spray.json.DefaultJsonProtocol._
 
@@ -14,7 +15,7 @@ import scala.concurrent.Future
  * Create on 2024/10/14
  * Author: mengen.dai@outlook.com
  */
-case class EmployeeRoute() extends HttpRoute with ApiRequest with ApiResponse {
+case class EmployeeRoute()(implicit val db: Database) extends HttpRoute with ApiRequest with ApiResponse {
   private val employeeService = EmployeeService()
 
   override def route: Route = concat(

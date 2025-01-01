@@ -1,7 +1,7 @@
 package com.advantest.demeter.database
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_EXECUTION_CONTEXT, DEMETER_SYSTEM}
-import slick.jdbc.MySQLProfile.api._
 
 import java.time.LocalDateTime
 import scala.concurrent.Future

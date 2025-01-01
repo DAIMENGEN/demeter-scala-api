@@ -2,7 +2,7 @@ package com.advantest.demeter.json
 
 import com.advantest.demeter.database.DBTableColumn
 import com.advantest.demeter.json.serialize.Serializable
-import slick.jdbc.MySQLProfile.api._
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 

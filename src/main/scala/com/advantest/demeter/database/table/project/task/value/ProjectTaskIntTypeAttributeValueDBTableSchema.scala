@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.task.value
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.DBIntValue
-import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
 /**

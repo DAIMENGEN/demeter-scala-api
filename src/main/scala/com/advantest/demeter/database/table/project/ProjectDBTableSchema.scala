@@ -1,8 +1,8 @@
 package com.advantest.demeter.database.table.project
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.constant.project.ProjectStatus
 import com.advantest.demeter.database.DBTableSchemaAbstract
-import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
 import java.time.LocalDate

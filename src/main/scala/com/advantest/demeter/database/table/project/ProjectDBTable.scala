@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.DBTable
-import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.Future
 

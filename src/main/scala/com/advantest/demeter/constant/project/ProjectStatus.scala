@@ -1,8 +1,8 @@
 package com.advantest.demeter.constant.project
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.DBTableColumn
 import com.advantest.demeter.json.serialize.Serializable
-import slick.jdbc.MySQLProfile.api._
 import spray.json.{JsNumber, JsValue, RootJsonFormat}
 
 /**

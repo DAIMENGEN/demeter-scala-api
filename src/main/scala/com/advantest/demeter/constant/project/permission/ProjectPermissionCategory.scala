@@ -1,9 +1,10 @@
 package com.advantest.demeter.constant.project.permission
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.DBTableColumn
 import com.advantest.demeter.json.serialize.Serializable
-import slick.jdbc.MySQLProfile.api._
 import spray.json.{JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+
 /**
  * Create on 2024/10/30
  * Author: mengen.dai@outlook.com

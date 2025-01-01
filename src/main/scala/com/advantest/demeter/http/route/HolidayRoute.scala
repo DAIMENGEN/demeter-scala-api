@@ -2,8 +2,9 @@ package com.advantest.demeter.http.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.http.payload.HolidayPayload
+import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
 import com.advantest.demeter.service.HolidayService
 import spray.json.DefaultJsonProtocol._
 
@@ -11,7 +12,7 @@ import spray.json.DefaultJsonProtocol._
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-case class HolidayRoute() extends HttpRoute with ApiRequest with ApiResponse {
+case class HolidayRoute()(implicit val db: Database) extends HttpRoute with ApiRequest with ApiResponse {
   private val holidayService = HolidayService()
 
   override def route: Route = concat(

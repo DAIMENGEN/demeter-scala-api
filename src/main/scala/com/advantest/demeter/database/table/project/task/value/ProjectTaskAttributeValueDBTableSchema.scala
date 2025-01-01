@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.task.value
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.{DBFieldValue, DBTableSchemaAbstract}
-import slick.jdbc.MySQLProfile.api._
 
 /**
  * Create on 2024/12/20

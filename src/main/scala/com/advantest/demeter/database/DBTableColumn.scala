@@ -1,6 +1,6 @@
 package com.advantest.demeter.database
 
-import slick.jdbc.MySQLProfile.api._
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 
 /**
  * Create on 2024/10/13

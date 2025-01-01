@@ -1,6 +1,7 @@
 package com.advantest.demeter.service
 
-import com.advantest.demeter.DemeterScalaApi.{DEMETER_DATABASE, DEMETER_EXECUTION_CONTEXT}
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
+import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.constant.holiday.{CompanyHoliday, NationalHoliday, SpecialHoliday}
 import com.advantest.demeter.database.table.holiday.{HolidayDBTable, HolidayDBTableRow}
 import com.advantest.demeter.http.payload.HolidayPayload
@@ -11,7 +12,7 @@ import scala.concurrent.Future
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-case class HolidayService() extends Service {
+case class HolidayService()(implicit val db: Database) extends Service {
   private val holidayTable: HolidayDBTable = HolidayDBTable()
 
   private val userService: EmployeeService = EmployeeService()

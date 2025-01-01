@@ -1,9 +1,9 @@
 package com.advantest.demeter.database
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.json.JsonObject
 import com.advantest.demeter.json.serialize.Serializable
 import com.advantest.demeter.utils.{DateUtils, JsonUtils}
-import slick.jdbc.MySQLProfile.api._
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
@@ -132,7 +132,7 @@ case class DBVarcharValue(value: String) extends DBFieldValue with DBTableColumn
   override def fromField(field: String): DBVarcharValue = DBVarcharValue(field)
 
   override implicit def columnMapper: BaseColumnType[DBVarcharValue] = MappedColumnType.base[DBVarcharValue, String](fromModel, fromField)
-  
+
   override def ===(other: DBFieldValue): Boolean = other match {
     case DBVarcharValue(value) => value == this.value
     case _ => false

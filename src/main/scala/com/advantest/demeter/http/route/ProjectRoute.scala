@@ -2,10 +2,10 @@ package com.advantest.demeter.http.route
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.http.payload.{ProjectPayload, ProjectTaskAttributePayload, ProjectTaskPayload}
+import com.advantest.demeter.http.{ApiRequest, ApiResponse, HttpRoute}
 import com.advantest.demeter.service.ProjectService
-import slick.jdbc.MySQLProfile.api._
 import spray.json.DefaultJsonProtocol._
 
 /**

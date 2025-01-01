@@ -1,6 +1,6 @@
 package com.advantest.demeter.database
 
-import slick.jdbc.MySQLProfile.api._
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 
 import java.time.LocalDateTime
 

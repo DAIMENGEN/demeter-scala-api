@@ -2,11 +2,11 @@ package com.advantest.demeter
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
-import com.advantest.demeter.database.DBConnection
 import com.advantest.demeter.http.HttpRoute
-import com.advantest.demeter.http.route.{DepartmentRoute, EmployeeRoute, HolidayRoute, ProjectRoute, TeamRoute}
+import com.advantest.demeter.http.route._
 import com.typesafe.config.{ConfigFactory, ConfigObject}
-import slick.jdbc.MySQLProfile.api._
+import slick.basic.DatabaseConfig
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -32,7 +32,6 @@ object DemeterScalaApi extends App {
   final lazy val DEMETER_JWT_KEY_ID = DEMETER_JWT_SECRET_CONFIG.getString("key-id")
 
 
-
   // Configure the database using Slick.
   private lazy implicit val path: String = if (args.apply(0).equals("release")) {
     DEMETER_SYSTEM.log.info("Start with release environment.")
@@ -44,8 +43,8 @@ object DemeterScalaApi extends App {
     throw new IllegalArgumentException("Please specify the startup environment (release or develop).")
   }
 
-  // Initialize the global database connection object.
-  final lazy implicit val DEMETER_DATABASE: Database = DBConnection.connect
+  val DATABASE_CONFIG: DatabaseConfig[JdbcProfile] = DatabaseConfig.forConfig[JdbcProfile](path)
+  final lazy implicit val database: DATABASE_CONFIG.profile.backend.Database = DATABASE_CONFIG.db
 
   // Start Demeter Api Server.
   HttpRoute.start(HolidayRoute(), EmployeeRoute(), DepartmentRoute(), TeamRoute(), ProjectRoute())

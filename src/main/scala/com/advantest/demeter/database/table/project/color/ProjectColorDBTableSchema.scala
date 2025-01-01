@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.color
 
+import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.database.DBTableSchemaAbstract
-import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
 
 /**
