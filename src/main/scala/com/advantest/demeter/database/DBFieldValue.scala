@@ -13,14 +13,21 @@ import java.time.{LocalDate, LocalDateTime}
  * Create on 2024/12/18
  * Author: mengen.dai@outlook.com
  */
-sealed trait DBFieldValue
+sealed trait DBFieldValue {
+  def ===(other: DBFieldValue): Boolean
+}
 
 /**
  * DBIntValue, representing an int value in the database.
  *
  * @param value The actual int value.
  */
-case class DBIntValue(value: Int) extends DBFieldValue
+case class DBIntValue(value: Int) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBIntValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBIntValue extends DBTableColumn {
   override type ModelType = DBIntValue
@@ -38,7 +45,21 @@ object DBIntValue extends DBTableColumn {
  *
  * @param value The actual long value.
  */
-case class DBLongValue(value: Long) extends DBFieldValue
+case class DBLongValue(value: Long) extends DBFieldValue with DBTableColumn {
+  override type ModelType = DBLongValue
+  override type FieldType = Long
+
+  override def fromModel(model: DBLongValue): Long = model.value
+
+  override def fromField(field: Long): DBLongValue = DBLongValue(field)
+
+  override implicit def columnMapper: BaseColumnType[DBLongValue] = MappedColumnType.base[DBLongValue, Long](fromModel, fromField)
+
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBLongValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBLongValue extends DBTableColumn {
   override type ModelType = DBLongValue
@@ -56,7 +77,12 @@ object DBLongValue extends DBTableColumn {
  *
  * @param value The actual float value.
  */
-case class DBFloatValue(value: Float) extends DBFieldValue
+case class DBFloatValue(value: Float) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBFloatValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBFloatValue extends DBTableColumn {
   override type ModelType = DBFloatValue
@@ -74,7 +100,12 @@ object DBFloatValue extends DBTableColumn {
  *
  * @param value The actual double value.
  */
-case class DBDoubleValue(value: Double) extends DBFieldValue
+case class DBDoubleValue(value: Double) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBDoubleValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBDoubleValue extends DBTableColumn {
   override type ModelType = DBDoubleValue
@@ -92,7 +123,21 @@ object DBDoubleValue extends DBTableColumn {
  *
  * @param value The actual string value and string length <= 255.
  */
-case class DBVarcharValue(value: String) extends DBFieldValue
+case class DBVarcharValue(value: String) extends DBFieldValue with DBTableColumn {
+  override type ModelType = DBVarcharValue
+  override type FieldType = String
+
+  override def fromModel(model: DBVarcharValue): String = model.value
+
+  override def fromField(field: String): DBVarcharValue = DBVarcharValue(field)
+
+  override implicit def columnMapper: BaseColumnType[DBVarcharValue] = MappedColumnType.base[DBVarcharValue, String](fromModel, fromField)
+  
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBVarcharValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBVarcharValue extends DBTableColumn {
   override type ModelType = DBVarcharValue
@@ -107,9 +152,16 @@ object DBVarcharValue extends DBTableColumn {
 
 /**
  * DBTextValue, representing a text value in the database.
+ *
  * @param value The actual string value and string length > 255 and <= 65,535. (64KB)
  */
-case class DBTextValue(value: String) extends DBFieldValue
+case class DBTextValue(value: String) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBTextValue(value) => value == this.value
+    case _ => false
+  }
+}
+
 object DBTextValue extends DBTableColumn {
   override type ModelType = DBTextValue
   override type FieldType = String
@@ -123,9 +175,16 @@ object DBTextValue extends DBTableColumn {
 
 /**
  * DBMediumtextValue, representing a mediumtext value in the database.
+ *
  * @param value The actual string value and string length > 65535 and <= 16,777,215. (16MB)
  */
-case class DBMediumtextValue(value: String) extends DBFieldValue
+case class DBMediumtextValue(value: String) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBMediumtextValue(value) => value == this.value
+    case _ => false
+  }
+}
+
 object DBMediumtextValue extends DBTableColumn {
   override type ModelType = DBMediumtextValue
   override type FieldType = String
@@ -139,9 +198,16 @@ object DBMediumtextValue extends DBTableColumn {
 
 /**
  * DBLongtextValue, representing a longtext value in the database.
+ *
  * @param value The actual string value and string length > 16,777,215 and <= 4,294,967,295 . (4GB)
  */
-case class DBLongtextValue(value: String) extends DBFieldValue
+case class DBLongtextValue(value: String) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBLongtextValue(value) => value == this.value
+    case _ => false
+  }
+}
+
 object DBLongtextValue extends DBTableColumn {
   override type ModelType = DBLongtextValue
   override type FieldType = String
@@ -158,7 +224,12 @@ object DBLongtextValue extends DBTableColumn {
  *
  * @param value The actual boolean value.
  */
-case class DBBooleanValue(value: Boolean) extends DBFieldValue
+case class DBBooleanValue(value: Boolean) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBBooleanValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBBooleanValue extends DBTableColumn {
   override type ModelType = DBBooleanValue
@@ -177,7 +248,12 @@ object DBBooleanValue extends DBTableColumn {
  *
  * @param value The actual string value.
  */
-case class DBJsonValue(value: JsonObject) extends DBFieldValue
+case class DBJsonValue(value: JsonObject) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBJsonValue(value) => value.value == this.value.value
+    case _ => false
+  }
+}
 
 object DBJsonValue extends DBTableColumn {
   override type ModelType = DBJsonValue
@@ -195,7 +271,12 @@ object DBJsonValue extends DBTableColumn {
  *
  * @param value The actual string value.
  */
-case class DBDateValue(value: LocalDate) extends DBFieldValue
+case class DBDateValue(value: LocalDate) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBDateValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBDateValue extends DBTableColumn {
   override type ModelType = DBDateValue
@@ -206,6 +287,8 @@ object DBDateValue extends DBTableColumn {
   override def fromField(field: String): DBDateValue = DBDateValue(DateUtils.parseLocalDate(field))
 
   override implicit def columnMapper: BaseColumnType[DBDateValue] = MappedColumnType.base[DBDateValue, String](fromModel, fromField)
+
+  def now(): DBDateValue = DBDateValue(LocalDate.now())
 }
 
 /**
@@ -213,7 +296,12 @@ object DBDateValue extends DBTableColumn {
  *
  * @param value The actual string value.
  */
-case class DBDateTimeValue(value: LocalDateTime) extends DBFieldValue
+case class DBDateTimeValue(value: LocalDateTime) extends DBFieldValue {
+  override def ===(other: DBFieldValue): Boolean = other match {
+    case DBDateTimeValue(value) => value == this.value
+    case _ => false
+  }
+}
 
 object DBDateTimeValue extends DBTableColumn {
   override type ModelType = DBDateTimeValue
@@ -224,6 +312,8 @@ object DBDateTimeValue extends DBTableColumn {
   override def fromField(field: String): DBDateTimeValue = DBDateTimeValue(DateUtils.parseLocalDateTime(field))
 
   override implicit def columnMapper: BaseColumnType[DBDateTimeValue] = MappedColumnType.base[DBDateTimeValue, String](fromModel, fromField)
+
+  def now(): DBDateTimeValue = DBDateTimeValue(LocalDateTime.now())
 }
 
 object DBFieldValue extends Serializable[DBFieldValue] {
