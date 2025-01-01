@@ -1,12 +1,11 @@
 package com.advantest.demeter.http.payload
 
 import com.advantest.demeter.database.table.project.task.ProjectTaskDBTableRow
-import com.advantest.demeter.database.{DBBooleanValue, DBDateTimeValue, DBDateValue, DBDoubleValue, DBFloatValue, DBIntValue, DBJsonValue, DBLongValue, DBLongtextValue, DBMediumtextValue, DBStringValue, DBTableRowFactory, DBTextValue}
+import com.advantest.demeter.database._
 import com.advantest.demeter.http.HttpPayload
 import com.advantest.demeter.json.serialize.Serializable
 import com.advantest.demeter.json.serialize.format.reader.JsonReaderFormat
 import com.advantest.demeter.json.serialize.format.writer.JsonWriterFormat
-import com.advantest.demeter.utils.serialize.{format}
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
@@ -22,7 +21,7 @@ final case class ProjectTaskPayload(
                                      taskAttributes: Seq[ProjectTaskAttributePayload] = Seq.empty,
                                      taskAttributeValues: Seq[ProjectTaskAttributeValuePayload] = Seq.empty,
                                      order: Option[Int] = None
-                                  ) extends HttpPayload {
+                                   ) extends HttpPayload {
   // To support cases where attribute values can be empty, the lengths of taskAttributes and taskAttributeValues are validated.
   assert(taskAttributes.size >= taskAttributeValues.size, "taskAttributes.size must bigger than taskAttributeValues.size.")
 

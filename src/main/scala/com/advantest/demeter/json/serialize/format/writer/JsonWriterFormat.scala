@@ -1,7 +1,6 @@
 package com.advantest.demeter.json.serialize.format.writer
 
-import com.advantest.demeter.json.serialize.format.writer.protocol.{BooleanJsonWriter, DoubleJsonWriter, FloatJsonWriter, IntJsonWriter, LocalDateJsonWriter, LocalDateTimeJsonWriter, LongJsonWriter, StringJsonWriter}
-import com.advantest.demeter.utils.serialize.format.writer.protocol._
+import com.advantest.demeter.json.serialize.format.writer.protocol._
 import spray.json.{JsObject, JsValue}
 
 import java.time.{LocalDate, LocalDateTime}

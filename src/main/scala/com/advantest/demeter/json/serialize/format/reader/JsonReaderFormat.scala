@@ -1,7 +1,6 @@
 package com.advantest.demeter.json.serialize.format.reader
 
-import com.advantest.demeter.json.serialize.format.reader.protocol.{BooleanJsonReader, IntJsonReader, LocalDateJsonReader, LocalDateTimeJsonReader, LongArrayJsonReader, LongJsonReader, StringJsonReader}
-import com.advantest.demeter.utils.serialize.format.reader.protocol._
+import com.advantest.demeter.json.serialize.format.reader.protocol._
 import spray.json.{JsValue, JsonFormat}
 
 import java.time.{LocalDate, LocalDateTime}
