@@ -6,7 +6,7 @@ package com.advantest.demeter.utils
  *
  * SnowflakeIdUtil: A utility class for generating unique identifiers using the Snowflake algorithm.
  */
-private class SnowflakeIdUtil(workerId: Long = 1, datacenterId: Long = 1) {
+private class SnowflakeIdUtils(workerId: Long = 1, datacenterId: Long = 1) {
   require(workerId >= 0 && workerId < 32, "workerId must be between 0 and 31")
   require(datacenterId >= 0 && datacenterId < 32, "datacenterId must be between 0 and 31")
 
@@ -50,9 +50,9 @@ private class SnowflakeIdUtil(workerId: Long = 1, datacenterId: Long = 1) {
   }
 }
 
-object SnowflakeIdUtil {
+object SnowflakeIdUtils {
 
-  private val snowflakeIdUtil = new SnowflakeIdUtil()
+  private val snowflakeIdUtil = new SnowflakeIdUtils()
 
   def nextId(): Long = snowflakeIdUtil.nextId()
 }

@@ -1,46 +1,51 @@
-package com.advantest.demeter.constant
+package com.advantest.demeter.constant.holiday
 
 import com.advantest.demeter.database.DBTableColumn
 import com.advantest.demeter.json.serialize.Serializable
-import spray.json.{JsNumber, JsValue, RootJsonFormat}
 import slick.jdbc.MySQLProfile.api._
+import spray.json.{JsNumber, JsValue, RootJsonFormat}
 
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
  */
-sealed trait HolidayType
+sealed trait HolidayType {
+  def toInt: Int
+}
 
 /**
  * NationalHoliday type, indicating a national holiday.
  */
-case object NationalHoliday extends HolidayType
+case object NationalHoliday extends HolidayType {
+  override def toInt: Int = 1
+}
 
 /**
  * CompanyHoliday type, indicating a company-specific holiday.
  */
-case object CompanyHoliday extends HolidayType
+case object CompanyHoliday extends HolidayType {
+  override def toInt: Int = 2
+}
 
 /**
  * WeeklyHoliday type, indicating a weekly holiday.
  */
-case object WeeklyHoliday extends HolidayType
+case object WeeklyHoliday extends HolidayType {
+  override def toInt: Int = 3
+}
 
 /**
  * SpecialHoliday type, indicating a special holiday.
  */
-case object SpecialHoliday extends HolidayType
+case object SpecialHoliday extends HolidayType {
+  override def toInt: Int = 4
+}
 
 object HolidayType extends DBTableColumn with Serializable[HolidayType] {
   override type ModelType = HolidayType
   override type FieldType = Int
 
-  override def fromModel(model: HolidayType): Int = model match {
-    case NationalHoliday => 1
-    case CompanyHoliday => 2
-    case WeeklyHoliday => 3
-    case SpecialHoliday => 4
-  }
+  override def fromModel(model: HolidayType): Int = model.toInt
 
   override def fromField(field: Int): HolidayType = field match {
     case 1 => NationalHoliday

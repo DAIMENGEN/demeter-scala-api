@@ -88,21 +88,21 @@ object DBDoubleValue extends DBTableColumn {
 }
 
 /**
- * DBStringValue, representing a string value in the database.
+ * DBVarcharValue, representing a string value in the database.
  *
  * @param value The actual string value and string length <= 255.
  */
-case class DBStringValue(value: String) extends DBFieldValue
+case class DBVarcharValue(value: String) extends DBFieldValue
 
-object DBStringValue extends DBTableColumn {
-  override type ModelType = DBStringValue
+object DBVarcharValue extends DBTableColumn {
+  override type ModelType = DBVarcharValue
   override type FieldType = String
 
-  override def fromModel(model: DBStringValue): String = model.value
+  override def fromModel(model: DBVarcharValue): String = model.value
 
-  override def fromField(field: String): DBStringValue = DBStringValue(field)
+  override def fromField(field: String): DBVarcharValue = DBVarcharValue(field)
 
-  override implicit def columnMapper: BaseColumnType[DBStringValue] = MappedColumnType.base[DBStringValue, String](fromModel, fromField)
+  override implicit def columnMapper: BaseColumnType[DBVarcharValue] = MappedColumnType.base[DBVarcharValue, String](fromModel, fromField)
 }
 
 /**
@@ -238,7 +238,7 @@ object DBFieldValue extends Serializable[DBFieldValue] {
       case DBLongValue(value) => value.toJson
       case DBFloatValue(value) => value.toJson
       case DBDoubleValue(value) => value.toJson
-      case DBStringValue(value) => value.toJson
+      case DBVarcharValue(value) => value.toJson
       case DBTextValue(value) => value.toJson
       case DBMediumtextValue(value) => value.toJson
       case DBLongtextValue(value) => value.toJson
@@ -269,7 +269,7 @@ object DBFieldValue extends Serializable[DBFieldValue] {
         } else if (JsonUtils.isValidJson(value)) {
           DBJsonValue(JsonObject(value))
         } else if (value.length <= 255) {
-          DBStringValue(value)
+          DBVarcharValue(value)
         } else if (value.length <= 65_535) {
           DBTextValue(value)
         } else if (value.length <= 16_777_215) {

@@ -1,6 +1,7 @@
 package com.advantest.demeter.database.table.holiday
 
-import com.advantest.demeter.constant.{CountryCode, HolidayType}
+import com.advantest.demeter.constant.country.CountryCode
+import com.advantest.demeter.constant.holiday.HolidayType
 import com.advantest.demeter.database.DBTableRow
 import com.advantest.demeter.http.payload.HolidayPayload
 

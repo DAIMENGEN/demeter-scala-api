@@ -45,7 +45,7 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
             case DBLongValue(value) => writer.writeLong(attributeName, value)
             case DBFloatValue(value) => writer.writeFloat(attributeName, value)
             case DBDoubleValue(value) => writer.writeDouble(attributeName, value)
-            case DBStringValue(value) => writer.writeString(attributeName, value)
+            case DBVarcharValue(value) => writer.writeString(attributeName, value)
             case DBTextValue(value) => writer.writeString(attributeName, value)
             case DBMediumtextValue(value) => writer.writeString(attributeName, value)
             case DBLongtextValue(value) => writer.writeString(attributeName, value)

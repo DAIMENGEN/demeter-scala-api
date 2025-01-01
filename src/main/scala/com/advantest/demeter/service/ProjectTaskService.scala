@@ -4,7 +4,7 @@ import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.database.table.project.task.ProjectTaskDBTable
 import com.advantest.demeter.database.table.project.task.attribute.ProjectTaskAttributeDBTable
 import com.advantest.demeter.database.table.project.task.value.{ProjectTaskAttributeValueDBTableRow, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable, ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable, ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable}
-import com.advantest.demeter.database.{DBBooleanValue, DBDateTimeValue, DBDateValue, DBDoubleValue, DBFloatValue, DBIntValue, DBJsonValue, DBLongValue, DBLongtextValue, DBMediumtextValue, DBStringValue, DBTextValue}
+import com.advantest.demeter.database.{DBBooleanValue, DBDateTimeValue, DBDateValue, DBDoubleValue, DBFloatValue, DBIntValue, DBJsonValue, DBLongValue, DBLongtextValue, DBMediumtextValue, DBVarcharValue, DBTextValue}
 import com.advantest.demeter.http.payload.{ProjectTaskAttributePayload, ProjectTaskAttributeValuePayload, ProjectTaskPayload}
 import slick.jdbc.MySQLProfile.api._
 
@@ -37,7 +37,7 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
         case DBLongValue(_) => longTypeValueDBTable.tableQuery += taskAttributeValueRow
         case DBFloatValue(_) => floatTypeValueDBTable.tableQuery += taskAttributeValueRow
         case DBDoubleValue(_) => doubleTypeValueDBTable.tableQuery += taskAttributeValueRow
-        case DBStringValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
+        case DBVarcharValue(_) => stringTypeValueDBTable.tableQuery += taskAttributeValueRow
         case DBTextValue(_) => textTypeValueDBTable.tableQuery += taskAttributeValueRow
         case DBMediumtextValue(_) => mediumtextTypeValueDBTable.tableQuery += taskAttributeValueRow
         case DBLongtextValue(_) => longtextTypeValueDBTable.tableQuery += taskAttributeValueRow

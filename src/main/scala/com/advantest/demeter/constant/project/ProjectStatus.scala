@@ -10,68 +10,78 @@ import spray.json.{JsNumber, JsValue, RootJsonFormat}
  * Author: mengen.dai@outlook.com
  */
 
-sealed trait ProjectStatus
+sealed trait ProjectStatus {
+  def toInt: Int
+}
 
 /**
  * NotStarted status, indicating that the project has not yet begun.
  */
-case object NotStarted extends ProjectStatus
+case object NotStarted extends ProjectStatus {
+  override def toInt: Int = 1
+}
 
 /**
  * RequirementsAnalysis status, indicating that the project is in the phase of analyzing requirements.
  */
-case object RequirementsAnalysis extends ProjectStatus
+case object RequirementsAnalysis extends ProjectStatus {
+  override def toInt: Int = 2
+}
 
 /**
  * Planning status, indicating that the project is in the planning phase.
  */
-case object Planning extends ProjectStatus
+case object Planning extends ProjectStatus {
+  override def toInt: Int = 3
+}
 
 /**
  * InProgress status, indicating that the project is currently being worked on.
  */
-case object InProgress extends ProjectStatus
+case object InProgress extends ProjectStatus {
+  override def toInt: Int = 4
+}
 
 /**
  * Acceptance status, indicating that the project is ready for acceptance or final review.
  */
-case object Acceptance extends ProjectStatus
+case object Acceptance extends ProjectStatus {
+  override def toInt: Int = 5
+}
 
 /**
  * Completed status, indicating that the project has been successfully completed.
  */
-case object Completed extends ProjectStatus
+case object Completed extends ProjectStatus {
+  override def toInt: Int = 6
+}
 
 /**
  * Cancelled status, indicating that the project has been canceled and will not be completed.
  */
-case object Canceled extends ProjectStatus
+case object Canceled extends ProjectStatus {
+  override def toInt: Int = 7
+}
 
 /**
  * OnHold status, indicating that the project is temporarily paused or delayed.
  */
-case object OnHold extends ProjectStatus
+case object OnHold extends ProjectStatus {
+  override def toInt: Int = 8
+}
 
 /**
  * Delayed status, indicating that the project is behind schedule and has been delayed.
  */
-case object Delayed extends ProjectStatus
+case object Delayed extends ProjectStatus {
+  override def toInt: Int = 9
+}
 
 object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
   override type ModelType = ProjectStatus
   override type FieldType = Int
 
-  override def fromModel(model: ProjectStatus): Int = model match {
-    case NotStarted => 1
-    case RequirementsAnalysis => 2
-    case Planning => 3
-    case InProgress => 4
-    case Acceptance => 5
-    case Completed => 6
-    case Canceled => 7
-    case OnHold => 8
-    case Delayed => 9
-  }
+  override def fromModel(model: ProjectStatus): Int = model.toInt
 
   override def fromField(field: Int): ProjectStatus = field match {
     case 1 => NotStarted
