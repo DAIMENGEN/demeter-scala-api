@@ -43,6 +43,7 @@ object DemeterScalaApi extends App {
     throw new IllegalArgumentException("Please specify the startup environment (release or develop).")
   }
 
+  // Configure the database using Slick.
   val DATABASE_CONFIG: DatabaseConfig[JdbcProfile] = DatabaseConfig.forConfig[JdbcProfile](path)
   final lazy implicit val database: DATABASE_CONFIG.profile.backend.Database = DATABASE_CONFIG.db
 
