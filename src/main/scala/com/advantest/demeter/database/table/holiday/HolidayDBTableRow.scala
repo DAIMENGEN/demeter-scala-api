@@ -28,9 +28,9 @@ final case class HolidayDBTableRow(
     title.value,
     description.map(_.value),
     holidayDate.value,
-    HolidayType.fromField(holidayType.value),
+    HolidayType.fromInt(holidayType.value),
     isRecurring.value,
-    CountryCode.fromField(countryCode.value)
+    CountryCode.fromInt(countryCode.value)
   )
 }
 

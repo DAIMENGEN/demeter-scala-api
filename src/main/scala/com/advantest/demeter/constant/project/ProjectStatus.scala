@@ -77,13 +77,9 @@ case object Delayed extends ProjectStatus {
   override def toInt: Int = 9
 }
 
-object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
-  override type ModelType = ProjectStatus
-  override type FieldType = Int
+object ProjectStatus extends Serializable[ProjectStatus] {
 
-  override def fromModel(model: ProjectStatus): Int = model.toInt
-
-  override def fromField(field: Int): ProjectStatus = field match {
+  def fromInt(field: Int): ProjectStatus = field match {
     case 1 => NotStarted
     case 2 => RequirementsAnalysis
     case 3 => Planning
@@ -96,13 +92,11 @@ object ProjectStatus extends DBTableColumn with Serializable[ProjectStatus] {
     case _ => throw new IllegalArgumentException(s"Invalid ProjectStatus field: $field. Valid fields are 1 (NotStarted), 2 (RequirementsAnalysis), 3 (Planning), 4 (InProgress), 5 (Acceptance), 6 (Completed), 7 (Cancelled), 8 (OnHold), 9 (Delayed).")
   }
 
-  override implicit def columnMapper: BaseColumnType[ProjectStatus] = MappedColumnType.base[ProjectStatus, Int](fromModel, fromField)
-
   override implicit val serializeFormat: RootJsonFormat[ProjectStatus] = new RootJsonFormat[ProjectStatus] {
-    override def write(obj: ProjectStatus): JsValue = JsNumber(fromModel(obj))
+    override def write(obj: ProjectStatus): JsValue = JsNumber(obj.toInt)
 
     override def read(json: JsValue): ProjectStatus = json match {
-      case JsNumber(value) => fromField(value.toInt)
+      case JsNumber(value) => fromInt(value.toInt)
       case _ => throw new IllegalArgumentException("Expected a JsNumber for ProjectStatus, but received a different type of JsValue.")
     }
   }

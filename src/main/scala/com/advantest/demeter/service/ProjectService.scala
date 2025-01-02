@@ -116,7 +116,7 @@ case class ProjectService()(implicit val db: Database) extends Service {
   def getProjectStatusSelectOptions: Future[Seq[SelectOption]] = {
     Future.successful(ProjectStatus.values.map(status => {
       val label = status.toString
-      val value = ProjectStatus.fromModel(status)
+      val value = status.toInt
       SelectOption(label, select.IntValue(value))
     }))
   }

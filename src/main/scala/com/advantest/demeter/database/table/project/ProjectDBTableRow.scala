@@ -26,7 +26,7 @@ final case class ProjectDBTableRow(
   def toPayload: ProjectPayload = ProjectPayload(
     id.value,
     projectName.value,
-    ProjectStatus.fromField(projectStatus.value),
+    ProjectStatus.fromInt(projectStatus.value),
     description.map(_.value),
     startDateTime.value,
     endDateTime.map(_.value),

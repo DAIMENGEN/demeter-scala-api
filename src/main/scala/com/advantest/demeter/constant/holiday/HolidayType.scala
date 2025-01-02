@@ -1,7 +1,5 @@
 package com.advantest.demeter.constant.holiday
 
-import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTableColumn
 import com.advantest.demeter.json.serialize.Serializable
 import spray.json.{JsNumber, JsValue, RootJsonFormat}
 
@@ -41,13 +39,9 @@ case object SpecialHoliday extends HolidayType {
   override def toInt: Int = 4
 }
 
-object HolidayType extends DBTableColumn with Serializable[HolidayType] {
-  override type ModelType = HolidayType
-  override type FieldType = Int
+object HolidayType extends Serializable[HolidayType] {
 
-  override def fromModel(model: HolidayType): Int = model.toInt
-
-  override def fromField(field: Int): HolidayType = field match {
+  def fromInt(field: Int): HolidayType = field match {
     case 1 => NationalHoliday
     case 2 => CompanyHoliday
     case 3 => WeeklyHoliday
@@ -55,13 +49,11 @@ object HolidayType extends DBTableColumn with Serializable[HolidayType] {
     case _ => throw new IllegalArgumentException(s"Invalid HolidayType field: $field. Valid fields are 1 (NationalHoliday), 2 (CompanyHoliday), 3 (WeeklyHoliday), 4 (SpecialHoliday).")
   }
 
-  override implicit def columnMapper: BaseColumnType[HolidayType] = MappedColumnType.base[HolidayType, Int](fromModel, fromField)
-
   override implicit val serializeFormat: RootJsonFormat[HolidayType] = new RootJsonFormat[HolidayType] {
-    override def write(obj: HolidayType): JsValue = JsNumber(fromModel(obj))
+    override def write(obj: HolidayType): JsValue = JsNumber(obj.toInt)
 
     override def read(json: JsValue): HolidayType = json match {
-      case JsNumber(value) => fromField(value.toInt)
+      case JsNumber(value) => fromInt(value.toInt)
       case _ => throw new IllegalArgumentException("Expected a JsNumber for HolidayType, but received a different type of JsValue.")
     }
   }
