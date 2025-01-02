@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.task
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTableSchemaAbstract
+import com.advantest.demeter.database.{DBIntValue, DBLongValue, DBTableSchemaAbstract, DBVarcharValue}
 import slick.lifted.ProvenShape
 
 /**
@@ -10,11 +10,11 @@ import slick.lifted.ProvenShape
  */
 final class ProjectTaskDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectTaskDBTableRow](tag, "PROJECT_TASK_DB_TABLE") {
 
-  def taskName: Rep[String] = column[String]("TASK_NAME", O.Length(255))
+  def taskName: Rep[DBVarcharValue] = column[DBVarcharValue]("TASK_NAME", O.SqlType("VARCHAR"), O.Length(255))
 
-  def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
+  def order: Rep[Option[DBIntValue]] = column[Option[DBIntValue]]("ORDER", O.Default(None))
 
-  def projectId: Rep[Long] = column[Long]("PROJECT_ID")
+  def projectId: Rep[DBLongValue] = column[DBLongValue]("PROJECT_ID")
 
   override def * : ProvenShape[ProjectTaskDBTableRow] = (
     id,

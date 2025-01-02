@@ -1,25 +1,22 @@
 package com.advantest.demeter.database.table.project.color
 
-import com.advantest.demeter.database.DBTableRow
-
-import java.time.LocalDateTime
+import com.advantest.demeter.database._
 
 /**
  * Create on 2024/10/28
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectColorDBTableRow(
-                                         id: Long,
-                                         value: String,
-                                         description: Option[String],
-                                         fieldName: String,
-                                         fieldValue: String,
-                                         order: Option[Int],
-                                         projectId: Long,
-                                         creatorId: Long,
-                                         updaterId: Long,
-                                         createDateTime: LocalDateTime = LocalDateTime.now(),
-                                         updateDateTime: LocalDateTime = LocalDateTime.now()
+                                         id: DBLongValue,
+                                         value: DBVarcharValue,
+                                         description: Option[DBTextValue],
+                                         fieldName: DBVarcharValue,
+                                         fieldValue: DBVarcharValue,
+                                         order: Option[DBIntValue],
+                                         projectId: DBLongValue,
+                                         creatorId: DBLongValue,
+                                         updaterId: DBLongValue,
+                                         createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
+                                         updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                        ) extends DBTableRow {
-  override def toString: String = s"ProjectColorTableRow(id=$id, value=$value, description=$description, fieldName=$fieldName, fieldValue=$fieldValue, order=$order, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }

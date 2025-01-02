@@ -1,7 +1,5 @@
 package com.advantest.demeter.database
 
-import java.time.LocalDateTime
-
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
@@ -14,36 +12,36 @@ trait DBTableRow {
   /**
    * Unique identifier of the record.
    *
-   * @return The ID of the record as a [[Long]].
+   * @return The ID of the record as a [[DBLongValue]].
    */
-  val id: Long
+  val id: DBLongValue
 
   /**
    * Identifier of the user who created the record.
    *
-   * @return The creator's ID as a [[Long]].
+   * @return The creator's ID as a [[DBLongValue]].
    */
-  val creatorId: Long
+  val creatorId: DBLongValue
 
   /**
    * Identifier of the user who last updated the record.
    *
-   * @return The updater's ID as a [[Long]].
+   * @return The updater's ID as a [[DBLongValue]].
    */
-  val updaterId: Long
+  val updaterId: DBLongValue
 
   /**
    * Timestamp when the record was created.
    *
-   * @return The creation time as a [[LocalDateTime]].
+   * @return The creation time as a [[DBDateTimeValue]].
    */
-  val createDateTime: LocalDateTime
+  val createDateTime: DBDateTimeValue
 
   /**
    * Timestamp when the record was last updated.
    *
-   * @return The last update time as a [[LocalDateTime]].
+   * @return The last update time as a [[DBDateTimeValue]].
    */
-  val updateDateTime: LocalDateTime
+  val updateDateTime: DBDateTimeValue
 }
 

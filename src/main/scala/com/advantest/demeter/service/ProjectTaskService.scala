@@ -75,11 +75,11 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
       val taskIntAttributeValueEntitiesMap = taskIntAttributeValueRows.map(_.toPayload).groupBy(_.taskId)
       taskRows.map { taskRow =>
         ProjectTaskPayload(
-          id = taskRow.id,
-          taskName = taskRow.taskName,
+          id = taskRow.id.value,
+          taskName = taskRow.taskName.value,
           taskAttributes = taskAttributeEntities,
-          taskAttributeValues = taskIntAttributeValueEntitiesMap.getOrElse(taskRow.id, Seq.empty),
-          order = taskRow.order
+          taskAttributeValues = taskIntAttributeValueEntitiesMap.getOrElse(taskRow.id.value, Seq.empty),
+          order = taskRow.order.map(_.value)
         )
       }
     }
@@ -104,7 +104,7 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
     val insertTaskRows = dbTable.tableQuery ++= taskRow
     val insertTaskAttributeValueRows = buildInsertTaskAttributeValueRowsAction(taskAttributeValueRows)
     val selectTaskRows = dbTable.tableQuery.filter(_.id.inSet(taskRowIds)).result
-    val selectTaskAttributes = attributeDBTable.tableQuery.filter(_.projectId === projectId).result
+    val selectTaskAttributes = attributeDBTable.tableQuery.filter(_.projectId === DBLongValue(projectId)).result
     val selectTaskAttributeValueRows = DBIO.sequence(Seq(
       intTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
       dateTypeValueDBTable.tableQuery.filter(_.id.inSet(taskRowIds)).result,
@@ -124,8 +124,8 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
       case ((taskRows, taskAttributeRows), taskAttributeValueRows) =>
         taskRows.map { taskRow =>
           ProjectTaskPayload(
-            id = taskRow.id,
-            taskName = taskRow.taskName,
+            id = taskRow.id.value,
+            taskName = taskRow.taskName.value,
             taskAttributes = taskAttributeRows.map(_.toPayload),
             taskAttributeValues = taskAttributeValueRows.flatten.filter(_.id == taskRow.id).map(_.toPayload),
           )

@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.department
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTable
+import com.advantest.demeter.database.{DBTable, DBVarcharValue}
 
 import scala.concurrent.Future
 
@@ -16,17 +16,12 @@ final case class DepartmentDBTable()(implicit val db: Database) extends DBTable 
   createTableIfNotExists()
 
   def queryByName(name: String): Future[Option[TableRowData]] = {
-    val select = table.filter(_.name === name).result.headOption
+    val select = table.filter(_.name === DBVarcharValue(name)).result.headOption
     db.run(select)
   }
 
   def queryByNameLike(namePattern: String): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.name like s"%$namePattern%").result
-    db.run(select)
-  }
-
-  def queryByDescriptionLike(descriptionPattern: String): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.description like s"%$descriptionPattern%").result
+    val select = table.filter(_.name.asColumnOf[String] like s"%$namePattern%").result
     db.run(select)
   }
 }

@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.task.attribute
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTable
+import com.advantest.demeter.database.{DBLongValue, DBTable}
 
 import scala.concurrent.Future
 
@@ -18,7 +18,7 @@ final case class ProjectTaskAttributeDBTable()(implicit val db: Database) extend
   createTableIfNotExists()
 
   def queryByProjectId(projectId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.projectId === projectId).result
+    val select = table.filter(_.projectId === DBLongValue(projectId)).result
     db.run(select)
   }
 }

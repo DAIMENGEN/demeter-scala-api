@@ -3,7 +3,6 @@ package com.advantest.demeter.database
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.{DEMETER_EXECUTION_CONTEXT, DEMETER_SYSTEM}
 
-import java.time.LocalDateTime
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
@@ -97,7 +96,7 @@ trait DBTable {
    * @param id The ID of the row to be deleted.
    * @return A `Future` containing the deleted row data. If the row does not exist, a `RuntimeException` is thrown.
    */
-  def deleteById(id: Long): Future[TableRowData] = {
+  def deleteById(id: DBLongValue): Future[TableRowData] = {
     val select = table.filter(_.id === id).result.headOption
     val delete = table.filter(_.id === id).delete
     val transaction = (select zipWith delete)((option, _) => option match {
@@ -113,7 +112,7 @@ trait DBTable {
    * @param ids A sequence of IDs of the rows to be deleted.
    * @return A `Future` containing the deleted row data.
    */
-  def deleteByIds(ids: Seq[Long]): Future[Seq[TableRowData]] = {
+  def deleteByIds(ids: Seq[DBLongValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.id.inSet(ids)).result
     val delete = table.filter(_.id.inSet(ids)).result
     val transaction = (select zipWith delete)((r1, _) => r1).transactionally
@@ -157,7 +156,7 @@ trait DBTable {
    * @param id The ID of the row to be queried.
    * @return A `Future` containing an optional row data.
    */
-  def queryById(id: Long): Future[Option[TableRowData]] = {
+  def queryById(id: DBLongValue): Future[Option[TableRowData]] = {
     val select = table.filter(_.id === id).result.headOption
     db.run(select)
   }
@@ -168,7 +167,7 @@ trait DBTable {
    * @param ids A sequence of IDs of the rows to be queried.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByIds(ids: Seq[Long]): Future[Seq[TableRowData]] = {
+  def queryByIds(ids: Seq[DBLongValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.id.inSet(ids)).result
     db.run(select)
   }
@@ -179,7 +178,7 @@ trait DBTable {
    * @param creatorId The ID of the creator.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByCreatorId(creatorId: Long): Future[Seq[TableRowData]] = {
+  def queryByCreatorId(creatorId: DBLongValue): Future[Seq[TableRowData]] = {
     val select = table.filter(_.creatorId === creatorId).result
     db.run(select)
   }
@@ -190,7 +189,7 @@ trait DBTable {
    * @param creatorIds A sequence of IDs of the creators.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByCreatorIds(creatorIds: Seq[Long]): Future[Seq[TableRowData]] = {
+  def queryByCreatorIds(creatorIds: Seq[DBLongValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.creatorId.inSet(creatorIds)).result
     db.run(select)
   }
@@ -201,7 +200,7 @@ trait DBTable {
    * @param updaterId The ID of the updater.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByUpdaterId(updaterId: Long): Future[Seq[TableRowData]] = {
+  def queryByUpdaterId(updaterId: DBLongValue): Future[Seq[TableRowData]] = {
     val select = table.filter(_.updaterId === updaterId).result
     db.run(select)
   }
@@ -212,7 +211,7 @@ trait DBTable {
    * @param updaterIds A sequence of IDs of the updaters.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByUpdaterIds(updaterIds: Seq[Long]): Future[Seq[TableRowData]] = {
+  def queryByUpdaterIds(updaterIds: Seq[DBLongValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.updaterId.inSet(updaterIds)).result
     db.run(select)
   }
@@ -223,7 +222,7 @@ trait DBTable {
    * @param createDateTime The creation date and time.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByCreateDateTime(createDateTime: LocalDateTime): Future[Seq[TableRowData]] = {
+  def queryByCreateDateTime(createDateTime: DBDateTimeValue): Future[Seq[TableRowData]] = {
     val select = table.filter(_.createDateTime === createDateTime).result
     db.run(select)
   }
@@ -234,7 +233,7 @@ trait DBTable {
    * @param createDateTimes A sequence of creation date and times.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByCreateDateTimes(createDateTimes: Seq[LocalDateTime]): Future[Seq[TableRowData]] = {
+  def queryByCreateDateTimes(createDateTimes: Seq[DBDateTimeValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.createDateTime.inSet(createDateTimes)).result
     db.run(select)
   }
@@ -245,7 +244,7 @@ trait DBTable {
    * @param updateDateTime The update date and time.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByUpdateDateTime(updateDateTime: LocalDateTime): Future[Seq[TableRowData]] = {
+  def queryByUpdateDateTime(updateDateTime: DBDateTimeValue): Future[Seq[TableRowData]] = {
     val select = table.filter(_.updateDateTime() === updateDateTime).result
     db.run(select)
   }
@@ -256,7 +255,7 @@ trait DBTable {
    * @param updateDateTimes A sequence of update date and times.
    * @return A `Future` containing a sequence of row data.
    */
-  def queryByUpdateDateTimes(updateDateTimes: Seq[LocalDateTime]): Future[Seq[TableRowData]] = {
+  def queryByUpdateDateTimes(updateDateTimes: Seq[DBDateTimeValue]): Future[Seq[TableRowData]] = {
     val select = table.filter(_.updateDateTime().inSet(updateDateTimes)).result
     db.run(select)
   }

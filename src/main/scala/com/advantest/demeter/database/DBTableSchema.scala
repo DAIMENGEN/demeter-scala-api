@@ -2,8 +2,6 @@ package com.advantest.demeter.database
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 
-import java.time.LocalDateTime
-
 /**
  * Create on 2024/10/13
  * Author: mengen.dai@outlook.com
@@ -15,33 +13,38 @@ trait DBTableSchema {
 
   /**
    * Unique identifier of the record.
-   * @return A [[Rep[Long]]] representing the ID of the record.
+   *
+   * @return A [[Rep[DBLongValue]]] representing the ID of the record.
    */
-  def id: Rep[Long]
+  def id: Rep[DBLongValue]
 
   /**
    * Identifier of the user who created the record.
-   * @return A [[Rep[Long]]] representing the creator's ID.
+   *
+   * @return A [[Rep[DBLongValue]]] representing the creator's ID.
    */
-  def creatorId: Rep[Long]
+  def creatorId: Rep[DBLongValue]
 
   /**
    * Identifier of the user who last updated the record.
-   * @return A [[Rep[Long]]] representing the updater's ID.
+   *
+   * @return A [[Rep[DBLongValue]]] representing the updater's ID.
    */
-  def updaterId: Rep[Long]
+  def updaterId: Rep[DBLongValue]
 
   /**
    * Timestamp when the record was created.
-   * @return A [[Rep[LocalDateTime]]] representing the creation time.
+   *
+   * @return A [[Rep[DBDateTimeValue]]] representing the creation time.
    */
-  def createDateTime: Rep[LocalDateTime]
+  def createDateTime: Rep[DBDateTimeValue]
 
   /**
    * Timestamp when the record was last updated.
-   * @return A [[Rep[LocalDateTime]]] representing the last update time.
+   *
+   * @return A [[Rep[DBDateTimeValue]]] representing the last update time.
    */
-  def updateDateTime(): Rep[LocalDateTime]
+  def updateDateTime(): Rep[DBDateTimeValue]
 }
 
 
@@ -51,51 +54,51 @@ trait DBTableSchema {
  * including the fields and their types, as well as default behaviors for handling common columns like
  * `id`, `creatorId`, `updaterId`, `createDateTime`, and `updateDateTime`.
  *
- * @param tag The tag used to associate this table with the database schema.
+ * @param tag       The tag used to associate this table with the database schema.
  * @param tableName The name of the table in the database.
  * @tparam T The type of the table, which corresponds to the data entity represented by the table.
  */
-abstract class DBTableSchemaAbstract[T](tag: Tag, tableName: String) extends Table[T] (tag, tableName) with DBTableSchema {
+abstract class DBTableSchemaAbstract[T](tag: Tag, tableName: String) extends Table[T](tag, tableName) with DBTableSchema {
 
   /**
    * The unique identifier of the record.
    * This field is marked as the primary key and should be unique for each record in the table.
    *
-   * @return A [[Rep[Long]]] representing the ID of the record.
+   * @return A [[Rep[DBLongValue]]] representing the ID of the record.
    */
-  override def id: Rep[Long] = column[Long]("ID", O.PrimaryKey, O.Unique)
+  override def id: Rep[DBLongValue] = column[DBLongValue]("ID", O.PrimaryKey, O.Unique)
 
   /**
    * The identifier of the user who created the record.
    * This field stores the ID of the user responsible for creating the record in the database.
    *
-   * @return A [[Rep[Long]]] representing the creator's ID.
+   * @return A [[Rep[DBLongValue]]] representing the creator's ID.
    */
-  override def creatorId: Rep[Long] = column[Long]("CREATOR_ID")
+  override def creatorId: Rep[DBLongValue] = column[DBLongValue]("CREATOR_ID")
 
   /**
    * The identifier of the user who last updated the record.
    * This field stores the ID of the user responsible for the most recent update to the record.
    *
-   * @return A [[Rep[Long]]] representing the updater's ID.
+   * @return A [[Rep[DBLongValue]]] representing the updater's ID.
    */
-  override def updaterId: Rep[Long] = column[Long]("UPDATER_ID")
+  override def updaterId: Rep[DBLongValue] = column[DBLongValue]("UPDATER_ID")
 
   /**
    * The timestamp when the record was created.
    * This field stores the creation timestamp of the record.
    * The default value is set to the current time when the record is created.
    *
-   * @return A [[Rep[LocalDateTime]]] representing the creation time of the record.
+   * @return A [[Rep[DBDateTimeValue]]] representing the creation time of the record.
    */
-  override def createDateTime: Rep[LocalDateTime] = column[LocalDateTime]("CREATE_DATE_TIME", O.Default(LocalDateTime.now()))
+  override def createDateTime: Rep[DBDateTimeValue] = column[DBDateTimeValue]("CREATE_DATE_TIME", O.Default(DBDateTimeValue.now()), O.SqlType("VARCHAR"), O.Length(19))
 
   /**
    * The timestamp when the record was last updated.
    * This field stores the last update timestamp of the record.
    * The default value is set to the current time when the record is created.
    *
-   * @return A [[Rep[LocalDateTime]]] representing the last update time of the record.
+   * @return A [[Rep[DBDateTimeValue]]] representing the last update time of the record.
    */
-  override def updateDateTime(): Rep[LocalDateTime] = column[LocalDateTime]("UPDATE_DATE_TIME", O.Default(LocalDateTime.now()))
+  override def updateDateTime(): Rep[DBDateTimeValue] = column[DBDateTimeValue]("UPDATE_DATE_TIME", O.Default(DBDateTimeValue.now()), O.SqlType("VARCHAR"), O.Length(19))
 }

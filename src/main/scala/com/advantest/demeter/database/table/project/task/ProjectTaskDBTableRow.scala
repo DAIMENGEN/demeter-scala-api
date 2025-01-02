@@ -1,22 +1,19 @@
 package com.advantest.demeter.database.table.project.task
 
-import com.advantest.demeter.database.DBTableRow
-
-import java.time.LocalDateTime
+import com.advantest.demeter.database._
 
 /**
  * Create on 2024/12/21
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectTaskDBTableRow(
-                                        id: Long,
-                                        taskName: String,
-                                        order: Option[Int],
-                                        projectId: Long,
-                                        creatorId: Long,
-                                        updaterId: Long,
-                                        createDateTime: LocalDateTime = LocalDateTime.now(),
-                                        updateDateTime: LocalDateTime = LocalDateTime.now()
+                                        id: DBLongValue,
+                                        taskName: DBVarcharValue,
+                                        order: Option[DBIntValue],
+                                        projectId: DBLongValue,
+                                        creatorId: DBLongValue,
+                                        updaterId: DBLongValue,
+                                        createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
+                                        updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                       ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskDBTableRow(id=$id, taskName=$taskName, order=$order, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 }

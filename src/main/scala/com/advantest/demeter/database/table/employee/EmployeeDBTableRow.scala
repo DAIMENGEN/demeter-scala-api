@@ -1,37 +1,33 @@
 package com.advantest.demeter.database.table.employee
 
-import com.advantest.demeter.database.DBTableRow
+import com.advantest.demeter.database._
 import com.advantest.demeter.http.payload.EmployeePayload
-
-import java.time.LocalDateTime
 
 /**
  * Create on 2024/10/24
  * Author: mengen.dai@outlook.com
  */
 final case class EmployeeDBTableRow(
-                                     id: Long,
-                                     account: String,
-                                     password: String,
-                                     employeeName: String,
-                                     email: String,
-                                     phone: Option[String],
-                                     isActive: Boolean,
-                                     creatorId: Long,
-                                     updaterId: Long,
-                                     createDateTime: LocalDateTime = LocalDateTime.now(),
-                                     updateDateTime: LocalDateTime = LocalDateTime.now()
+                                     id: DBLongValue,
+                                     account: DBVarcharValue,
+                                     password: DBVarcharValue,
+                                     employeeName: DBVarcharValue,
+                                     email: DBVarcharValue,
+                                     phone: Option[DBVarcharValue],
+                                     isActive: DBBooleanValue,
+                                     creatorId: DBLongValue,
+                                     updaterId: DBLongValue,
+                                     createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
+                                     updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                    ) extends DBTableRow {
 
-  override def toString: String = s"UserTableRow(id=$id, account=$account, password=$password, employeeName=$employeeName, email=$email, phone=$phone, isActive=$isActive, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
-
   def toPayload: EmployeePayload = EmployeePayload(
-    id = id,
-    account = account,
-    password = password,
-    employeeName = employeeName,
-    email = email,
-    phone = phone,
-    isActive = isActive
+    id = id.value,
+    account = account.value,
+    password = password.value,
+    employeeName = employeeName.value,
+    email = email.value,
+    phone = phone.map(_.value),
+    isActive = isActive.value
   )
 }

@@ -1,27 +1,24 @@
 package com.advantest.demeter.database.table.project.task.value
 
-import com.advantest.demeter.database.{DBFieldValue, DBTableRow}
+import com.advantest.demeter.database.{DBDateTimeValue, DBFieldValue, DBLongValue, DBTableRow}
 import com.advantest.demeter.http.payload.ProjectTaskAttributeValuePayload
 
-import java.time.LocalDateTime
-
 final case class ProjectTaskAttributeValueDBTableRow(
-                                                      id: Long,
-                                                      taskId: Long,
-                                                      taskAttributeId: Long,
+                                                      id: DBLongValue,
+                                                      taskId: DBLongValue,
+                                                      taskAttributeId: DBLongValue,
                                                       taskAttributeValue: DBFieldValue,
-                                                      projectId: Long,
-                                                      creatorId: Long,
-                                                      updaterId: Long,
-                                                      createDateTime: LocalDateTime = LocalDateTime.now(),
-                                                      updateDateTime: LocalDateTime = LocalDateTime.now()
+                                                      projectId: DBLongValue,
+                                                      creatorId: DBLongValue,
+                                                      updaterId: DBLongValue,
+                                                      createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
+                                                      updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                                     ) extends DBTableRow {
-  override def toString: String = s"ProjectTaskAttributeValueDBTableRow(id=$id, taskId=$taskId, taskAttributeId=$taskAttributeId, taskAttributeValue=$taskAttributeValue, projectId=$projectId, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
 
   def toPayload: ProjectTaskAttributeValuePayload = ProjectTaskAttributeValuePayload(
-    id,
-    taskId,
-    taskAttributeId,
+    id.value,
+    taskId.value,
+    taskAttributeId.value,
     taskAttributeValue
   )
 }

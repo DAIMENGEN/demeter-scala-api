@@ -1,13 +1,11 @@
 package com.advantest.demeter.http.payload
 
 import com.advantest.demeter.database.table.project.task.value.ProjectTaskAttributeValueDBTableRow
-import com.advantest.demeter.database.{DBFieldValue, DBTableRowFactory}
+import com.advantest.demeter.database.{DBDateTimeValue, DBFieldValue, DBLongValue, DBTableRowFactory}
 import com.advantest.demeter.http.HttpPayload
 import com.advantest.demeter.json.serialize.Serializable
 import spray.json.DefaultJsonProtocol._
 import spray.json.RootJsonFormat
-
-import java.time.LocalDateTime
 
 /**
  * Create on 2024/12/19
@@ -18,7 +16,7 @@ final case class ProjectTaskAttributeValuePayload(
                                                    taskId: Long,
                                                    taskAttributeId: Long,
                                                    taskAttributeValue: DBFieldValue,
-                                                ) extends HttpPayload {
+                                                 ) extends HttpPayload {
   override def toString: String = s"ProjectTaskAttributeValuePayload(id=$id, taskId=$taskId, taskAttributeId=$taskAttributeId, taskAttributeValue=$taskAttributeValue)"
 }
 
@@ -32,13 +30,13 @@ object ProjectTaskAttributeValuePayload extends Serializable[ProjectTaskAttribut
     val maybeProjectId = options.flatMap(_.get("projectId").map(_.asInstanceOf[Long]))
     maybeProjectId match {
       case Some(projectId) => ProjectTaskAttributeValueDBTableRow(
-        id = payloadData.id,
-        taskId = payloadData.taskId,
-        taskAttributeId = payloadData.taskAttributeId,
+        id = DBLongValue(payloadData.id),
+        taskId = DBLongValue(payloadData.taskId),
+        taskAttributeId = DBLongValue(payloadData.taskAttributeId),
         taskAttributeValue = payloadData.taskAttributeValue,
-        projectId = projectId,
-        creatorId = employeeId,
-        updaterId = employeeId,
+        projectId = DBLongValue(projectId),
+        creatorId = DBLongValue(employeeId),
+        updaterId = DBLongValue(employeeId),
       )
       case None => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskAttributeValueDBTableRow")
     }
@@ -46,7 +44,7 @@ object ProjectTaskAttributeValuePayload extends Serializable[ProjectTaskAttribut
 
   override def update(employeeId: Long, payloadData: PayloadData, oldRowData: DBTableRowData, options: OptionalData): DBTableRowData = oldRowData.copy(
     taskAttributeValue = payloadData.taskAttributeValue,
-    updaterId = employeeId,
-    updateDateTime = LocalDateTime.now()
+    updaterId = DBLongValue(employeeId),
+    updateDateTime = DBDateTimeValue.now()
   )
 }

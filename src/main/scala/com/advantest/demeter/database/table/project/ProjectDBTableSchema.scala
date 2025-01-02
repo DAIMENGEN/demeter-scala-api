@@ -1,11 +1,8 @@
 package com.advantest.demeter.database.table.project
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.constant.project.ProjectStatus
-import com.advantest.demeter.database.DBTableSchemaAbstract
+import com.advantest.demeter.database._
 import slick.lifted.ProvenShape
-
-import java.time.LocalDate
 
 /**
  * Create on 2024/10/27
@@ -13,19 +10,19 @@ import java.time.LocalDate
  */
 final class ProjectDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectDBTableRow](tag, "PROJECT_DB_TABLE") {
 
-  def projectName: Rep[String] = column[String]("PROJECT_NAME")
+  def projectName: Rep[DBVarcharValue] = column[DBVarcharValue]("PROJECT_NAME", O.SqlType("VARCHAR"), O.Length(255))
 
-  def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
+  def description: Rep[Option[DBTextValue]] = column[Option[DBTextValue]]("DESCRIPTION", O.SqlType("TEXT"), O.Default(None))
 
-  def startDateTime: Rep[LocalDate] = column[LocalDate]("START_DATE_TIME")
+  def startDateTime: Rep[DBDateValue] = column[DBDateValue]("START_DATE_TIME", O.SqlType("VARCHAR"), O.Length(10))
 
-  def endDateTime: Rep[Option[LocalDate]] = column[Option[LocalDate]]("END_DATE_TIME")
+  def endDateTime: Rep[Option[DBDateValue]] = column[Option[DBDateValue]]("END_DATE_TIME", O.SqlType("VARCHAR"), O.Length(10), O.Default(None))
 
-  def projectStatus: Rep[ProjectStatus] = column[ProjectStatus]("PROJECT_STATUS")
+  def projectStatus: Rep[DBIntValue] = column[DBIntValue]("PROJECT_STATUS")
 
-  def version: Rep[Option[Int]] = column[Option[Int]]("VERSION")
+  def version: Rep[Option[DBIntValue]] = column[Option[DBIntValue]]("VERSION", O.Default(None))
 
-  def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
+  def order: Rep[Option[DBIntValue]] = column[Option[DBIntValue]]("ORDER", O.Default(None))
 
   override def * : ProvenShape[ProjectDBTableRow] = (
     id,

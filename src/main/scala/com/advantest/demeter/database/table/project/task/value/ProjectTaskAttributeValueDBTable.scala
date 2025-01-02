@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.task.value
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTable
+import com.advantest.demeter.database.{DBLongValue, DBTable}
 
 import scala.concurrent.Future
 
@@ -15,12 +15,12 @@ trait ProjectTaskAttributeValueDBTable extends DBTable {
   protected val table: TableQuery[_ <: ProjectTaskAttributeValueDBTableSchema[TableRowData]]
 
   def queryByTaskId(taskId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.taskId === taskId).result
+    val select = table.filter(_.taskId === DBLongValue(taskId)).result
     db.run(select)
   }
 
   def queryByProjectId(projectId: Long): Future[Seq[TableRowData]] = {
-    val select = table.filter(_.projectId === projectId).result
+    val select = table.filter(_.projectId === DBLongValue(projectId)).result
     db.run(select)
   }
 }

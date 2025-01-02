@@ -1,15 +1,13 @@
 package com.advantest.demeter.http.payload
 
-import com.advantest.demeter.database.table.project.task.ProjectTaskDBTableRow
 import com.advantest.demeter.database._
+import com.advantest.demeter.database.table.project.task.ProjectTaskDBTableRow
 import com.advantest.demeter.http.HttpPayload
 import com.advantest.demeter.json.serialize.Serializable
 import com.advantest.demeter.json.serialize.format.reader.JsonReaderFormat
 import com.advantest.demeter.json.serialize.format.writer.JsonWriterFormat
 import spray.json.DefaultJsonProtocol._
 import spray.json._
-
-import java.time.LocalDateTime
 
 /**
  * Create on 2024/12/21
@@ -78,21 +76,21 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
     maybeProjectId match {
       case Some(projectId) =>
         ProjectTaskDBTableRow(
-          id = payloadData.id,
-          taskName = payloadData.taskName,
-          order = payloadData.order,
-          projectId = projectId,
-          creatorId = employeeId,
-          updaterId = employeeId,
+          id = DBLongValue(payloadData.id),
+          taskName = DBVarcharValue(payloadData.taskName),
+          order = payloadData.order.map(o => DBIntValue(o)),
+          projectId = DBLongValue(projectId),
+          creatorId = DBLongValue(employeeId),
+          updaterId = DBLongValue(employeeId),
         )
       case None => throw new IllegalArgumentException("ProjectId are required when creating a ProjectTaskDBTableRow")
     }
   }
 
   override def update(employeeId: Long, payloadData: PayloadData, oldRowData: ProjectTaskDBTableRow, options: OptionalData = None): DBTableRowData = oldRowData.copy(
-    taskName = payloadData.taskName,
-    order = payloadData.order,
-    updaterId = employeeId,
-    updateDateTime = LocalDateTime.now()
+    taskName = DBVarcharValue(payloadData.taskName),
+    order = payloadData.order.map(o => DBIntValue(o)),
+    updaterId = DBLongValue(employeeId),
+    updateDateTime = DBDateTimeValue.now()
   )
 }

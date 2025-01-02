@@ -1,39 +1,36 @@
 package com.advantest.demeter.database.table.project
 
 import com.advantest.demeter.constant.project.ProjectStatus
-import com.advantest.demeter.database.DBTableRow
+import com.advantest.demeter.database._
 import com.advantest.demeter.http.payload.ProjectPayload
-
-import java.time.{LocalDate, LocalDateTime}
 
 /**
  * Create on 2024/10/27
  * Author: mengen.dai@outlook.com
  */
 final case class ProjectDBTableRow(
-                                  id: Long,
-                                  projectName: String,
-                                  description: Option[String],
-                                  startDateTime: LocalDate,
-                                  endDateTime: Option[LocalDate],
-                                  projectStatus: ProjectStatus,
-                                  version: Option[Int],
-                                  order: Option[Int],
-                                  creatorId: Long,
-                                  updaterId: Long,
-                                  createDateTime: LocalDateTime = LocalDateTime.now(),
-                                  updateDateTime: LocalDateTime = LocalDateTime.now()
-                          ) extends DBTableRow {
-  override def toString: String = s"ProjectTableRow(id=$id, projectName=$projectName, description=$description, startDateTime=$startDateTime, endDateTime=$endDateTime, projectStatus=$projectStatus, version=$version, order=$order, creatorId=$creatorId, updaterId=$updaterId, createDateTime=$createDateTime, updateDateTime=$updateDateTime)"
+                                    id: DBLongValue,
+                                    projectName: DBVarcharValue,
+                                    description: Option[DBTextValue],
+                                    startDateTime: DBDateValue,
+                                    endDateTime: Option[DBDateValue],
+                                    projectStatus: DBIntValue,
+                                    version: Option[DBIntValue],
+                                    order: Option[DBIntValue],
+                                    creatorId: DBLongValue,
+                                    updaterId: DBLongValue,
+                                    createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
+                                    updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
+                                  ) extends DBTableRow {
 
   def toPayload: ProjectPayload = ProjectPayload(
-    id,
-    projectName,
-    projectStatus,
-    description,
-    startDateTime,
-    endDateTime,
-    version,
-    order
+    id.value,
+    projectName.value,
+    ProjectStatus.fromField(projectStatus.value),
+    description.map(_.value),
+    startDateTime.value,
+    endDateTime.map(_.value),
+    version.map(_.value),
+    order.map(_.value)
   )
 }

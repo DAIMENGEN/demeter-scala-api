@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.project.color
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTableSchemaAbstract
+import com.advantest.demeter.database._
 import slick.lifted.ProvenShape
 
 /**
@@ -10,17 +10,17 @@ import slick.lifted.ProvenShape
  */
 final class ProjectColorDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[ProjectColorDBTableRow](tag, "PROJECT_COLOR_DB_TABLE") {
 
-  def value: Rep[String] = column[String]("VALUE")
+  def value: Rep[DBVarcharValue] = column[DBVarcharValue]("VALUE", O.SqlType("VARCHAR"), O.Length(255))
 
-  def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
+  def description: Rep[Option[DBTextValue]] = column[Option[DBTextValue]]("DESCRIPTION", O.SqlType("TEXT"))
 
-  def fieldName: Rep[String] = column[String]("FIELD_NAME")
+  def fieldName: Rep[DBVarcharValue] = column[DBVarcharValue]("FIELD_NAME", O.SqlType("VARCHAR"), O.Length(255))
 
-  def fieldValue: Rep[String] = column[String]("FIELD_VALUE")
+  def fieldValue: Rep[DBVarcharValue] = column[DBVarcharValue]("FIELD_VALUE", O.SqlType("VARCHAR"), O.Length(255))
 
-  def order: Rep[Option[Int]] = column[Option[Int]]("ORDER")
+  def order: Rep[Option[DBIntValue]] = column[Option[DBIntValue]]("ORDER", O.Default(None))
 
-  def projectId: Rep[Long] = column[Long]("PROJECT_ID")
+  def projectId: Rep[DBLongValue] = column[DBLongValue]("PROJECT_ID")
 
   override def * : ProvenShape[ProjectColorDBTableRow] = (
     id,

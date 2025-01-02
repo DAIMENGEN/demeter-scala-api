@@ -10,7 +10,7 @@ import slick.lifted.ProvenShape
  */
 final class ProjectTaskDatetimeTypeAttributeValueDBTableSchema(tag: Tag) extends ProjectTaskAttributeValueDBTableSchema[ProjectTaskAttributeValueDBTableRow](tag, "PROJECT_TASK_DATETIME_TYPE_ATTRIBUTE_VALUE_DB_TABLE") {
 
-  override def taskAttributeValue: Rep[DBDateTimeValue] = column[DBDateTimeValue]("TASK_ATTRIBUTE_VALUE", O.SqlType("DATETIME"))
+  override def taskAttributeValue: Rep[DBDateTimeValue] = column[DBDateTimeValue]("TASK_ATTRIBUTE_VALUE", O.SqlType("VARCHAR"), O.Length(19))
 
   override def * : ProvenShape[ProjectTaskAttributeValueDBTableRow] = (
     id,

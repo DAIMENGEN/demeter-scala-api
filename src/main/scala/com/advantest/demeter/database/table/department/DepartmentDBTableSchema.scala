@@ -1,7 +1,7 @@
 package com.advantest.demeter.database.table.department
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
-import com.advantest.demeter.database.DBTableSchemaAbstract
+import com.advantest.demeter.database.{DBTableSchemaAbstract, DBTextValue, DBVarcharValue}
 import slick.lifted.ProvenShape
 
 /**
@@ -10,9 +10,9 @@ import slick.lifted.ProvenShape
  */
 final class DepartmentDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[DepartmentDBTableRow](tag, "DEPARTMENT_DB_TABLE") {
 
-  def name: Rep[String] = column[String]("NAME")
+  def name: Rep[DBVarcharValue] = column[DBVarcharValue]("NAME", O.SqlType("VARCHAR"), O.Length(255))
 
-  def description: Rep[Option[String]] = column[Option[String]]("DESCRIPTION")
+  def description: Rep[Option[DBTextValue]] = column[Option[DBTextValue]]("DESCRIPTION", O.SqlType("TEXT"))
 
   override def * : ProvenShape[DepartmentDBTableRow] = (
     id,
