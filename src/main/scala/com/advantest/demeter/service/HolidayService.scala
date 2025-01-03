@@ -3,7 +3,6 @@ package com.advantest.demeter.service
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.constant.holiday.{CompanyHoliday, NationalHoliday, SpecialHoliday}
-import com.advantest.demeter.database.DBLongValue
 import com.advantest.demeter.database.table.holiday.{HolidayDBTable, HolidayDBTableRow}
 import com.advantest.demeter.http.payload.HolidayPayload
 
@@ -37,17 +36,17 @@ case class HolidayService()(implicit val db: Database) extends Service {
 
   def deleteHolidayById(employeeId: Long, holidayId: Long): Future[HolidayPayload] = {
     if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
-    holidayTable.deleteById(DBLongValue(holidayId)).map(_.toEntity)
+    holidayTable.deleteById(holidayId).map(_.toEntity)
   }
 
   def deleteHolidayByIds(employeeId: Long, holidayIds: Seq[Long]): Future[Seq[HolidayPayload]] = {
     if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can delete holidays.")
-    holidayTable.deleteByIds(holidayIds.map(holidayId => DBLongValue(holidayId))).map(_.map(_.toEntity))
+    holidayTable.deleteByIds(holidayIds).map(_.map(_.toEntity))
   }
 
   def updateHoliday(employeeId: Long, holiday: HolidayPayload): Future[HolidayPayload] = {
     if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can update holidays.")
-    holidayTable.queryById(DBLongValue(holiday.id)).flatMap {
+    holidayTable.queryById(holiday.id).flatMap {
       case Some(oldRowData: HolidayDBTableRow) =>
         val updatedTableRowData = HolidayPayload.update(employeeId, holiday, oldRowData)
         holidayTable.update(updatedTableRowData).map(_.toEntity)
@@ -57,10 +56,10 @@ case class HolidayService()(implicit val db: Database) extends Service {
 
   def updateHolidays(employeeId: Long, holidays: Seq[HolidayPayload]): Future[Seq[HolidayPayload]] = {
     if (userService.checkIfAdmin(employeeId)) throw new IllegalArgumentException("Only system admin can update holidays.")
-    holidayTable.queryByIds(holidays.map(holiday => DBLongValue(holiday.id))).flatMap(oldRowDataSeq => {
+    holidayTable.queryByIds(holidays.map(_.id)).flatMap(oldRowDataSeq => {
       val oldRowDataMap = oldRowDataSeq.map(oldRowData => oldRowData.id -> oldRowData).toMap
       val updatedTableRowDataSeq = holidays.flatMap { holiday =>
-        oldRowDataMap.get(DBLongValue(holiday.id)).map { oldRowData =>
+        oldRowDataMap.get(holiday.id).map { oldRowData =>
           HolidayPayload.update(employeeId, holiday, oldRowData)
         }
       }

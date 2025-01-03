@@ -3,10 +3,10 @@ package com.advantest.demeter.service
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
 import com.advantest.demeter.database.table.employee.{EmployeeDBTable, EmployeeDBTableRow}
-import com.advantest.demeter.database.{DBDateTimeValue, DBLongValue, DBVarcharValue}
 import com.advantest.demeter.http.payload.EmployeePayload
 import com.advantest.demeter.integration.antdesign.select.{LongValue, SelectOption}
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 /**
@@ -38,10 +38,10 @@ case class EmployeeService()(implicit val db: Database) extends Service {
   }
 
   def resetPassword(employeeId: Long, oldPassword: String, newPassword: String): Future[EmployeePayload] = {
-    employeeTable.queryById(DBLongValue(employeeId)).flatMap {
+    employeeTable.queryById(employeeId).flatMap {
       case Some(employee: EmployeeDBTableRow) =>
         val isCorrect = employee.password.value == oldPassword
-        val newEmployee = employee.copy(password = DBVarcharValue(newPassword), updaterId = DBLongValue(employeeId), updateDateTime = DBDateTimeValue.now())
+        val newEmployee = employee.copy(password = newPassword, updaterId = employeeId, updateDateTime = LocalDateTime.now())
         if (isCorrect) employeeTable.update(newEmployee).map(_.toPayload) else throw new IllegalArgumentException(s"Old password for employee '$employeeId' is incorrect.")
       case None => throw new NoSuchElementException(s"User with ID '$employeeId' does not exist.")
     }

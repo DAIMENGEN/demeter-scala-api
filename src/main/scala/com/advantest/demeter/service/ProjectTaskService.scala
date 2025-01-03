@@ -2,10 +2,10 @@ package com.advantest.demeter.service
 
 import com.advantest.demeter.DemeterScalaApi.DATABASE_CONFIG.profile.api._
 import com.advantest.demeter.DemeterScalaApi.DEMETER_EXECUTION_CONTEXT
+import com.advantest.demeter.database._
 import com.advantest.demeter.database.table.project.task.ProjectTaskDBTable
 import com.advantest.demeter.database.table.project.task.attribute.ProjectTaskAttributeDBTable
 import com.advantest.demeter.database.table.project.task.value.{ProjectTaskAttributeValueDBTableRow, ProjectTaskBooleanTypeAttributeValueDBTable => BooleanTypeValueDBTable, ProjectTaskDateTypeAttributeValueDBTable => DateTypeValueDBTable, ProjectTaskDatetimeTypeAttributeValueDBTable => DatetimeTypeValueDBTable, ProjectTaskDoubleTypeAttributeValueDBTable => DoubleTypeValueDBTable, ProjectTaskFloatTypeAttributeValueDBTable => FloatTypeValueDBTable, ProjectTaskIntTypeAttributeValueDBTable => IntTypeValueDBTable, ProjectTaskJsonTypeAttributeValueDBTable => JsonTypeValueDBTable, ProjectTaskLongTypeAttributeValueDBTable => LongTypeValueDBTable, ProjectTaskLongtextTypeAttributeValueDBTable => LongtextTypeValueDBTable, ProjectTaskMediumtextTypeAttributeValueDBTable => MediumtextTypeValueDBTable, ProjectTaskStringTypeAttributeValueDBTable => StringTypeValueDBTable, ProjectTaskTextTypeAttributeValueDBTable => TextTypeValueDBTable}
-import com.advantest.demeter.database._
 import com.advantest.demeter.http.payload.{ProjectTaskAttributePayload, ProjectTaskAttributeValuePayload, ProjectTaskPayload}
 
 import scala.concurrent.Future
