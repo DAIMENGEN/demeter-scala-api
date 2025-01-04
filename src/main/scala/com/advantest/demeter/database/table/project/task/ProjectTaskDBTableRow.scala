@@ -9,7 +9,6 @@ import com.advantest.demeter.database._
 final case class ProjectTaskDBTableRow(
                                         id: DBLongValue,
                                         taskName: DBVarcharValue,
-                                        order: Option[DBIntValue],
                                         projectId: DBLongValue,
                                         creatorId: DBLongValue,
                                         updaterId: DBLongValue,

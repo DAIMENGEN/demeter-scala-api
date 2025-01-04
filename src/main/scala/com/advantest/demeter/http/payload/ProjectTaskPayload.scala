@@ -18,12 +18,9 @@ final case class ProjectTaskPayload(
                                      taskName: String,
                                      taskAttributes: Seq[ProjectTaskAttributePayload] = Seq.empty,
                                      taskAttributeValues: Seq[ProjectTaskAttributeValuePayload] = Seq.empty,
-                                     order: Option[Int] = None
                                    ) extends HttpPayload {
   // To support cases where attribute values can be empty, the lengths of taskAttributes and taskAttributeValues are validated.
   assert(taskAttributes.size >= taskAttributeValues.size, "taskAttributes.size must bigger than taskAttributeValues.size.")
-
-  override def toString: String = s"ProjectTaskPayload(id=$id, taskName=$taskName, order=$order)"
 }
 
 object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableRowFactory {
@@ -53,7 +50,7 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
             case DBDateTimeValue(value) => writer.writeLocalDateTime(attributeName, value)
           }
       }
-      writer.writeString("taskName", obj.taskName).writeInt("order", obj.order).toJsObject
+      writer.writeString("taskName", obj.taskName).toJsObject
     }
 
     override def read(json: JsValue): ProjectTaskPayload = {
@@ -61,11 +58,10 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
         case JsObject(fields) =>
           val reader = JsonReaderFormat(fields)
           val id = reader.readLong("id")
-          val order = reader.readOptionInt("order")
           val taskName = reader.readString("taskName")
           val taskAttributes = reader.read[Seq[ProjectTaskAttributePayload]]("taskAttributes")
           val taskAttributeValues = reader.read[Seq[ProjectTaskAttributeValuePayload]]("taskAttributeValues")
-          ProjectTaskPayload(id, taskName, taskAttributes, taskAttributeValues, order)
+          ProjectTaskPayload(id, taskName, taskAttributes, taskAttributeValues)
         case _ => deserializationError("ProjectTaskEntity deserialization error.")
       }
     }
@@ -78,7 +74,6 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
         ProjectTaskDBTableRow(
           id = DBLongValue(payloadData.id),
           taskName = DBVarcharValue(payloadData.taskName),
-          order = payloadData.order.map(o => DBIntValue(o)),
           projectId = DBLongValue(projectId),
           creatorId = DBLongValue(employeeId),
           updaterId = DBLongValue(employeeId),
@@ -89,7 +84,6 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
 
   override def update(employeeId: Long, payloadData: PayloadData, oldRowData: ProjectTaskDBTableRow, options: OptionalData = None): DBTableRowData = oldRowData.copy(
     taskName = DBVarcharValue(payloadData.taskName),
-    order = payloadData.order.map(o => DBIntValue(o)),
     updaterId = DBLongValue(employeeId),
     updateDateTime = DBDateTimeValue.now()
   )

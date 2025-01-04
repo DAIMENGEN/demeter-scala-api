@@ -78,8 +78,7 @@ case class ProjectTaskService()(implicit val db: Database) extends Service {
           id = taskRow.id.value,
           taskName = taskRow.taskName.value,
           taskAttributes = taskAttributeEntities,
-          taskAttributeValues = taskIntAttributeValueEntitiesMap.getOrElse(taskRow.id.value, Seq.empty),
-          order = taskRow.order.map(_.value)
+          taskAttributeValues = taskIntAttributeValueEntitiesMap.getOrElse(taskRow.id.value, Seq.empty)
         )
       }
     }
