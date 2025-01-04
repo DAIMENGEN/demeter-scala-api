@@ -76,6 +76,7 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
         ProjectTaskDBTableRow(
           id = DBLongValue(payloadData.id),
           taskName = DBVarcharValue(payloadData.taskName),
+          parentTaskId = payloadData.parentTaskId.map(DBLongValue(_)),
           projectId = DBLongValue(projectId),
           creatorId = DBLongValue(employeeId),
           updaterId = DBLongValue(employeeId),
@@ -86,6 +87,7 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
 
   override def update(employeeId: Long, payloadData: PayloadData, oldRowData: ProjectTaskDBTableRow, options: OptionalData = None): DBTableRowData = oldRowData.copy(
     taskName = DBVarcharValue(payloadData.taskName),
+    parentTaskId = payloadData.parentTaskId.map(DBLongValue(_)),
     updaterId = DBLongValue(employeeId),
     updateDateTime = DBDateTimeValue.now()
   )

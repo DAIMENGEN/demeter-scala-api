@@ -12,17 +12,17 @@ final class ProjectTaskDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[Pro
 
   def taskName: Rep[DBVarcharValue] = column[DBVarcharValue]("TASK_NAME", O.SqlType("VARCHAR"), O.Length(255))
 
-  def projectId: Rep[DBLongValue] = column[DBLongValue]("PROJECT_ID")
-
   def parentTaskId: Rep[Option[DBLongValue]] = column[Option[DBLongValue]]("PARENT_TASK_ID", O.Default(None))
+
+  def projectId: Rep[DBLongValue] = column[DBLongValue]("PROJECT_ID")
 
   override def * : ProvenShape[ProjectTaskDBTableRow] = (
     id,
     taskName,
+    parentTaskId,
     projectId,
     creatorId,
     updaterId,
-    parentTaskId,
     createDateTime,
     updateDateTime()
   ) <> ((ProjectTaskDBTableRow.apply _).tupled, ProjectTaskDBTableRow.unapply)

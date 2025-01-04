@@ -9,10 +9,10 @@ import com.advantest.demeter.database._
 final case class ProjectTaskDBTableRow(
                                         id: DBLongValue,
                                         taskName: DBVarcharValue,
+                                        parentTaskId: Option[DBLongValue] = None,
                                         projectId: DBLongValue,
                                         creatorId: DBLongValue,
                                         updaterId: DBLongValue,
-                                        parentTaskId: Option[DBLongValue] = None,
                                         createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
                                         updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                       ) extends DBTableRow {
