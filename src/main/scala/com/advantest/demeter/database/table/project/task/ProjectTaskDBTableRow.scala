@@ -12,6 +12,7 @@ final case class ProjectTaskDBTableRow(
                                         projectId: DBLongValue,
                                         creatorId: DBLongValue,
                                         updaterId: DBLongValue,
+                                        parentTaskId: Option[DBLongValue] = None,
                                         createDateTime: DBDateTimeValue = DBDateTimeValue.now(),
                                         updateDateTime: DBDateTimeValue = DBDateTimeValue.now()
                                       ) extends DBTableRow {

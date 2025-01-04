@@ -16,6 +16,7 @@ import spray.json._
 final case class ProjectTaskPayload(
                                      id: Long,
                                      taskName: String,
+                                     parentTaskId: Option[Long] = None,
                                      taskAttributes: Seq[ProjectTaskAttributePayload] = Seq.empty,
                                      taskAttributeValues: Seq[ProjectTaskAttributeValuePayload] = Seq.empty,
                                    ) extends HttpPayload {
@@ -50,7 +51,7 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
             case DBDateTimeValue(value) => writer.writeLocalDateTime(attributeName, value)
           }
       }
-      writer.writeString("taskName", obj.taskName).toJsObject
+      writer.writeLong("id", obj.id).writeString("taskName", obj.taskName).writeLong("parentTaskId", obj.parentTaskId).toJsObject
     }
 
     override def read(json: JsValue): ProjectTaskPayload = {
@@ -59,9 +60,10 @@ object ProjectTaskPayload extends Serializable[ProjectTaskPayload] with DBTableR
           val reader = JsonReaderFormat(fields)
           val id = reader.readLong("id")
           val taskName = reader.readString("taskName")
+          val parentTaskId = reader.readOptionLong("parentTaskId")
           val taskAttributes = reader.read[Seq[ProjectTaskAttributePayload]]("taskAttributes")
           val taskAttributeValues = reader.read[Seq[ProjectTaskAttributeValuePayload]]("taskAttributeValues")
-          ProjectTaskPayload(id, taskName, taskAttributes, taskAttributeValues)
+          ProjectTaskPayload(id, taskName, parentTaskId, taskAttributes, taskAttributeValues)
         case _ => deserializationError("ProjectTaskEntity deserialization error.")
       }
     }

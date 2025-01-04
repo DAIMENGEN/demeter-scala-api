@@ -14,12 +14,15 @@ final class ProjectTaskDBTableSchema(tag: Tag) extends DBTableSchemaAbstract[Pro
 
   def projectId: Rep[DBLongValue] = column[DBLongValue]("PROJECT_ID")
 
+  def parentTaskId: Rep[Option[DBLongValue]] = column[Option[DBLongValue]]("PARENT_TASK_ID", O.Default(None))
+
   override def * : ProvenShape[ProjectTaskDBTableRow] = (
     id,
     taskName,
     projectId,
     creatorId,
     updaterId,
+    parentTaskId,
     createDateTime,
     updateDateTime()
   ) <> ((ProjectTaskDBTableRow.apply _).tupled, ProjectTaskDBTableRow.unapply)
